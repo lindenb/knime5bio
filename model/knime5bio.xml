@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin package="com.github.lindenb.jvarkit.knime">
+
+  <category name="knime5bio">
+          <category name="bio">
+              <category name="fasta" label="Fasta">
+              <node name="readfasta" label="Read Fasta" description="Reads a Fasta file">
+                  <property type="file-read" name="fastaIn" >
+                      <extension>.fa</extension>
+                      <extension>.fasta</extension>
+                      <extension>.fasta.gz</extension>
+                      <extension>.fa.gz</extension>
+                  </property>
+                  <property type="int" name="limit" label="max sequences" description="number of sequences to be fetch. 0 = ALL" default="0">
+                  </property>
+                  <property type="bool" name="upper" label="Uppercase" description="Convert to Uppercase" default="false">
+                  </property>
+                  <outPort name="output">
+                      <column name="title" label="Title" type="string"/>
+                      <column name="sequence" label="Sequence" type="string"/>
+                  </outPort>
+                  <code>
+                      <import>
+                      import java.io.*;
+                      </import>
+                      <body>
+                    @Override
+                    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception
+                        {
+                        int limit = this.getPropertyLimitValue();
+                        String url = this.getPropertyFastaInValue();
+                        boolean to_upper = this.getPropertyUpperValue();
+                        getLogger().info("reading "+url);
+                        java.io.BufferedReader r= null;
+                        int n_sequences = 0;
+                        try
+                            {
+                            r = this.openUriForBufferedReader(url);
+
+                            DataTableSpec dataspec0 = this.createOutTableSpec0();
+                            BufferedDataContainer container0 = exec.createDataContainer(dataspec0);
+
+                            String seqname="";
+                            StringBuilder sequence=new StringBuilder();
+                            for(;;)
+                                {
+                                exec.checkCanceled();
+                                exec.setMessage("Sequences "+n_sequences);
+                                String line= r.readLine();
+                                if(line==null || line.startsWith(">"))
+                                    {
+                                    if(!(sequence.length()==0 &amp;&amp; seqname.trim().isEmpty()))
+                                        {
+										  container0.addRowToTable(new  org.knime.core.data.def.DefaultRow(
+										  org.knime.core.data.RowKey.createRowKey(n_sequences),
+										this.createDataCellsForOutTableSpec0(seqname,sequence)
+																				    ));
+                                        ++n_sequences;
+                                        }
+                                    if(line==null) break;
+                                    if( limit!=0 &amp;&amp; limit==n_sequences) break;
+                                    seqname=line.substring(1);
+                                    sequence=new StringBuilder();
+                                    }
+                                else
+                                    {
+                                    line= line.trim();
+                                    if( to_upper ) line= line.toUpperCase();
+                                    sequence.append(line);
+                                    }
+                                }
+                            container0.close();
+                            BufferedDataTable out0 = container0.getTable();
+                            return new BufferedDataTable[]{out0};
+                            }
+                        finally
+                            {
+                            r.close();
+                            }
+                        }
+                      </body>
+                  </code>
+              </node>
+
+              <node name="writefasta" label="Write Fasta" description="Write a Fasta file">
+                  <inPort name="input">
+                  </inPort>
+                  <property type="file-save" name="fastaOut" >
+                  </property>
+
+                  <property type="column" name="title" label="Title" description="Fasta title" data-type="string">
+                  </property>
+
+                  <property type="column" name="sequence" label="Sequence" description="Fasta Sequence" data-type="string">
+                  </property>
+
+                  <property type="int" name="fold" label="Fold size" description="Fold sequences greater than..." default="60">
+                  </property>
+
+
+
+                  <code>
+                      <import>
+                      import org.knime.core.data.container.CloseableRowIterator;
+                      import java.io.*;
+                      </import>
+                      <body>
+                    @Override
+                    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception
+                        {
+                        CloseableRowIterator iter=null;
+                        BufferedDataTable inTable=inData[0];
+                        int fold = this.getPropertyFoldValue();
+                        int tIndex = this.findTitleRequiredColumnIndex(inTable.getDataTableSpec());
+                        int sIndex = this.findSequenceRequiredColumnIndex(inTable.getDataTableSpec());
+                        PrintWriter w =null;
+                        try
+                            {
+                            w= openFastaOutForPrinting();
+
+                            int nRows=0;
+                            double total=inTable.getRowCount();
+                            iter=inTable.iterator();
+                            while(iter.hasNext())
+                                {
+                                DataRow row=iter.next();
+                                DataCell tCell =row.getCell(tIndex);
+
+                                DataCell sCell =row.getCell(sIndex);
+
+                                w.print(">");
+                                if(!tCell.isMissing())
+                                    { 
+                                    w.print(StringCell.class.cast(tCell).getStringValue());
+                                    }
+                                if(!sCell.isMissing())
+                                    {
+                                    String sequence = StringCell.class.cast(sCell).getStringValue();
+                                    for(int i=0;i&lt;sequence.length();++i)
+                                        {
+                                        if(i%fold == 0) w.println();
+                                        w.print(sequence.charAt(i));
+                                        exec.checkCanceled();
+                                        }
+                                    }
+                                w.println();
+
+                                exec.checkCanceled();
+                                exec.setProgress(nRows/total,"Saving Fasta");
+                                ++nRows;
+                                }
+                            w.flush();
+                            return new BufferedDataTable[0];
+                            }
+                        finally
+                            {
+                            if(w!=null) w.close();
+                            }
+                        }
+                      </body>
+                  </code>
+              </node>
+        </category>
+      </category>
+  </category>
+
+</plugin>
