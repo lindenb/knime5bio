@@ -4,23 +4,15 @@
 	extends="com.github.knime5bio.vcf.AbstractVcfFilterNodeModel"
 	>
   <inPort name="input">
-  	  <column name="vcfin" label="VCF file in" type="string"/>
+  	  <column name="vcfIn" label="VCF file in" type="string"/>
   </inPort>
-  <outPort name="outputsnp">
-      <column name="vcfout" label="VCF file out" type="string"/>
+   <outPort name="output">
+  	  <column name="vcfOut" label="VCF file in" type="string"/>
   </outPort>
-  <outPort name="outputindel">
-      <column name="vcfout" label="VCF file out" type="string"/>
-  </outPort>
-  <code>
-     <body>
-     
-    @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception
-        {
-        return new BufferedDataTable[0];
-        }
-     </body>
-  </code>
+  <property type="column" name="vcfInput" label="Title" description="Fasta title" data-type="string">
+  </property>
+
+  <property type="column" name="vcfOutput" label="Sequence" description="Fasta Sequence" data-type="string">
+  </property>
 </node>
 

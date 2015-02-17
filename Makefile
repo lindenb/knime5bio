@@ -1,7 +1,10 @@
 .PHONY=all build clean:
 generated.dir=generated
 knime.dir=${HOME}/tmp/KNIME/knime_2.11.2
-extra.jars=$(realpath ../jvarkit-git/htsjdk/dist/htsjdk-1.120.jar)
+htsjdk.dist=$(realpath ../jvarkit-git/htsjdk/dist)
+extra.jars=${htsjdk.dist}/htsjdk-1.120.jar:${htsjdk.dist}/commons-jexl-2.1.1.jar:${htsjdk.dist}/commons-logging-1.1.1.jar:${htsjdk.dist}/snappy-java-1.0.3-rc3.jar
+
+
 
 all: build
 
