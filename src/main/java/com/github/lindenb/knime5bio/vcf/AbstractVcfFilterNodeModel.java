@@ -1,6 +1,5 @@
 package com.github.lindenb.knime5bio.vcf;
 import org.knime.core.node.*;
-import org.knime.core.node.defaultnodesettings.SettingsModel;
 import org.knime.core.data.*;
 import org.knime.core.data.container.CloseableRowIterator;
 import org.knime.core.data.def.*;
@@ -8,13 +7,10 @@ import org.knime.core.data.def.*;
 import com.github.lindenb.knime5bio.AbstractKnime5BioNodeModel;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.InputStream;
 
-import htsjdk.samtools.util.CloseableIterator;
 import htsjdk.samtools.util.CloserUtil;
-import htsjdk.samtools.util.IOUtil;
-import htsjdk.samtools.util.LineReader;
-import htsjdk.tribble.readers.AsciiLineReader;
 import htsjdk.tribble.readers.LineIterator;
 import htsjdk.tribble.readers.LineIteratorImpl;
 import htsjdk.tribble.readers.LineReaderUtil;
@@ -22,16 +18,12 @@ import htsjdk.variant.variantcontext.VariantContext;
 import htsjdk.variant.variantcontext.writer.VariantContextWriter;
 import htsjdk.variant.variantcontext.writer.VariantContextWriterBuilder;
 import htsjdk.variant.vcf.VCFCodec;
-import htsjdk.variant.vcf.VCFFileReader;
 import htsjdk.variant.vcf.VCFHeader;
 import htsjdk.variant.vcf.VCFHeaderLine;
 
 public abstract class AbstractVcfFilterNodeModel
 	extends AbstractKnime5BioNodeModel
-	{
-	protected abstract String getPropertyVcfInValue();
-	protected abstract int findVcfInputRequiredColumnIndex(final  DataTableSpec inSpec) throws InvalidSettingsException;
-	
+	{	
 	protected AbstractVcfFilterNodeModel(int inport,int outport)
 		{
 		/* super(inport,outport) */
@@ -52,7 +44,7 @@ public abstract class AbstractVcfFilterNodeModel
 
 		
 		
-		VcfFilterHandler(final BufferedDataTable[] inData, final ExecutionContext exec)
+		public VcfFilterHandler(final BufferedDataTable[] inData, final ExecutionContext exec)
 			{
 			super(inData,exec);
 			}
@@ -99,7 +91,7 @@ public abstract class AbstractVcfFilterNodeModel
 			}
 		
 		/** in the input table, return the column containing the path of the VCF */
-		public int getInputPathColumnIndex()
+		public int getInputPathColumnIndex()  throws InvalidSettingsException 
 			{
 			/* input container */
 			BufferedDataTable inputTable = this.getInputBufferedDataTable();
@@ -157,14 +149,20 @@ public abstract class AbstractVcfFilterNodeModel
 		protected File createOutputFile(String uri)
 			{
 			File mydir= getKnime5BiNodeWorkingDirectory();
-			return new File(mydir,md5(uri)+"."+getNodeName()+".vcf.gz");
+			return new File(mydir,md5(uri)+"."+getNodeName().toLowerCase()+".vcf.gz");
 			}
+		
+		protected boolean acceptVariant(VariantContext ctx)
+			{
+			return true;
+			}	
 		
 		protected WhatToDo processVariant(VariantContext ctx)
 			{
+			if(!acceptVariant(ctx)) return WhatToDo.CONTINUE;
 			this.variantContextWriter.add(ctx);
 			++this.outVariantCount;
-			return WhatToDo.OK;
+			return WhatToDo.CONTINUE;
 			}
 		
 		protected boolean acceptHeader(VCFHeader in)
@@ -174,17 +172,24 @@ public abstract class AbstractVcfFilterNodeModel
 		
 		protected void processVcfFile(String uri) throws Exception
 			{
+			System.err.println("[LOG] Process "+uri);
 			InputStream vcfStream=null;
 			File outFile =null;
 			try
 				{
 				this.inVariantIndex=0;
 				this.outVariantCount=0;
+				getLogger().info("opening "+uri);
 				vcfStream = openUriForInputStream(uri);
 				VCFCodec codec=new VCFCodec();
+				System.err.println("[LOG] vcf codec:" +codec);
 				LineIterator iter= new LineIteratorImpl(LineReaderUtil.fromBufferedStream(vcfStream));
+				System.err.println("[LOG]  iter ok");
 				VCFHeader inHeader =(VCFHeader)codec.readActualHeader(iter);
-				if(!acceptHeader(inHeader)) return;
+				if(!acceptHeader(inHeader))
+					{
+					return;
+					}
 				VCFHeader outHeader = createOuputHeader(inHeader);
 				outFile = createOutputFile(uri);
 				
@@ -202,6 +207,7 @@ public abstract class AbstractVcfFilterNodeModel
 				while(iter.hasNext())
 					{
 					String line= iter.next();
+					
 					VariantContext ctx = codec.decode(line);
 					++this.inVariantIndex;
 					checkCanceled();
@@ -223,6 +229,7 @@ public abstract class AbstractVcfFilterNodeModel
 				}
 			catch(Exception err)
 				{
+				err.printStackTrace();
 				CloserUtil.close(this.variantContextWriter);
 				this.variantContextWriter=null;
 				if(outFile!=null) outFile.delete();
@@ -253,8 +260,9 @@ public abstract class AbstractVcfFilterNodeModel
 			    	DataRow row= rowIter.next();
 		            DataCell cell =row.getCell(inputPathColumnIndex);
 		            this.checkCanceled();
-		            if(!cell.isMissing())
+		            if(cell.isMissing())
 		            	{
+		            	getLogger().warn("Missing cells in "+getNodeName());
 		            	++this.inputTableIndex;
 		            	continue;
 		            	}
@@ -270,6 +278,7 @@ public abstract class AbstractVcfFilterNodeModel
 		            	++this.inputTableIndex;
 		            	continue;
 		            	}
+		            System.err.println("[LOG]vcfuri="+vcfuri);
 		            processVcfFile(vcfuri);
 			    	++this.inputTableIndex;
 			    	this.getExecutionContext().setProgress(this.inputTableIndex/(double)this.countInputTableRows);
@@ -284,6 +293,7 @@ public abstract class AbstractVcfFilterNodeModel
 		@Override
 		public BufferedDataTable[] execute() throws Exception
 			{
+			System.err.println("go for execute");
 			/* output container */
 			this.outputDataContainer = null;
 			beginExecute();
@@ -295,10 +305,12 @@ public abstract class AbstractVcfFilterNodeModel
 				this.outputDataContainer.close();
 		        BufferedDataTable outtable = this.outputDataContainer.getTable();
 		        this.outputDataContainer=null;
+		    	System.err.println("end for execute");
 		        return new BufferedDataTable[]{outtable};
 				}
 			catch(Exception err)
 				{
+				err.printStackTrace();
 				getLogger().error(String.valueOf(err.getMessage()), err);
 				throw err;
 				}
@@ -308,7 +320,50 @@ public abstract class AbstractVcfFilterNodeModel
 				this.outputDataContainer=null;
 				endExecute();
 				}
+		
 			}
 		}
 	
+	protected abstract VcfFilterHandler createVcfFilterHandler(
+			BufferedDataTable[] inData,
+			ExecutionContext exec);
+	
+	@Override
+	protected BufferedDataTable[] execute(BufferedDataTable[] inData,
+			ExecutionContext exec) throws Exception {
+		 System.err.println("[LOG]"+getNodeName()+" execute0");
+		 System.err.println("[LOG]"+getNodeName()+" execute");
+		 VcfFilterHandler handler= createVcfFilterHandler(inData, exec);
+		 System.err.println("[LOG]"+getNodeName()+" GOT handler");
+		return handler.execute();
+		}
+	
+	protected void removeVCFFiles()
+		{
+		FileFilter filter=new FileFilter() {
+			@Override
+			public boolean accept(File path) {
+				return path.isFile() && path.getName().endsWith(".vcf.gz");
+			}
+		};
+		File dir= getKnime5BiNodeWorkingDirectory();
+		if(!dir.exists()) return;
+		for(File f :dir.listFiles(filter))
+			{
+			getLogger().warn("remove "+f);
+			f.delete();
+			}
+		}
+	
+	@Override
+	protected void onDispose() {
+		super.onDispose();
+		getLogger().info(getNodeName()+": disposed");
+		}
+	@Override
+	protected void reset() {
+		super.reset();
+		removeVCFFiles();
+		getLogger().info(getNodeName()+": reset");
+		}
 	}

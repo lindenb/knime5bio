@@ -11,7 +11,7 @@ public abstract class AbstractKnime5BioNodeModel extends
 	com.github.lindenb.knime5bio.AbstractNodeModel
 	{
 	protected enum WhatToDo {
-		OK,BREAK
+		CONTINUE,BREAK
 		};
 	
 	
@@ -28,9 +28,12 @@ public abstract class AbstractKnime5BioNodeModel extends
 	
 	protected File getKnime5BioBaseDirectory()
 		{
-		final String KNIME5DIR="knime5bio.working.directory";
+		final String KNIME5DIR="com.github.lindenb.knime5bio.working.directory";
 		String s= peekFlowVariableString(KNIME5DIR);
-		if(s==null) throw new IllegalStateException("Flow Variable "+KNIME5DIR+" undefined ");
+		if(s==null) throw new IllegalStateException(
+				"Flow Variable "+KNIME5DIR+" undefined. "+
+				"Add this variable in the KNIME workspace (right click in the workspace icon) and set its value to an existing directory."
+				);
 		File dir=new File(s);
 		if(!dir.exists())
 			{

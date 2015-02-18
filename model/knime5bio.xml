@@ -9,6 +9,9 @@
     </category>
 	<category name="vcf" label="VCF">
   		<xi:include href="node.vcf-split-indel-snp.xml"/>
+  		<category name="jvarkit" label="JVARKIT">
+  			<xi:include href="node.jvarkit-filterso.xml"/>        
+  		</category>
     </category>
   </category>
 </plugin>

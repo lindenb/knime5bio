@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node name="vcfFilterSO" label="VCF Filter SO" 
+	description="VCF Filter Sequence Ontology"
+	extends-model="com.github.lindenb.knime5bio.AbstractJVarkitNodeModel&lt;com.github.lindenb.jvarkit.tools.misc.VcfFilterSequenceOntology&gt;"
+	>
+   <inPort name="input">
+  	  <column name="vcfIn" label="VCF file in" type="string"/>
+  </inPort>
+   <outPort name="output">
+  	  <column name="vcfOut" label="VCF file out" type="string"/>
+  </outPort>
+  <property type="column" name="vcfInput" label="VCF path" description="VCF files" data-type="string">
+  </property>
+  <property type="bool" name="inverseSelection" label="Inverse selection" description="Inverse selection" default="false">
+  </property>
+  <property type="bool" name="enableReasoning"  default="true">
+  </property>
+  <property type="string" name="terms">
+  </property>
+
+  
+  <code>
+  	<import>
+  	import com.github.lindenb.jvarkit.tools.misc.VcfFilterSequenceOntology;
+  	
+  	</import>
+  	<body>
+  	
+  	@Override
+	protected DataTableSpec createDefaultOuputTableSpec() {
+		return createOutTableSpec0();
+		}
+	
+  	
+  	
+  	@Override
+  	public String getOutputFileSuffix()
+  		{
+  		return ".vcf.gz";
+  		}
+  	@Override
+  	protected int getInputBufferedDataTableIndex() {
+  		return 0;
+  		}
+  	
+  	@Override
+  	protected int getInputUriColumnIndex(DataTableSpec inSpec) throws Exception {
+  		return super.findVcfInputRequiredColumnIndex(inSpec);
+  		}
+
+  	@Override
+  	protected VcfFilterSequenceOntology createInstanceOfKnimeApplication()
+  			throws Exception {
+  		
+  		com.github.lindenb.jvarkit.tools.misc.VcfFilterSequenceOntology instance=new VcfFilterSequenceOntology();
+  		instance.setInverseResult(super.getPropertyInverseSelectionValue());
+  		instance.setReasoning(super.getPropertyEnableReasoningValue());
+  		for(String acn: this.getPropertyTermsValue().split("[ ,\n\t]"))
+  			{
+  			instance.addTerm(acn);
+  			}
+  		return instance;
+  		}
+
+  	
+  	</body>
+  
+  </code>
+</node>
+

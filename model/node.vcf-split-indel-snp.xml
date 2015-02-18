@@ -1,18 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <node name="splitindelsnp" label="Split Indel/SNP"
 	description="Split Indel/SNP"
-	extends-model="com.github.knime5bio.vcf.AbstractVcfFilterNodeModel"
+	extends-model="com.github.lindenb.knime5bio.vcf.AbstractVcfFilterNodeModel"
 	>
   <inPort name="input">
   	  <column name="vcfIn" label="VCF file in" type="string"/>
   </inPort>
    <outPort name="output">
-  	  <column name="vcfOut" label="VCF file in" type="string"/>
+  	  <column name="vcfOut" label="VCF file out" type="string"/>
+  	  <column name="COUNT" label="number of variants" type="int"/>
   </outPort>
-  <property type="column" name="vcfInput" label="Title" description="Fasta title" data-type="string">
+  <property type="column" name="vcfInput" label="VCF path" description="VCF files" data-type="string">
+  </property>
+  <property type="bool" name="inverseSelection" label="Inverse selection" description="Inverse selection" default="false">
   </property>
 
-  <property type="column" name="vcfOutput" label="Sequence" description="Fasta Sequence" data-type="string">
-  </property>
+  
+  <code>
+  	<import>
+  	import htsjdk.variant.variantcontext.*;
+  	</import>
+  	<body>
+  	
+  		@Override
+  		protected VcfFilterHandler createVcfFilterHandler( BufferedDataTable[] inData, ExecutionContext exec)
+  			{
+  			return new VcfFilterHandler(inData,exec)
+  				{
+  				@Override
+  				public DataTableSpec createDefaultOutputDataTableSpec()
+  					{
+  					return getOwnerNode().createOutTableSpec0();
+  					}
+		  		@Override
+		  		public int getInputPathColumnIndex()  throws InvalidSettingsException
+		  			{
+		  			BufferedDataTable inputTable = this.getInputBufferedDataTable();
+		  			return findVcfInputRequiredColumnIndex(inputTable.getDataTableSpec());
+		  			}
+	  			
+  				@Override
+  				protected boolean acceptVariant(VariantContext ctx)
+					{
+					return ctx.isIndel()  == !getOwnerNode().getPropertyInverseSelectionValue();
+					}
+  				};
+  			}	
+  			
+  	</body>
+  
+  </code>
+  
 </node>
 
