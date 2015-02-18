@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <node name="splitindelsnp" label="Split Indel/SNP"
 	description="Split Indel/SNP"
-	extends="com.github.knime5bio.vcf.AbstractVcfFilterNodeModel"
+	extends-model="com.github.knime5bio.vcf.AbstractVcfFilterNodeModel"
 	>
   <inPort name="input">
   	  <column name="vcfIn" label="VCF file in" type="string"/>
