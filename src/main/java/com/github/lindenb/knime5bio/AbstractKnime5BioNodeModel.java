@@ -5,14 +5,16 @@ import java.io.File;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
+import org.knime.core.node.NodeModel;
 import org.knime.core.node.port.PortType;
 
 public abstract class AbstractKnime5BioNodeModel extends
-	com.github.lindenb.knime5bio.AbstractNodeModel
+	NodeModel
 	{
 	protected enum WhatToDo {
 		CONTINUE,BREAK
 		};
+	
 	
 	
 	protected AbstractKnime5BioNodeModel(int inport,int outport)
@@ -45,6 +47,16 @@ public abstract class AbstractKnime5BioNodeModel extends
 			}
 		return dir;
 		}
+	
+	/** return a NodeLoggerAdapter for this node. Used to bind application from jvarkit */
+	protected  NodeLoggerAdapter createNodeLoggerAdapter()
+		{
+		return new NodeLoggerAdapter(getNodeName(), getLogger());
+		}
+	
+	protected abstract  String getNodeUniqId();
+	protected abstract String getNodeName();
+	
 	protected File getKnime5BiNodeWorkingDirectory()
 		{
 		File parent= getKnime5BioBaseDirectory();

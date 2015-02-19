@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin package="com.github.lindenb.knime5bio"
 	xmlns:xi="http://www.w3.org/2001/XInclude"
+	extends-model="com.github.lindenb.knime5bio.AbstractKnime5BioNodeModel"
 	>
   <category name="bio">
 	<category name="fasta" label="Fasta">
@@ -8,9 +9,9 @@
   		<xi:include href="node.write-fasta.xml"/>        
     </category>
 	<category name="vcf" label="VCF">
-  		<xi:include href="node.vcf-split-indel-snp.xml"/>
   		<category name="jvarkit" label="JVARKIT">
-  			<xi:include href="node.jvarkit-filterso.xml"/>        
+  			<xi:include href="node.jvarkit-filterso.xml"/>      
+  			<xi:include href="node.vcf-samples.xml"/>  
   		</category>
     </category>
   </category>

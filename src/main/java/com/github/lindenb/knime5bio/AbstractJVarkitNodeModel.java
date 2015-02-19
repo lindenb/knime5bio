@@ -40,12 +40,12 @@ public abstract class AbstractJVarkitNodeModel<T extends KnimeApplication> exten
 		}
 	
 	protected abstract DataTableSpec createDefaultOuputTableSpec();
-	protected abstract T createInstanceOfKnimeApplication() throws Exception;
 	protected abstract int getInputUriColumnIndex(DataTableSpec inSpec) throws Exception;
 	
 	
 	
-	protected abstract String getOutputFileSuffix();
+	
+	public abstract AbstractExecuteNodeModelHandler createExecuteNodeModelHandler();
 	
 	@Override
 	protected BufferedDataTable[] execute(BufferedDataTable[] inData,

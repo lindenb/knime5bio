@@ -24,7 +24,7 @@
         {
         int limit = this.getPropertyLimitValue();
         String url = this.getPropertyFastaInValue();
-        boolean to_upper = this.getPropertyUpperValue();
+        boolean to_upper = this.isPropertyUpperValue();
         getLogger().info("reading "+url);
         java.io.BufferedReader r= null;
         int n_sequences = 0;

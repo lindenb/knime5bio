@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node name="vcfSamples" label="VCF Samples" 
+	description="Extract the samples genotypes in a VCF"
+	generate-model='false'
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	>
+   <xi:include href="inport.vcf.xml"/>
+   
+   <outPort name="output">
+  	  <column name="vcfOut" label="VCF file out" type="string">
+  	  	<xi:include href="description.vcfin..xml"/>
+  	  </column>
+  	  <column name="SAMPLE" label="Sample Name" type="string"/>
+  </outPort>
+
+	<property type="column" name="vcfInput" label="VCF path" description="VCF files" data-type="string">
+  </property>
+  <property type="bool" name="filterOutNoSample" label="Filter out files containing no samples"  default="false">
+  </property>
+
+</node>
+
