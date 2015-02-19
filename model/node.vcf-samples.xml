@@ -8,7 +8,7 @@
    
    <outPort name="output">
   	  <column name="vcfOut" label="VCF file out" type="string">
-  	  	<xi:include href="description.vcfin..xml"/>
+  	  	<xi:include href="description.vcfin.xml"/>
   	  </column>
   	  <column name="SAMPLE" label="Sample Name" type="string"/>
   </outPort>
