@@ -35,7 +35,7 @@ build: ${xsl2java} model/knime5bio.xml
 		--stringparam extra.source.dir $(realpath src/main/java) \
 		--stringparam extra.jars ${extra.jars} \
 		$^
-	$(MAKE) -C ${generated.dir} knime.root=${knime.dir}
+	$(MAKE) -B -C ${generated.dir} knime.root=${knime.dir}
 
 doc: build
 	$(MAKE) -C ${generated.dir} $@ knime.root=${knime.dir}

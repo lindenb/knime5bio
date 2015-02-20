@@ -14,4 +14,27 @@
 	</initialize>
 </node>
 
+
+<node name="vcffilterjs" type="vcf-filter" handler-class="com.github.lindenb.jvarkit.tools.vcffilterjs.VCFFilterJS">
+	<initialize>
+	instance.setScriptExpression(this.getPropertyJavascriptValue());
+	if( instance.initializeKnime() != 0)
+		{
+		throw new RuntimeException("Cannot initialize VCFFilterJS. Check java engine and script syntax");
+		}
+	</initialize>
+</node>
+
+<node name="vcffilterso" type="vcf-filter" handler-class="com.github.lindenb.jvarkit.tools.misc.VcfFilterSequenceOntology">
+	<initialize>
+  		instance.setInverseResult(super.isPropertyInverseSelectionValue());
+  		instance.setReasoning(super.isPropertyEnableReasoningValue());
+  		for(String acn: this.getPropertyTermsValue().split("[ ,\n\t]"))
+  			{
+  			instance.addTerm(acn);
+  			}
+	</initialize>
+</node>
+
+
 </generate-code>

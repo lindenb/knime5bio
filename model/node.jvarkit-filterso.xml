@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <node name="vcfFilterSO" label="VCF Filter SO" 
 	description="VCF Filter Sequence Ontology"
-	generate-model='false'
+	generate-model='true'
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	>
    <xi:include href="inport.vcf.xml"/>
@@ -17,5 +17,7 @@
   <description>
      <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
   </description>
+  
+  <xi:include href="code.vcffilterso.xml" parse="xml" />
 </node>
 

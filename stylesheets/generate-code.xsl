@@ -116,7 +116,7 @@ import htsjdk.variant.vcf.VCFHeader;
 	                	RowKey.createRowKey(nRows),
 	                	createDataCellsForOutTableSpec0(
 	                			fileout.getPath(),
-	                			instance.geVariantCount()
+	                			instance.getVariantCount()
 	                			)
 	                	));
 	               

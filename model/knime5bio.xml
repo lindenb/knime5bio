@@ -14,8 +14,11 @@
   			<xi:include href="node.jvarkit-filterso.xml"/>
   			<xi:include href="node.jvarkit-vcfhead.xml"/>
   			<xi:include href="node.jvarkit-vcftail.xml"/>
+  			<xi:include href="node.jvarkit-vcffilterjs.xml"/>
+  			<xi:include href="node.jvarkit-vcfmerge.xml"/>
   		</category>
   		<xi:include href="node.vcf-samples.xml"/>  
+  		<xi:include href="node.vcf2table.xml"/>  
     </category>
   </category>
 </plugin>
