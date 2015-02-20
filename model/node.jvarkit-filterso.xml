@@ -5,21 +5,17 @@
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	>
    <xi:include href="inport.vcf.xml"/>
-   
-   <outPort name="output">
-  	  <column name="vcfOut" label="VCF file out" type="string">
-  	  	<xi:include href="description.vcfin.xml"/>
-  	  </column>
-  	  <column name="countVariants" label="Number of variants" type="int"/>
-  </outPort>
-  <property type="column" name="vcfInput" label="VCF path" description="VCF files" data-type="string">
-  </property>
+   <xi:include href="outport.vcf_count.xml"/>
+
+ <property type="column" name="vcfInput" label="Vcf Input" data-type="string" port="input"/>
   <property type="bool" name="inverseSelection" label="Inverse selection" description="Inverse selection" default="false">
   </property>
   <property type="bool" name="enableReasoning"  default="true">
   </property>
   <property type="string" name="terms">
   </property>
-
+  <description>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
 </node>
 

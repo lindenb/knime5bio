@@ -37,7 +37,6 @@ import org.knime.core.data.container.CloseableRowIterator;
 import org.knime.core.data.def.*;
 
 import com.github.lindenb.jvarkit.tools.misc.VcfFilterSequenceOntology;
-import com.github.lindenb.knime5bio.NodeLoggerAdapter;
   	
 public class VcfFilterSONodeModel
 	extends AbstractVcfFilterSONodeModel
@@ -72,8 +71,6 @@ public class VcfFilterSONodeModel
 
 		try {
 			instance= this.createInstanceOfKnimeApplication();
-		    NodeLoggerAdapter logger=this.createNodeLoggerAdapter();
-            instance.getLogger().addHandler(logger);
 			instance.initializeKnime();
 			out_container = exec.createDataContainer(dataOutSpec);
             int nRows=0;
@@ -134,7 +131,6 @@ public class VcfFilterSONodeModel
 	        	iter.close();
 	        	iter=null;
 	        	out_container.close();
-	        	instance.getLogger().removeHandler(logger);
 	            BufferedDataTable out0 = out_container.getTable();
 	            out_container=null;
 	            return new BufferedDataTable[]{out0};

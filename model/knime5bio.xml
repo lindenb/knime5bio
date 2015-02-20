@@ -10,9 +10,12 @@
     </category>
 	<category name="vcf" label="VCF">
   		<category name="jvarkit" label="JVARKIT">
-  			<xi:include href="node.jvarkit-filterso.xml"/>      
-  			<xi:include href="node.vcf-samples.xml"/>  
+  			<description>Tools from jvarkit</description>
+  			<xi:include href="node.jvarkit-filterso.xml"/>
+  			<xi:include href="node.jvarkit-vcfhead.xml"/>
+  			<xi:include href="node.jvarkit-vcftail.xml"/>
   		</category>
+  		<xi:include href="node.vcf-samples.xml"/>  
     </category>
   </category>
 </plugin>

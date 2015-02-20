@@ -1,6 +1,5 @@
 package com.github.lindenb.knime5bio;
 
-import htsjdk.variant.variantcontext.Allele;
 import htsjdk.variant.variantcontext.VariantContext;
 import htsjdk.variant.vcf.VCFEncoder;
 import htsjdk.variant.vcf.VCFFilterHeaderLine;
@@ -12,13 +11,15 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnProperties;
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataColumnSpecCreator;
-import org.knime.core.data.DataRow;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.DataType;
 import org.knime.core.data.def.DoubleCell;
@@ -27,27 +28,37 @@ import org.knime.core.data.def.StringCell;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
+import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeModel;
 import org.knime.core.node.port.PortType;
 
 public abstract class AbstractKnime5BioNodeModel extends
 	NodeModel
 	{
-	protected enum WhatToDo {
-		CONTINUE,BREAK
-		};
-	
-	
+	/** attach jvarkit logger to knime  */
+	private NodeLoggerAdapter nodeLoggerAdapter=null;
 	
 	protected AbstractKnime5BioNodeModel(int inport,int outport)
 		{
 		/* super(inport,outport) */
 		super(inport,outport);
+		attachvarkitLogger();
 		}
 
 	protected AbstractKnime5BioNodeModel(PortType[] inPortTypes, PortType[] outPortTypes)
 		{
 		super(inPortTypes, outPortTypes);
+		attachvarkitLogger();
+		}
+	
+	/** attach jvarkit logger to knime 
+	 * called by constructor, output jvarkit log to knime
+	 **/
+	private void attachvarkitLogger()
+		{
+		Logger LOG=Logger.getLogger("jvarkit");
+		this.nodeLoggerAdapter=new NodeLoggerAdapter();
+		LOG.addHandler(this.nodeLoggerAdapter);
 		}
 	
 	protected File getKnime5BioBaseDirectory()
@@ -70,11 +81,6 @@ public abstract class AbstractKnime5BioNodeModel extends
 		return dir;
 		}
 	
-	/** return a NodeLoggerAdapter for this node. Used to bind application from jvarkit */
-	protected  NodeLoggerAdapter createNodeLoggerAdapter()
-		{
-		return new NodeLoggerAdapter(getNodeName(), getLogger());
-		}
 	
 	protected abstract  String getNodeUniqId();
 	protected abstract String getNodeName();
@@ -227,5 +233,92 @@ public abstract class AbstractKnime5BioNodeModel extends
 		
 		public abstract BufferedDataTable[] execute()  throws Exception;
 		}
+	
+	@Override
+	protected void reset() {	
+		}
+	
+	@Override
+	protected void onDispose() {
+		super.onDispose();
+		if(this.nodeLoggerAdapter!=null)
+			{
+			Logger LOG=Logger.getLogger("jvarkit");
+			LOG.removeHandler(this.nodeLoggerAdapter);
+			this.nodeLoggerAdapter=null;
+			}
+		}
+	
+	
+	private class NodeLoggerAdapter
+		extends java.util.logging.Handler
+		{
+		
+		@Override
+		public void publish(LogRecord record) {
+			if(record.getLevel().equals(Level.OFF))
+				return;
+			String msg=String.valueOf(record.getMessage());
+			Throwable thrown = record.getThrown();
+			if(record.getLevel()==null)
+				{
+				
+				}
+			else if(record.getLevel().equals(Level.WARNING))
+				{
+				if(thrown==null)
+					{
+					getLogger().warn(msg);
+					}
+				else
+					{
+					getLogger().warn(msg,thrown);
+					}
+				}
+			else if(record.getLevel().equals(Level.INFO))
+				{
+				if(thrown==null)
+					{
+					getLogger().warn(msg);
+					}
+				else
+					{
+					getLogger().warn(msg,thrown);
+					}
+				}
+			else if(record.getLevel().equals(Level.SEVERE))
+				{
+				if(thrown==null)
+					{
+					getLogger().fatal(msg);
+					}
+				else
+					{
+					getLogger().fatal(msg,thrown);
+					}
+				}
+			else
+				{
+				if(thrown==null)
+					{
+					getLogger().error(msg);
+					}
+				else
+					{
+					getLogger().error(msg,thrown);
+					}
+				}
+			}
+		@Override
+		public void flush()
+			{
+			//do nothing
+			}
+		@Override
+		public void close()
+			{
+			}
+		}
+
 	
 	}

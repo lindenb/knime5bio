@@ -1,7 +1,7 @@
 ifneq ($(realpath local.mk),)
 include local.mk
 endif
-.PHONY=all build clean:
+.PHONY=all build build clean:
 
 xsl2java?= ../xslt-sandbox/stylesheets/knime/knime2java.xsl
 knime.dir?= ${HOME}/tmp/KNIME/knime_2.11.2
@@ -23,8 +23,14 @@ install: build
 	cp ${generated.dir}/dist/com.github.lindenb.knime5bio_*.jar ${knime.dir}/plugins
 
 build: ${xsl2java} model/knime5bio.xml
-	mkdir -p ${generated.dir}
+	rm -rf ${generated.dir}/src ${generated.dir}/tmp
+	mkdir -p ${generated.dir}/model
 	xsltproc --xinclude \
+		-stringparam base.dir ${generated.dir}/model \
+		stylesheets/generate-code.xsl \
+		model/model.code.xml
+	xsltproc --xinclude \
+		--path ${generated.dir}/model \
 		--stringparam base.dir ${generated.dir} \
 		--stringparam extra.source.dir $(realpath src/main/java) \
 		--stringparam extra.jars ${extra.jars} \

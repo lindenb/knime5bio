@@ -25,12 +25,9 @@ SOFTWARE.
 
 
 */
-package com.github.lindenb.knime5bio.bio.vcf.jvarkit.vcfsamples;
+package com.github.lindenb.knime5bio.bio.vcf.vcfsamples;
 import htsjdk.samtools.util.CloserUtil;
-import htsjdk.variant.vcf.VCFHeader;
 
-import java.io.File;
-import java.util.Collections;
 import java.util.List;
 
 import org.knime.core.node.*;
@@ -38,10 +35,9 @@ import org.knime.core.data.*;
 import org.knime.core.data.container.CloseableRowIterator;
 import org.knime.core.data.def.*;
 
-import com.github.lindenb.jvarkit.tools.misc.VcfFilterSequenceOntology;
 import com.github.lindenb.jvarkit.util.vcf.VCFUtils;
 import com.github.lindenb.jvarkit.util.vcf.VcfIterator;
-import com.github.lindenb.knime5bio.NodeLoggerAdapter;
+import com.github.lindenb.knime5bio.bio.vcf.vcfsamples.AbstractVcfSamplesNodeModel;
 
 /** BEGIN user imports */
 

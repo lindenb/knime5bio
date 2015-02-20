@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<generate-code>
+
+<node name="vcfhead" type="vcf-filter" handler-class="com.github.lindenb.jvarkit.tools.misc.VcfHead">
+	<initialize>
+	instance.setCount(this.getPropertyNumberOfLinesValue());
+	</initialize>
+</node>
+
+
+<node name="vcftail" type="vcf-filter" handler-class="com.github.lindenb.jvarkit.tools.misc.VcfTail">
+	<initialize>
+	instance.setCount(this.getPropertyNumberOfLinesValue());
+	</initialize>
+</node>
+
+</generate-code>

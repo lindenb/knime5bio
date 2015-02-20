@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<property type="column" name="vcfInput" label="VCF path" data-type="string">	
+	<description>column containing the VCF file</description> 
+</property>

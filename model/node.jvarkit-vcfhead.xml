@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node name="vcfHead" label="VCF Head" 
+	description="Retains the first lines of a VCF file"
+	generate-model='true'
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	>
+   <xi:include href="inport.vcf.xml"/>
+   <xi:include href="outport.vcf_count.xml"/>
+
+ <property type="column" name="vcfInput" label="VCF path" description="VCF files" data-type="string"  port="input"/>
+  <property type="int" name="numberOfLines" label="Number of lines" default="10"/>
+ 
+  <description>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+  
+  <xi:include href="code.vcfhead.xml" parse="xml" />
+  
+</node>
+
