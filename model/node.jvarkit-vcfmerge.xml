@@ -81,12 +81,12 @@ import com.github.lindenb.jvarkit.tools.vcfmerge.VCFMerge2;
 	        	
 	        	if(	!vcffiles.isEmpty())
 			    	{
-			    	File nodeDir=this.getKnime5BiNodeWorkingDirectory();
+			    	File nodeDir=this.getNodeWorkingDirectory();
 			    	nodeDir.mkdirs();
 			    	mergedFile = new File(nodeDir,md5(getNodeUniqId())+".vcf.gz");
 			    	VCFMerge2 vcfMerge2=new VCFMerge2();
 			    	
-			    	vcfMerge2.addTmpDirectory(this.getKnime5BiNodeWorkingDirectory());
+			    	vcfMerge2.addTmpDirectory(nodeDir);
 			    	vcfMerge2.setOutputFile(mergedFile);
 			    	vcfMerge2.setFilesAreSorted(this.isPropertyVcfSortedValue());
 			    	if(vcfMerge2.initializeKnime()!=0)

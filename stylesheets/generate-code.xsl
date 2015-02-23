@@ -94,7 +94,7 @@ import htsjdk.variant.vcf.VCFHeader;
 	                	}
 	                /* create output file */
 	                java.io.File fileout = new java.io.File(
-	                		this.getKnime5BiNodeWorkingDirectory(),
+	                		this.getNodeWorkingDirectory(),
 	                		md5(uri)+".vcf.gz"
 	                		);
 					/* create parent directory if it doesn't exist */

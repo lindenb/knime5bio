@@ -33,6 +33,38 @@
   			{
   			instance.addTerm(acn);
   			}
+  		if( instance.initializeKnime() != 0)
+			{
+			throw new RuntimeException("Cannot initialize vcffilterso");
+			}
+	</initialize>
+</node>
+
+
+
+<node name="vcfgo" type="vcf-filter" handler-class="com.github.lindenb.jvarkit.tools.vcfgo.VcfGeneOntology">
+	<initialize>
+		
+			instance.setGeneOntologyUrl(this.getPropertyGoUrlValue());
+			instance.setGeneOntologyAnnotationUrl(this.getPropertyGoaUrlValue());
+			instance.setRemoveIfNoGo(this.isPropertyRemoveIfNoGoValue());
+			instance.setInverseFilter(this.isPropertyInverseFilterValue());
+			
+			
+			if(this.getPropertyFilterNameValue().trim().isEmpty())
+				{
+				instance.setFilterName(this.getPropertyFilterNameValue().trim());
+				}
+			
+	  		for(String acn: this.getPropertyGoTermsValue().split("[ ,\n\t]"))
+	  			{
+	  			if(acn.isEmpty()) continue;
+	  			instance.addGoTerm(acn);
+	  			}
+			if( instance.initializeKnime() != 0)
+				{
+				throw new RuntimeException("Cannot initialize vcfgo");
+				}
 	</initialize>
 </node>
 

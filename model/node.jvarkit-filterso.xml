@@ -12,7 +12,7 @@
   </property>
   <property type="bool" name="enableReasoning"  default="true">
   </property>
-  <property type="string" name="terms">
+  <property type="string" name="terms" multiline="true">
   </property>
   <description>
      <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />

@@ -1,7 +1,6 @@
 package com.github.lindenb.knime5bio;
 
 
-import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -9,11 +8,10 @@ import java.util.logging.Logger;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
-import org.knime.core.node.NodeModel;
 import org.knime.core.node.port.PortType;
 
 public abstract class AbstractKnime5BioNodeModel extends
-	NodeModel
+	AbstractNodeModel
 	{
 	/** attach jvarkit logger to knime  */
 	private NodeLoggerAdapter nodeLoggerAdapter=null;
@@ -40,37 +38,11 @@ public abstract class AbstractKnime5BioNodeModel extends
 		this.nodeLoggerAdapter=new NodeLoggerAdapter();
 		LOG.addHandler(this.nodeLoggerAdapter);
 		}
-	
-	protected File getKnime5BioBaseDirectory()
-		{
-		final String KNIME5DIR="com.github.lindenb.knime5bio.working.directory";
-		String s= peekFlowVariableString(KNIME5DIR);
-		if(s==null) throw new IllegalStateException(
-				"Flow Variable "+KNIME5DIR+" undefined. "+
-				"Add this variable in the KNIME workspace (right click in the workspace icon) and set its value to an existing directory."
-				);
-		File dir=new File(s);
-		if(!dir.exists())
-			{
-			throw new IllegalStateException(KNIME5DIR+" defined as  "+s+" but doesn't exists");
-			}
-		if(!dir.isDirectory())
-			{
-			throw new IllegalStateException(KNIME5DIR+" defined as  "+s+" but it's not a directory");
-			}
-		return dir;
+	@Override
+	protected String getPluginBaseDirectoryVariable() {
+		return "com.github.lindenb.knime5bio.working.directory";
 		}
 	
-	
-	protected abstract  String getNodeUniqId();
-	protected abstract String getNodeName();
-	
-	protected File getKnime5BiNodeWorkingDirectory()
-		{
-		File parent= getKnime5BioBaseDirectory();
-		File me = new File(parent, getNodeUniqId()+"."+getNodeName());
-		return me;
-		}
 
 		
 	/* A wrapper for execute method in a model */

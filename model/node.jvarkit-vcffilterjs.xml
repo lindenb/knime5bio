@@ -7,7 +7,7 @@
    <xi:include href="outport.vcf_count.xml"/>
 
  <property type="column" name="vcfInput" label="VCF path" description="VCF files" data-type="string"  port="input"/>
-  <property type="string" name="javascript" label="javascript file" default="false;"/>
+  <property type="string" name="javascript" label="javascript code" default="false;" multiline="true"/>
  
   <description>
      <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />

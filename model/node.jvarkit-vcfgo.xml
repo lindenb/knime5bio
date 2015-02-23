@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node name="vcfGo" label="VCF Gene Ontology" 
+	description="VCF Filter Gene Ontology"
+	generate-model='true'
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	>
+   <xi:include href="inport.vcf.xml"/>
+   <xi:include href="outport.vcf_count.xml"/>
+
+ <property type="column" name="vcfInput" label="Vcf Input" data-type="string" port="input"/>
+ 
+  <property type="string" name="goaUrl" label="GOA URL" description="Gene Ontology Annotation URL" default="http://cvsweb.geneontology.org/cgi-bin/cvsweb.cgi/go/gene-associations/gene_association.goa_human.gz?rev=HEAD">
+  </property>
+ 
+ <property type="string" name="goUrl" label="GO URL" description="Gene Ontology URL" default="http://archive.geneontology.org/latest-termdb/go_daily-termdb.rdf-xml.gz">
+  </property>
+ 
+ <property type="bool" name="removeIfNoGo" label="remove if not GO" description="remove variant if no GO term is found associated to variant." default="false">
+  </property>
+ 
+  <property type="string" name="goTerms" label="GO Terms" description="GO Terms" default="" multiline="true">
+  </property>
+  
+  <property type="bool" name="inverseFilter" label="inverse Filter" description="Inverse filter if a GO term was provided" default="false">
+  </property>
+  
+   <property type="string" name="filterName" label="filter Name" description="Filter Name don't remove the variant but set a filter" default="">
+  </property>
+    
+  
+  <description>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+  
+  <xi:include href="code.vcfgo.xml" parse="xml" />
+</node>
+
