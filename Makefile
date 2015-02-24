@@ -6,10 +6,10 @@ endif
 xsl2java?= ../xslt-sandbox/stylesheets/knime/knime2java.xsl
 knime.dir?= ${HOME}/tmp/KNIME/knime_2.11.2
 htsjdk.dist?= $(realpath ../jvarkit-git/htsjdk/dist)
-jvarkit.dist?=$(realpath ../jvarkit-git/dist-1.128)
+jvarkit.dist?=$(realpath ../jvarkit-git/dist)
 
 generated.dir=generated
-extra.jars=${htsjdk.dist}/htsjdk-1.128.jar:${htsjdk.dist}/commons-jexl-2.1.1.jar:${htsjdk.dist}/commons-logging-1.1.1.jar:${htsjdk.dist}/snappy-java-1.0.3-rc3.jar:${jvarkit.dist}/jvarkit-1.128.jar
+extra.jars=${htsjdk.dist}/htsjdk-1.129.jar:${htsjdk.dist}/commons-jexl-2.1.1.jar:${htsjdk.dist}/commons-logging-1.1.1.jar:${htsjdk.dist}/snappy-java-1.0.3-rc3.jar:${jvarkit.dist}/jvarkit-1.129.jar
 
 
 

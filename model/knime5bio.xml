@@ -17,6 +17,7 @@
   			<xi:include href="node.jvarkit-vcffilterjs.xml"/>
   			<xi:include href="node.jvarkit-vcfmerge.xml"/>
   			<xi:include href="node.jvarkit-vcfgo.xml"/>
+			<xi:include href="node.vcf-in.xml"/>
   		</category>
   		<xi:include href="node.vcf-samples.xml"/>  
   		<xi:include href="node.vcf2table.xml"/>  
