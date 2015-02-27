@@ -69,4 +69,18 @@
 </node>
 
 
+<node name="vcftrio" type="vcf-filter" handler-class="com.github.lindenb.jvarkit.tools.vcftrios.VCFTrios">
+	<initialize>
+			instance.setCreateFilter(this.isPropertyFilterValue());
+			instance.setPedigreeURI(this.getPropertyPedigreeValue());
+			if( instance.initializeKnime() != 0)
+				{
+				throw new RuntimeException("Cannot initialize");
+				}
+
+	</initialize>
+</node>
+
+
+
 </generate-code>

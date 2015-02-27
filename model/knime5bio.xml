@@ -17,10 +17,13 @@
   			<xi:include href="node.jvarkit-vcffilterjs.xml"/>
   			<xi:include href="node.jvarkit-vcfmerge.xml"/>
   			<xi:include href="node.jvarkit-vcfgo.xml"/>
-			<xi:include href="node.vcf-in.xml"/>
+			<xi:include href="node.jvarkit-vcfin.xml"/>
+			<xi:include href="node.jvarkit-groupbygene.xml"/>
+			<xi:include href="node.jvarkit-vcftrio.xml"/>
   		</category>
   		<xi:include href="node.vcf-samples.xml"/>  
-  		<xi:include href="node.vcf2table.xml"/>  
+  		<xi:include href="node.vcf2table.xml"/> 
+  		<xi:include href="node.vcf-indextabix.xml"/> 
     </category>
   </category>
 </plugin>
