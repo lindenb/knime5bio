@@ -20,6 +20,7 @@
 			<xi:include href="node.jvarkit-vcfin.xml"/>
 			<xi:include href="node.jvarkit-groupbygene.xml"/>
 			<xi:include href="node.jvarkit-vcftrio.xml"/>
+			<xi:include href="node.jvarkit-vcfcutsamples.xml"/>
   		</category>
   		<xi:include href="node.vcf-samples.xml"/>  
   		<xi:include href="node.vcf2table.xml"/> 

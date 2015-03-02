@@ -81,6 +81,23 @@
 	</initialize>
 </node>
 
+<node name="vcfcutsamples" type="vcf-filter" handler-class="com.github.lindenb.jvarkit.tools.misc.VcfCutSamples">
+	<initialize>
+			instance.setMissingSampleIsError(this.isPropertyMissingIsErrorValue());
+			instance.setInvert(this.isPropertyInverseValue());
+			instance.setRemoveCtxIfNoCall(this.isPropertyRemoveCtxIfNoCallValue());
+			for(String S: this.getPropertySamplesValue().split("[ ,\n\t]"))
+	  			{
+	  			if(S.isEmpty()) continue;
+	  			instance.getUserSamples().add(S);
+	  			}
+			if( instance.initializeKnime() != 0)
+				{
+				throw new RuntimeException("Cannot initialize");
+				}
+
+	</initialize>
+</node>
 
 
 </generate-code>
