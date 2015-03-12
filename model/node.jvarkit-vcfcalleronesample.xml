@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node name="vcfcalleronesample" label="vcf caller one sample" 
+	description="VCF with one sample called using different callers. *Only keep variant if it was found in  min&lt;=x=other-files&lt;=max"
+	generate-model='true'
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	>
+   <xi:include href="inport.vcf.xml"/>
+   <xi:include href="outport.vcf_count.xml"/>
+
+ <property type="column" name="vcfInput" label="VCF path" description="VCF files" data-type="string"  port="input"/>
+  <property type="bool" name="ignoreAltAlleles" label="Ignore ALT" description="Ignore ALT alleles" default="false"/>
+  <property type="int" name="minCountInclusive" label="min Count Inclusive" description="Min number of time (inclusive) we should find a variant in the other files" default="0"/>
+  <property type="int" name="maxCountInclusive" label="max Count Inclusive" description="Nax number of time (inclusive) we should find a variant in the other files" default="Integer.MAX_VALUE -1 "/>
+  <description>
+  	Description: For my colleague Julien: VCF with one sample called using different callers. *Only keep variant if it was found in min&lt;=x=other-files&lt;=max
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+  
+  <code>
+  <import>
+import htsjdk.samtools.util.CloserUtil;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import com.github.lindenb.jvarkit.tools.vcfcmp.VcfCompareCallersOneSample;
+  </import>
+  <body><![CDATA[
+  
+	/* @inheritDoc */
+	@Override
+    protected BufferedDataTable[] execute(
+    		final BufferedDataTable[] inData,
+            final ExecutionContext exec
+            ) throws Exception
+			{
+			BufferedDataContainer out_container =null;
+			File mergedFile= null;
+			RowIterator rowiterator=null;
+			try
+		    	{
+				BufferedDataTable inTable=inData[0];
+		        int inUriIndex = this.findVcfInputRequiredColumnIndex(inTable.getDataTableSpec());
+				Set<java.io.File> vcffiles = new java.util.HashSet<java.io.File>(inTable.getRowCount()); 
+		        double total=inTable.getRowCount();
+		        long nRow = 0L;
+		       
+	        	DataTableSpec dataOutSpec = this.createOutTableSpec0();
+	        	out_container = exec.createDataContainer(dataOutSpec);;
+
+		        
+		        for(int step=0; step < 2; ++step)
+			        {
+			        nRow=0L;
+			        /* collect vcf files */
+		        	rowiterator=inTable.iterator();
+		        	while(rowiterator.hasNext())
+		        		{
+		        		++nRow;
+		        		DataRow row=rowiterator.next();
+		                DataCell cell =row.getCell(inUriIndex);
+	
+			            if(cell.isMissing())
+			            	{
+			            	getLogger().warn("Missing cells in "+getNodeName());
+			            	continue;
+			            	}
+			            if(!cell.getType().equals(StringCell.TYPE))
+			            	{
+			            	getLogger().error("not a StringCell type in "+cell);
+			            	continue;
+			            	}
+		                String uri = StringCell.class.cast(cell).getStringValue();
+		                if(uri.isEmpty())
+		                	{
+			            	getLogger().error("Empty uri");
+			            	continue;
+		                	}
+		                java.io.File inpuFile=new java.io.File(uri);
+		                if(step==0)
+		                	{
+		                	vcffiles.add(inpuFile);
+		                	}
+		                else
+		                	{
+		                	VcfCompareCallersOneSample tool =new VcfCompareCallersOneSample();
+		                	tool.setMinCountInclusive(this.getPropertyMinCountInclusiveValue());
+		                	tool.setMaxCountInclusive(this.getPropertyMaxCountInclusiveValue());
+		                	tool.getChallengerVcf().addAll(vcffiles);
+		                	tool.setIgnoreAlternate(isPropertyIgnoreAltAllelesValue());
+		                	
+		                	
+		                	File nodeDir=this.getNodeWorkingDirectory();
+					    	nodeDir.mkdirs();
+					    	mergedFile = new File(nodeDir,md5(uri)+".vcf.gz");					    	
+					    	tool.setOutputFile(mergedFile);
+					    	if(tool.initializeKnime()!=0)
+					    		{
+					    		throw new RuntimeException("Cannot initialize knime");
+					    		}
+					    	
+					    	if( tool.executeKnime(java.util.Collections.singletonList(inpuFile.getPath()))!=0)
+					    		{
+					    		mergedFile.delete();
+					    		throw new RuntimeException("Merge failed");
+					    		}
+					    	
+					    	 out_container.addRowToTable(new DefaultRow(
+						            	row.getKey(),
+						            	createDataCellsForOutTableSpec0(
+						            			mergedFile.getPath(),
+						            			tool.getVariantCount()
+						            			)
+						            	));
+		                	}
+		        		exec.checkCanceled();
+		            	exec.setProgress(nRow/(2.0*total),"Extracting Files....");
+		        		}
+		        	
+			        }
+	        	
+	        	
+	        	
+	        	
+	        	
+		        /* create and fill array to be returned */
+	        	out_container.close();
+	            BufferedDataTable out0 = out_container.getTable();
+	            out_container=null;
+	            return new BufferedDataTable[]{out0};
+		    	}
+			catch(Exception err)
+				{
+				if(mergedFile!=null) mergedFile.delete();
+				getLogger().error("Boum", err);
+				err.printStackTrace();
+				throw err;
+				}
+			finally
+				{
+				CloserUtil.close(out_container);
+				}
+			}
+
+  ]]></body>
+  
+  </code>
+  
+  
+</node>
+
