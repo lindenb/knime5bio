@@ -83,7 +83,7 @@ import com.github.lindenb.jvarkit.tools.vcfmerge.VCFMerge2;
 			    	{
 			    	File nodeDir=this.getNodeWorkingDirectory();
 			    	nodeDir.mkdirs();
-			    	mergedFile = new File(nodeDir,md5(getNodeUniqId())+".vcf.gz");
+			    	mergedFile = this.createFileForWriting( getNodeUniqId(),".vcf.gz");
 			    	VCFMerge2 vcfMerge2=new VCFMerge2();
 			    	
 			    	vcfMerge2.addTmpDirectory(nodeDir);

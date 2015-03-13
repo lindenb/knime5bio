@@ -83,10 +83,7 @@
 					}
 				
 				/* create output file */
-				java.io.File fileout = new java.io.File(
-						this.getNodeWorkingDirectory(),
-						md5(uris[0]+uris[1])+".vcf.gz"
-						);
+				java.io.File fileout = createFileForWriting(uris[0]+"."+md5(uris[1]),".vcf.gz");
 				/* create parent directory if it doesn't exist */
 				if(fileout.getParentFile()!=null)
 					{

@@ -93,10 +93,7 @@ import htsjdk.variant.vcf.VCFHeader;
 		            	continue;
 	                	}
 	                /* create output file */
-	                java.io.File fileout = new java.io.File(
-	                		this.getNodeWorkingDirectory(),
-	                		md5(uri)+".vcf.gz"
-	                		);
+	                java.io.File fileout = this.createFileForWriting(uri,".vcf.gz" );
 					/* create parent directory if it doesn't exist */
 	                if(fileout.getParentFile()!=null)
 	                	{

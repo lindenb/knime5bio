@@ -94,7 +94,7 @@ import com.github.lindenb.jvarkit.tools.vcfcmp.VcfCompareCallersOneSample;
 		                	
 		                	File nodeDir=this.getNodeWorkingDirectory();
 					    	nodeDir.mkdirs();
-					    	mergedFile = new File(nodeDir,md5(uri)+".vcf.gz");					    	
+					    	mergedFile = this.createFileForWriting(uri,".vcf.gz");					    	
 					    	tool.setOutputFile(mergedFile);
 					    	if(tool.initializeKnime()!=0)
 					    		{
@@ -116,7 +116,7 @@ import com.github.lindenb.jvarkit.tools.vcfcmp.VcfCompareCallersOneSample;
 						            	));
 		                	}
 		        		exec.checkCanceled();
-		            	exec.setProgress(nRow/(2.0*total),"Extracting Files....");
+		            	exec.setProgress(nRow/(2.0*total),"Processing Files....");
 		        		}
 		        	
 			        }

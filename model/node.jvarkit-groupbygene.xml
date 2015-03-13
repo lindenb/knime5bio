@@ -80,7 +80,7 @@ import com.github.lindenb.jvarkit.tools.groupbygene.GroupByGene;
         		{
         		getLogger().info("Reading "+vcfFile);
         		GroupByGene command=new GroupByGene();
-        		tsvTable = new File(this.getNodeWorkingDirectory(),md5(vcfFile)+".tsv");
+        		tsvTable = this.createFileForWriting(vcfFile,".tsv");
         		tsvTable.getParentFile().mkdirs();
         		command.setOutputFile(tsvTable);
         		command.addTmpDirectory(this.getNodeWorkingDirectory());
