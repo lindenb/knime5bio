@@ -126,7 +126,7 @@ import htsjdk.variant.vcf.VCFHeader;
 	        	out_container.close();
 	            BufferedDataTable out0 = out_container.getTable();
 	            out_container=null;
-	            return new BufferedDataTable[]{out0};
+	            return this.internalTables(new BufferedDataTable[]{out0});
 	            }
 	        finally
 	            {
