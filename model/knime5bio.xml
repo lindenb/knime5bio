@@ -28,7 +28,7 @@
   		</category>
   		<xi:include href="node.vcf-samples.xml"/>  
   		<xi:include href="node.vcf2table.xml"/> 
-  		<xi:include href="node.vcf-indextabix.xml"/> 
+  		<!-- <xi:include href="node.vcf-indextabix.xml"/>  -->
   		<xi:include href="node.vcf-concat.xml"/> 
     </category>
 
