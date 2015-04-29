@@ -4,7 +4,7 @@
 * n'ouvrez pas l'application knime pour le moment
 * localisez le repertoire 'plugins' de knime
 
-![install01.jpg](xinstall01.jpg)
+![install01.jpg](install01.jpg)
 
 * supprimer un ancien fichier `com.github.lindenb.knime5bio*.jar` si il est présent dans le répertoire `plugins`.
 * télécharger et installer le nouveau fichier  `com.github.lindenb.knime5bio*.jar` dans le répertoire `plugins`.
