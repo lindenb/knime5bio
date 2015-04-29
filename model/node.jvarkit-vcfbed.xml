@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node name="vcfbed"
+	label="VCF-Bed" 
+	description="VCF: Annotate a VCF with the content of a BED file indexed with tabix or tribble"
+	generate-model='true'
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	>
+
+   <xi:include href="inport.vcf.xml"/>
+   <xi:include href="outport.vcf_count.xml"/>
+
+  
+   <xi:include href="property.vcffile_column.xml"/>
+	
+	
+  <property type="string" name="format" label="Format"  description="Field with ${number} will be replaced with the column of the BED." default="${1}:${2}-${3}" />
+  <property type="string" name="infotag" label="INFO tag"  description="INFO tag" default="VCFBEDTAG" />
+  <property type="file-read" name="bedfile" description="BedFile indexed with tabix or sorted">
+	  <extension>.bed</extension>
+	  <extension>.bed.gz</extension>
+  </property>
+  
+  
+
+	<xi:include href="code.vcfbed.xml" parse="xml" />
+	<view class="com.github.lindenb.knime5bio.bio.VcfNodeView"/>
+</node>
+

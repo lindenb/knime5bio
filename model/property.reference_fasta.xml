@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<property type="file-read" name="fastaFaidx" description="Reference FASTA indexed with tabix and picard">
+  <extension>.fa</extension>
+  <extension>.fasta</extension>
+</property>

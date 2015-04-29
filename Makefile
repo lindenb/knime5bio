@@ -1,15 +1,16 @@
 ifneq ($(realpath local.mk),)
 include local.mk
 endif
-.PHONY=all build build clean:
+.PHONY=all build build clean lib:
 
 xsl2java?= ../xslt-sandbox/stylesheets/knime/knime2java.xsl
 knime.dir?= ${HOME}/tmp/KNIME/knime_2.11.2
-htsjdk.dist?= $(realpath ../jvarkit-git/htsjdk/dist)
-jvarkit.dist?=$(realpath ../jvarkit-git/dist)
+jvarkit.dir?=$(realpath ../jvarkit-git)
+htsjdk.dist?= $(realpath ${jvarkit.dir}/htsjdk/dist)
+jvarkit.dist?=$(realpath ${jvarkit.dir}/dist)
 
 generated.dir=generated
-extra.jars=${htsjdk.dist}/htsjdk-1.129.jar:${htsjdk.dist}/commons-jexl-2.1.1.jar:${htsjdk.dist}/commons-logging-1.1.1.jar:${htsjdk.dist}/snappy-java-1.0.3-rc3.jar:${jvarkit.dist}/jvarkit-1.129.jar
+extra.jars=${htsjdk.dist}/htsjdk-1.129.jar:${htsjdk.dist}/commons-jexl-2.1.1.jar:${htsjdk.dist}/commons-logging-1.1.1.jar:${htsjdk.dist}/snappy-java-1.0.3-rc3.jar:${jvarkit.dist}/jvarkit-1.129.jar:${jvarkit.dir}/lib/BigWig.jar:${jvarkit.dir}/lib/log4j-1.2.15.jar
 
 
 
@@ -22,7 +23,7 @@ install: build
 	rm -f ${knime.dir}/plugins/com.github.lindenb.jvarkit.knime*.jar
 	cp ${generated.dir}/dist/com.github.lindenb.knime5bio_*.jar ${knime.dir}/plugins
 
-build: ${xsl2java} model/knime5bio.xml
+build: ${xsl2java} model/knime5bio.xml lib
 	rm -rf ${generated.dir}/src ${generated.dir}/tmp
 	mkdir -p ${generated.dir}/model
 	xsltproc --xinclude \
@@ -34,12 +35,15 @@ build: ${xsl2java} model/knime5bio.xml
 		--stringparam base.dir ${generated.dir} \
 		--stringparam extra.source.dir $(realpath src/main/java) \
 		--stringparam extra.jars ${extra.jars} \
-		$^
+		${xsl2java} model/knime5bio.xml
 	$(MAKE) -B -C ${generated.dir} knime.root=${knime.dir}
 
 doc: build
 	$(MAKE) -C ${generated.dir} $@ knime.root=${knime.dir}
-	
+
+lib:
+	(cd ../jvarkit-git && make library)
+
 clean:
 	rm -rf ${generated.dir}
 

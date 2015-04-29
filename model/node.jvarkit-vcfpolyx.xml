@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node
+	name="vcfpolyx"
+	label="VCF: PolyX" 
+	description="Number of poly-X bases around variations"
+	generate-model='true'
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	>
+
+   <xi:include href="inport.vcf.xml"/>
+   <xi:include href="outport.vcf_count.xml"/>
+
+  
+  <xi:include href="property.vcffile_column.xml"/>
+  <xi:include href="property.reference_fasta.xml"/>
+
+  
+	<xi:include href="code.vcfpolyx.xml" parse="xml" />
+
+
+	<view class="com.github.lindenb.knime5bio.bio.VcfNodeView"/>
+</node>
+

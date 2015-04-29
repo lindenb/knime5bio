@@ -100,4 +100,46 @@
 </node>
 
 
+
+<node name="vcfbigwig" type="vcf-filter" handler-class="com.github.lindenb.jvarkit.tools.vcfbigwig.VCFBigWig">
+	<initialize>
+			instance.setBiwWigFile(this.getPropertyBigWigValue());
+			instance.setTag(this.getPropertyVcftagValue());
+			instance.setContained(this.isPropertyContainedValue());
+
+			if( instance.initializeKnime() != 0)
+				{
+				throw new RuntimeException("Cannot initialize");
+				}
+
+	</initialize>
+</node>
+
+<node name="vcfbed" type="vcf-filter" handler-class="com.github.lindenb.jvarkit.tools.vcfbed.VCFBed">
+	<initialize>
+			instance.setBedFile(new java.io.File(this.getPropertyBedfileValue()));
+			instance.setFormat(this.getPropertyFormatValue());
+			instance.setTag(this.getPropertyInfotagValue());
+
+			if( instance.initializeKnime() != 0)
+				{
+				throw new RuntimeException("Cannot initialize");
+				}
+
+	</initialize>
+</node>
+
+<node name="vcfpolyx" type="vcf-filter" handler-class="com.github.lindenb.jvarkit.tools.misc.VCFPolyX">
+	<initialize>
+			instance.setReference(new java.io.File(this.getPropertyFastaFaidxValue()));
+			if( instance.initializeKnime() != 0)
+				{
+				throw new RuntimeException("Cannot initialize");
+				}
+
+
+	</initialize>
+</node>
+
+
 </generate-code>

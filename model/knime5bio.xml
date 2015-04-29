@@ -22,6 +22,9 @@
 			<xi:include href="node.jvarkit-vcftrio.xml"/>
 			<xi:include href="node.jvarkit-vcfcutsamples.xml"/>
 			<xi:include href="node.jvarkit-vcfcalleronesample.xml"/>
+			<xi:include href="node.jvarkit-vcfbigwig.xml"/>
+			<xi:include href="node.jvarkit-vcfbed.xml"/>
+			<xi:include href="node.jvarkit-vcfpolyx.xml"/>
   		</category>
   		<xi:include href="node.vcf-samples.xml"/>  
   		<xi:include href="node.vcf2table.xml"/> 
