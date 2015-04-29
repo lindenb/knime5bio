@@ -20,7 +20,7 @@ run : install
 	${knime.dir}/knime -clean
 
 install: build
-	rm -f ${knime.dir}/plugins/com.github.lindenb.jvarkit.knime*.jar
+	rm -f ${knime.dir}/plugins/com.github.lindenb.knime5bio_*.jar
 	cp ${generated.dir}/dist/com.github.lindenb.knime5bio_*.jar ${knime.dir}/plugins
 
 build: ${xsl2java} model/knime5bio.xml lib
@@ -36,6 +36,7 @@ build: ${xsl2java} model/knime5bio.xml lib
 		--stringparam extra.source.dir $(realpath src/main/java) \
 		--stringparam extra.jars ${extra.jars} \
 		${xsl2java} model/knime5bio.xml
+	rm -f ${generated.dir}/dist/com.github.lindenb.knime5bio_*.jar
 	$(MAKE) -B -C ${generated.dir} knime.root=${knime.dir}
 
 doc: build
