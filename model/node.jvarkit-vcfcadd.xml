@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node
+	name="vcfcadd"
+	label="VCF: CADD" 
+	description="Annotations with Combined Annotation Dependent Depletion (CADD)"
+	generate-model='true'
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	>
+
+   <xi:include href="inport.vcf.xml"/>
+   <xi:include href="outport.vcf_count.xml"/>
+
+  
+   <xi:include href="property.vcffile_column.xml"/>
+	<property type="string" name="cadduri" label="CADD URL" description="CADD URL" default="http://krishna.gs.washington.edu/download/CADD/v1.2/whole_genome_SNVs.tsv.gz" >
+  </property>
+
+  
+	<xi:include href="code.vcfadd.xml" parse="xml" />
+
+
+	<view class="com.github.lindenb.knime5bio.bio.VcfNodeView"/>
+</node>
+

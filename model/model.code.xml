@@ -141,5 +141,17 @@
 	</initialize>
 </node>
 
+<node name="vcfcadd" type="vcf-filter" handler-class="com.github.lindenb.jvarkit.tools.misc.VcfCadd">
+	<initialize>
+			instance.setCcaduri(this.getPropertyCadduriValue());
+			if( instance.initializeKnime() != 0)
+				{
+				throw new RuntimeException("Cannot initialize");
+				}
+
+
+	</initialize>
+</node>
+
 
 </generate-code>
