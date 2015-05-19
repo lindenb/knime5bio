@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<node name="vcfjoin" label="VCF Join" 
+<node name="vcfJoin" label="VCF Join" 
 	description="Join Two stream of VCFs"
 	generate-model='false'
 	xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -18,9 +18,9 @@
    
    <xi:include href="outport.vcf_count.xml"/>
   
-	<property type="column" name="vcfInput1" label="VCF path" description="VCF files" data-type="string"  port="input1">
+	<property type="column" name="vcfInput1" label="VCF path" description="VCF files" data-type="string"  port="input">
   </property>
-  	<property type="column" name="vcfInput2" label="VCF indexe" description="Database VCF file" data-type="string"  port="input2">
+  	<property type="column" name="vcfInput2" label="VCF indexe" description="Database VCF file" data-type="string"  port="index">
   </property>
   
   <property type="bool" name="inverse" label="Inverse selection" description="Inverse selection" default="false">
