@@ -148,10 +148,20 @@
 				{
 				throw new RuntimeException("Cannot initialize");
 				}
-
-
 	</initialize>
 </node>
+
+<node name="vcfindextabix" type="vcf-filter" handler-class="com.github.lindenb.jvarkit.tools.misc.VcfIndexTabix">
+	<initialize>
+			instance.setMaxRecordsInRam(this.getPropertyMaxRecordsinRamValue());
+			instance.setSort(this.isPropertySortValue());
+			if( instance.initializeKnime() != 0)
+				{
+				throw new RuntimeException("Cannot initialize");
+				}
+	</initialize>
+</node>
+
 
 
 </generate-code>

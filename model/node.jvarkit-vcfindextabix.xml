@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node
+	name="vcfindextabix"
+	label="VCF: Index+Tabix" 
+	description="Sort a VCF, compress and index with tabix"
+	generate-model='true'
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	>
+
+   <xi:include href="inport.vcf.xml"/>
+   <xi:include href="outport.vcf_count.xml"/>
+
+  
+   <xi:include href="property.vcffile_column.xml"/>
+	<property type="bool" name="sort" label="Sort" description="Sort prior to compress" default="true" />
+	<property type="int" name="maxRecordsinRam" label="Max Records in RAM" description="Max Records in RAM for caching" default="1000" >
+    </property>
+
+  
+	<xi:include href="code.vcfindextabix.xml" parse="xml" />
+
+
+	<view class="com.github.lindenb.knime5bio.bio.VcfNodeView"/>
+</node>
+

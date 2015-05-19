@@ -26,7 +26,9 @@
 			<xi:include href="node.jvarkit-vcfbed.xml"/>
 			<xi:include href="node.jvarkit-vcfpolyx.xml"/>
 			<xi:include href="node.jvarkit-vcfcadd.xml"/>
+			<xi:include href="node.jvarkit-vcfindextabix.xml"/>
   		</category>
+  		<xi:include href="node.vcf-join.xml"/>  
   		<xi:include href="node.vcf-samples.xml"/>  
   		<xi:include href="node.vcf2table.xml"/> 
   		<!-- <xi:include href="node.vcf-indextabix.xml"/>  -->

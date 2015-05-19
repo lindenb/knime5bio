@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node name="vcfjoin" label="VCF Join" 
+	description="Join Two stream of VCFs"
+	generate-model='false'
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	>
+<inPort name="input">
+    <column name="vcfIn1" label="VCF file" type="string">
+      <description><a href="http://www.htslib.org/doc/vcf.html">A Variant Call Format (VCF)</a> file. Can be gzipped or <a href="http://www.ncbi.nlm.nih.gov/pubmed/21208982">bgzipped</a></description>
+    </column>
+</inPort>
+<inPort name="index">
+    <column name="vcfIn2" label="Indexed VCF file" type="string">
+      <description><a href="http://www.htslib.org/doc/vcf.html">A Variant Call Format (VCF)</a> file. Can be gzipped or <a href="http://www.ncbi.nlm.nih.gov/pubmed/21208982">bgzipped</a></description>
+    </column>
+</inPort>
+
+   
+   <xi:include href="outport.vcf_count.xml"/>
+  
+	<property type="column" name="vcfInput1" label="VCF path" description="VCF files" data-type="string"  port="input1">
+  </property>
+  	<property type="column" name="vcfInput2" label="VCF indexe" description="Database VCF file" data-type="string"  port="input2">
+  </property>
+  
+  <property type="bool" name="inverse" label="Inverse selection" description="Inverse selection" default="false">
+  	</property>
+	 
+  <property type="bool" name="altInIndex" label="picky about ALT" description="ALL user ALT alleles must be present in VCF database"  default="false">
+	</property>
+	 
+  <property type="string" name="peekInfo" label="Peek Info Tag" description="Peek Info Tags"  default="">
+	</property>
+		 
+	 
+</node>
+

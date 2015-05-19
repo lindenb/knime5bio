@@ -1,11 +1,45 @@
+/*
+The MIT License (MIT)
+
+Copyright (c) 2014 Pierre Lindenbaum
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+History:
+* 2014 creation
+
+*/
 package com.github.lindenb.knime5bio.bio;
 
 import htsjdk.samtools.util.CloserUtil;
 import htsjdk.tribble.readers.LineIterator;
+import htsjdk.variant.variantcontext.Genotype;
+import htsjdk.variant.variantcontext.VariantContext;
+import htsjdk.variant.vcf.VCFFormatHeaderLine;
+import htsjdk.variant.vcf.VCFHeader;
+import htsjdk.variant.vcf.VCFInfoHeaderLine;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -13,10 +47,10 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
 
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataRow;
@@ -42,6 +76,13 @@ public class VcfNodeView<T extends AbstractNodeModel>
 		private JTable vcfTable;
 		private DefaultVcfTable vcfTableModel;
 		
+		private JTable genotypeTable;
+		private GenotypeTableModel genotypeTableModel;
+
+		
+		private JTable infoTable;
+		private InfoTableModel infoTableModel;
+		
 		VcfNodeViewComponent(T nodeModel)
 			{
 			super(new BorderLayout(5, 5));
@@ -59,6 +100,22 @@ public class VcfNodeView<T extends AbstractNodeModel>
 			scroll=new JScrollPane(this.vcfTable);
 			this.add(scroll,BorderLayout.CENTER);
 			
+			this.genotypeTableModel = new GenotypeTableModel();
+			this.genotypeTable = new JTable(this.genotypeTableModel);
+			this.genotypeTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+			this.genotypeTable.getSelectionModel().clearSelection();
+			scroll=new JScrollPane(this.genotypeTable);
+			this.add(scroll,BorderLayout.EAST);
+			
+			
+			this.infoTableModel = new InfoTableModel();
+			this.infoTable = new JTable(this.infoTableModel);
+			this.infoTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+			this.infoTable.getSelectionModel().clearSelection();
+			scroll=new JScrollPane(this.infoTable);
+			this.add(scroll,BorderLayout.SOUTH);
+
+			
 			this.fileList.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			this.fileList.getSelectionModel().addListSelectionListener(new ListSelectionListener()
 				{
@@ -75,6 +132,26 @@ public class VcfNodeView<T extends AbstractNodeModel>
 					reloadVcfFile(f);
 					}
 				});
+			
+			this.vcfTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			this.vcfTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+				@Override
+				public void valueChanged(ListSelectionEvent e) {
+					if(e.getValueIsAdjusting()) return;
+					int rowIndex = e.getFirstIndex();
+					if(rowIndex<0) return ;
+					VcfNodeViewComponent.this.genotypeTableModel.reset(
+							VcfNodeViewComponent.this.vcfTableModel.getVCFHeader(),
+							VcfNodeViewComponent.this.vcfTableModel.getVariantContextAt(rowIndex)
+							);
+					VcfNodeViewComponent.this.infoTableModel.reset(
+							VcfNodeViewComponent.this.vcfTableModel.getVCFHeader(),
+							VcfNodeViewComponent.this.vcfTableModel.getVariantContextAt(rowIndex)
+							);
+
+					}
+				});
+			
 			reloadFileList();
 			}
 		
@@ -102,6 +179,7 @@ public class VcfNodeView<T extends AbstractNodeModel>
 					{
 					this.vcfTableModel.reset(null, null);
 					}	
+				this.genotypeTableModel.reset(null, null);
 				}
 			catch(Exception err)
 				{
@@ -153,6 +231,138 @@ public class VcfNodeView<T extends AbstractNodeModel>
 			}
 		
 		}
+	
+	@SuppressWarnings("serial")
+	private class GenotypeTableModel extends AbstractTableModel
+		{
+		private VariantContext ctx;
+		private List<String> samples = Collections.emptyList();
+		private List<VCFFormatHeaderLine> formats = Collections.emptyList();
+				
+		@Override
+		public String getColumnName(int column) {
+			
+			if(column==0) return "Sample";
+			if(formats==null)
+				{
+				return "";
+				}
+			return formats.get(column-1).getID();
+			}
+		@Override
+		public int getRowCount() {
+			return this.samples.size();
+			}
+		
+		@Override
+		public int getColumnCount() {
+			return 1+(formats==null?0:formats.size());
+			}
+		
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex)
+			{
+			if(this.ctx==null || rowIndex<0 || rowIndex>=this.samples.size()) return null;
+			String sampleName=  this.samples.get(rowIndex);
+			if(columnIndex==0)
+				{
+				return sampleName ;
+				}
+			Genotype g = this.ctx.getGenotype(sampleName);
+			if( g == null ) return null;
+			VCFFormatHeaderLine h = this.formats.get(columnIndex-1);
+			Object o = g.getAnyAttribute(h.getID());
+			return String.valueOf(o);
+			}
+		@Override
+		public Class<?> getColumnClass(int columnIndex) {
+			switch(columnIndex)
+				{
+				default: return String.class;
+				}
+			}
+		
+		public void reset(VCFHeader header,VariantContext ctx)
+			{
+			this.ctx = ctx;
+			if(header==null || ctx==null)
+				{
+				this.samples = Collections.emptyList();
+				this.formats = Collections.emptyList();
+				}
+			else
+				{
+				this.samples = header.getSampleNamesInOrder();
+				this.formats = new ArrayList<>(header.getFormatHeaderLines());
+				}
+			fireTableStructureChanged();
+			}
+		}
+	
+	@SuppressWarnings("serial")
+	private class InfoTableModel extends AbstractTableModel
+		{
+		private List<String> data = new ArrayList<String>();
+				
+		@Override
+		public String getColumnName(int column)
+			{
+			switch(column)
+				{
+				case 0: return "Key";
+				case 1: return "Value";
+				}
+			return null;
+			}
+		@Override
+		public int getRowCount() {
+			return this.data.size()/2;
+			}
+		
+		@Override
+		public int getColumnCount() {
+			return 2;
+			}
+		
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex)
+			{
+			int idx= rowIndex*2+columnIndex;
+			if(idx<this.data.size() || idx>=this.data.size()) return null;
+			return this.data.get(idx);
+			}
+		@Override
+		public Class<?> getColumnClass(int columnIndex) {
+			switch(columnIndex)
+				{
+				default: return String.class;
+				}
+			}
+		
+		public void reset(VCFHeader header,VariantContext ctx)
+			{
+			
+			if(header==null || ctx==null)
+				{
+				this.data = Collections.emptyList();
+				}
+			else
+				{
+				this.data= new ArrayList<>();
+				for(VCFInfoHeaderLine h:header.getInfoHeaderLines())
+					{
+					for(Object o: VCFUtils.attributeAsList(ctx.getAttribute(h.getID())))
+						{
+						data.add(h.getID());
+						data.add(String.valueOf(o));
+						}
+					}
+				}
+			fireTableStructureChanged();
+			}
+		}
+
+	
 	
 	private VcfNodeViewComponent vcfNodeViewComponent=null;
 	
