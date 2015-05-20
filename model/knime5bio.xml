@@ -9,6 +9,7 @@
   		<xi:include href="node.write-fasta.xml"/>        
     </category>
 	<category name="vcf" label="VCF">
+		<description>VCF tools</description>
   		<category name="jvarkit" label="JVARKIT">
   			<description>Tools from jvarkit</description>
   			<xi:include href="node.jvarkit-filterso.xml"/>
@@ -32,7 +33,8 @@
   		<xi:include href="node.vcf-samples.xml"/>  
   		<xi:include href="node.vcf2table.xml"/> 
   		<!-- <xi:include href="node.vcf-indextabix.xml"/>  -->
-  		<xi:include href="node.vcf-concat.xml"/> 
+  		<xi:include href="node.vcf-concat.xml"/>
+  		<xi:include href="node.vcf-headers.xml"/> 
     </category>
 
   </category>

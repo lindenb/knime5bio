@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node name="vcfheaders" label="VCF Headers" 
+	description="Extract Headers in a VCF"
+	generate-model='false'
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	>
+   <xi:include href="inport.vcf.xml"/>
+   
+   <outPort name="Filters" description="FILTER">
+  	  <column name="FILE" label="File Name" type="string"/>
+  	  <column name="Name" label="Name" type="string"/>
+  	  <column name="Description" label="Description" type="string"/>
+   </outPort>
+ 
+    <outPort name="Infos" description="INFOS">
+  	  <column name="FILE" label="File Name" type="string"/>
+  	  <column name="Id" label="id" type="string"/>
+  	  <column name="Count" label="count" type="int"/>
+	  <column name="CountType" label="CountType" type="string"/>
+	  <column name="Type" label="Type" type="string"/>
+  	  <column name="Description" label="Description" type="string"/>
+   </outPort>
+   
+   
+    <outPort name="Format" description="FORMAT">
+  	  <column name="FILE" label="File Name" type="string"/>
+  	  <column name="Id" label="id" type="string"/>
+  	  <column name="Count" label="count" type="int"/>
+	  <column name="CountType" label="CountType" type="string"/>
+	  <column name="Type" label="Type" type="string"/>
+  	  <column name="Description" label="Description" type="string"/>
+   </outPort>
+  
+  <property type="column" name="vcfInput" label="VCF path" description="VCF files" data-type="string"  port="input">
+  </property>
+
+</node>
+
