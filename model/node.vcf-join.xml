@@ -29,9 +29,14 @@
   <property type="bool" name="altInIndex" label="picky about ALT" description="ALL user ALT alleles must be present in VCF database"  default="false">
 	</property>
 	 
+
   <property type="string" name="peekInfo" label="Peek Info Tag" description="Peek Info Tags"  default="">
 	</property>
-		 
+  <property type="string" name="tagPrefix" label="Tag Prefix" description="On peeking, prefix all tags with this prefix"  default="">
+	</property>
+
+
+<view class="com.github.lindenb.knime5bio.bio.VcfNodeView"/>		 
 	 
 </node>
 

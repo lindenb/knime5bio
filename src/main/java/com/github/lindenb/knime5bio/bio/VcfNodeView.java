@@ -39,6 +39,7 @@ import htsjdk.variant.vcf.VCFInfoHeaderLine;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -110,7 +111,7 @@ public class VcfNodeView<T extends AbstractNodeModel>
 			
 			this.infoTableModel = new InfoTableModel();
 			this.infoTable = new JTable(this.infoTableModel);
-			this.infoTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+			this.infoTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 			this.infoTable.getSelectionModel().clearSelection();
 			scroll=new JScrollPane(this.infoTable);
 			this.add(scroll,BorderLayout.SOUTH);
@@ -139,7 +140,7 @@ public class VcfNodeView<T extends AbstractNodeModel>
 				public void valueChanged(ListSelectionEvent e) {
 					if(e.getValueIsAdjusting()) return;
 					int rowIndex = e.getFirstIndex();
-					if(rowIndex<0) return ;
+					if(rowIndex<0 || rowIndex>=VcfNodeViewComponent.this.vcfTableModel.getRowCount()) return ;
 					VcfNodeViewComponent.this.genotypeTableModel.reset(
 							VcfNodeViewComponent.this.vcfTableModel.getVCFHeader(),
 							VcfNodeViewComponent.this.vcfTableModel.getVariantContextAt(rowIndex)
@@ -272,6 +273,10 @@ public class VcfNodeView<T extends AbstractNodeModel>
 			if( g == null ) return null;
 			VCFFormatHeaderLine h = this.formats.get(columnIndex-1);
 			Object o = g.getAnyAttribute(h.getID());
+			if(o!=null && o.getClass().isArray())
+				{
+				return Arrays.toString((Object[])o);
+				}
 			return String.valueOf(o);
 			}
 		@Override
@@ -302,6 +307,7 @@ public class VcfNodeView<T extends AbstractNodeModel>
 	@SuppressWarnings("serial")
 	private class InfoTableModel extends AbstractTableModel
 		{
+		private VCFHeader header=null;
 		private List<String> data = new ArrayList<String>();
 				
 		@Override
@@ -311,6 +317,7 @@ public class VcfNodeView<T extends AbstractNodeModel>
 				{
 				case 0: return "Key";
 				case 1: return "Value";
+				case 3: return "Desc";
 				}
 			return null;
 			}
@@ -321,14 +328,23 @@ public class VcfNodeView<T extends AbstractNodeModel>
 		
 		@Override
 		public int getColumnCount() {
-			return 2;
+			return 3;
 			}
 		
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex)
 			{
+			if(columnIndex==2)
+				{
+				Object o= getValueAt(rowIndex,0);
+				if(o==null || this.header==null) return null;
+				String tag=String.valueOf(o);
+				VCFInfoHeaderLine h=this.header.getInfoHeaderLine(tag);
+				if(h==null) return null;
+				return h.getDescription();
+				}
 			int idx= rowIndex*2+columnIndex;
-			if(idx<this.data.size() || idx>=this.data.size()) return null;
+			if(idx<0 || idx>=this.data.size()) return null;
 			return this.data.get(idx);
 			}
 		@Override
@@ -345,16 +361,18 @@ public class VcfNodeView<T extends AbstractNodeModel>
 			if(header==null || ctx==null)
 				{
 				this.data = Collections.emptyList();
+				this.header=null;
 				}
 			else
 				{
 				this.data= new ArrayList<>();
+				this.header=header;
 				for(VCFInfoHeaderLine h:header.getInfoHeaderLines())
 					{
 					for(Object o: VCFUtils.attributeAsList(ctx.getAttribute(h.getID())))
 						{
-						data.add(h.getID());
-						data.add(String.valueOf(o));
+						this.data.add(h.getID());
+						this.data.add(String.valueOf(o));
 						}
 					}
 				}

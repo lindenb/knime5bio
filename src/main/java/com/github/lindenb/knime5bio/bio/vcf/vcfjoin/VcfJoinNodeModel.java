@@ -23,6 +23,7 @@ import htsjdk.variant.variantcontext.VariantContextBuilder;
 import htsjdk.variant.variantcontext.writer.VariantContextWriter;
 import htsjdk.variant.vcf.VCFHeader;
 import htsjdk.variant.vcf.VCFHeaderLine;
+import htsjdk.variant.vcf.VCFHeaderLineCount;
 import htsjdk.variant.vcf.VCFInfoHeaderLine;
 
 
@@ -59,10 +60,11 @@ public class VcfJoinNodeModel
         DataTableSpec dataOutSpec = this.createOutTableSpec0();
         BufferedDataContainer out_container = null;
         int inUri1Index = this.findVcfInput1RequiredColumnIndex(inTable1.getDataTableSpec());
-        int inUri2Index = this.findVcfInput1RequiredColumnIndex(inTable2.getDataTableSpec());
+        int inUri2Index = this.findVcfInput2RequiredColumnIndex(inTable2.getDataTableSpec());
         String resource2=null;
+        String tagPrefix = this.getPropertyTagPrefixValue().trim();
         IndexedVcfFileReader indexedVcfFileReader=null;
-        Set<String> infoToPeek = new HashSet<>(Arrays.asList(this.getPropertyPeekInfoValue().split("[\n ,\t;]+")));
+        Set<String> infoToPeek = new HashSet<>(Arrays.asList(this.getPropertyPeekInfoValue().split("[\\s\n ,\t;]+")));
 		try {
 			infoToPeek.remove("");
 			/* find resource 2 */
@@ -150,11 +152,29 @@ public class VcfJoinNodeModel
             			{
             			if(info.isEmpty()) continue;
             			VCFInfoHeaderLine h=indexedVcfFileReader.getHeader().getInfoHeaderLine(info);
-            			if(h2.getInfoHeaderLine(info)!=null)
+            			if(h==null) 
             				{
-            				throw new RuntimeException("Cannot insert tag "+info+" because it already exists in "+uri);
+            				getLogger().warn("Cannot get INFO field "+info+" in "+resource2);
+            				continue;
             				}
-            			if(h!=null) h2.addMetaDataLine(h);
+            			if(!tagPrefix.isEmpty())
+            				{
+            				if(h.getCountType()==VCFHeaderLineCount.INTEGER)
+            					{
+            					h=new VCFInfoHeaderLine(tagPrefix+h.getID(), h.getCount(), h.getType(), h.getDescription());
+            					}
+            				else
+            					{
+            					h=new VCFInfoHeaderLine(tagPrefix+h.getID(),h.getCountType(), h.getType(), h.getDescription());
+            					}
+            				}
+            			
+            			if(h2.getInfoHeaderLine(h.getID())!=null)
+            				{
+            				throw new RuntimeException("Cannot insert tag "+h.getID()+" because it already exists in "+uri);
+            				}
+            			getLogger().info("Adding "+h.getID());
+            			h2.addMetaDataLine(h);
             			}
 	                
 	                SAMSequenceDictionaryProgress progress=new SAMSequenceDictionaryProgress(header);
@@ -163,6 +183,7 @@ public class VcfJoinNodeModel
 	                /* loop over variants */
 	                while(in.hasNext())
 	                	{
+	                	exec.checkCanceled();
 	                	VariantContext ctx = progress.watch(in.next());
 	                	boolean keep=false;
 	                	
@@ -208,7 +229,7 @@ public class VcfJoinNodeModel
 	                		VariantContextBuilder vcb=new VariantContextBuilder(ctx);
 	                		for(String key: atts.keySet())
 	                			{
-	                			vcb.attribute(key, atts.get(key));
+	                			vcb.attribute(tagPrefix+key, atts.get(key));
 	                			}
 	                		w.add(vcb.make());
 	                		++count;
@@ -233,7 +254,7 @@ public class VcfJoinNodeModel
 	        	out_container.close();
 	            BufferedDataTable out0 = out_container.getTable();
 	            out_container=null;
-	            return this.internalTables(new BufferedDataTable[]{out0});
+	            return internalTables(this.internalTables(new BufferedDataTable[]{out0}));
 	            }
 	        finally
 	            {
