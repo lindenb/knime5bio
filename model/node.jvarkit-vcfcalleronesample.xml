@@ -148,6 +148,7 @@ import com.github.lindenb.jvarkit.tools.vcfcmp.VcfCompareCallersOneSample;
   
   </code>
   
+ <view class="com.github.lindenb.knime5bio.bio.VcfNodeView"/>
   
 </node>
 

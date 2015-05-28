@@ -23,7 +23,6 @@ import htsjdk.variant.variantcontext.VariantContextBuilder;
 import htsjdk.variant.variantcontext.writer.VariantContextWriter;
 import htsjdk.variant.vcf.VCFHeader;
 import htsjdk.variant.vcf.VCFHeaderLine;
-import htsjdk.variant.vcf.VCFHeaderLineCount;
 import htsjdk.variant.vcf.VCFInfoHeaderLine;
 
 
@@ -159,14 +158,7 @@ public class VcfJoinNodeModel
             				}
             			if(!tagPrefix.isEmpty())
             				{
-            				if(h.getCountType()==VCFHeaderLineCount.INTEGER)
-            					{
-            					h=new VCFInfoHeaderLine(tagPrefix+h.getID(), h.getCount(), h.getType(), h.getDescription());
-            					}
-            				else
-            					{
-            					h=new VCFInfoHeaderLine(tagPrefix+h.getID(),h.getCountType(), h.getType(), h.getDescription());
-            					}
+            				h = VCFUtils.renameVCFInfoHeaderLine(h, tagPrefix+h.getID());
             				}
             			
             			if(h2.getInfoHeaderLine(h.getID())!=null)
@@ -185,7 +177,7 @@ public class VcfJoinNodeModel
 	                	{
 	                	exec.checkCanceled();
 	                	VariantContext ctx = progress.watch(in.next());
-	                	boolean keep=false;
+	                	boolean found_one=false;
 	                	
 	                	iter2 = indexedVcfFileReader.iterator(
 	                			ctx.getChr(),
@@ -213,7 +205,7 @@ public class VcfJoinNodeModel
 	                				}
 	                			if(!found_all_alt) continue;
 	                			}
-	                		keep=true;
+	                		found_one = true;
 	                		for(String info:infoToPeek)
 		            			{
 		            			if(info.isEmpty()) continue;
@@ -222,9 +214,18 @@ public class VcfJoinNodeModel
 		            			}
 	                		}
 	                	CloserUtil.close(iter2); iter2=null;
-	                	if(isPropertyInverseValue()) keep=!keep;
+	                	//exclude on join
+	                	if(found_one && this.getPropertyJoinTypeValue().equals(AbstractVcfJoinNodeModel.CONFIG_JOINTYPE_ENUM[1]))
+	                		{
+	                		continue;
+	                		}
+	                	//include on join
+	                	if(!found_one && this.getPropertyJoinTypeValue().equals(AbstractVcfJoinNodeModel.CONFIG_JOINTYPE_ENUM[2]))
+	                		{
+	                		continue;
+	                		}
 	                	
-	                	if(keep)
+	                	if(found_one)
 	                		{
 	                		VariantContextBuilder vcb=new VariantContextBuilder(ctx);
 	                		for(String key: atts.keySet())
@@ -232,6 +233,11 @@ public class VcfJoinNodeModel
 	                			vcb.attribute(tagPrefix+key, atts.get(key));
 	                			}
 	                		w.add(vcb.make());
+	                		++count;
+	                		}
+	                	else
+	                		{
+	                		w.add(ctx);
 	                		++count;
 	                		}
 	                	}

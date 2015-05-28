@@ -14,6 +14,7 @@
   </description>
   
   <xi:include href="code.vcffilterjs.xml" parse="xml" />
-  
+
+ <view class="com.github.lindenb.knime5bio.bio.VcfNodeView"/>  
 </node>
 

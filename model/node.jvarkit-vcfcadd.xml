@@ -12,11 +12,12 @@
 
   
    <xi:include href="property.vcffile_column.xml"/>
-	<property type="string" name="cadduri" label="CADD URL" description="CADD URL" default="http://krishna.gs.washington.edu/download/CADD/v1.2/whole_genome_SNVs.tsv.gz" >
-  </property>
+    
+    <property type="string" name="cadduri" label="CADD URL" description="CADD URL" default="http://krishna.gs.washington.edu/download/CADD/v1.2/whole_genome_SNVs.tsv.gz" >
+    </property>
 
   
-	<xi:include href="code.vcfadd.xml" parse="xml" />
+	<xi:include href="code.vcfcadd.xml" parse="xml" />
 
 
 	<view class="com.github.lindenb.knime5bio.bio.VcfNodeView"/>
