@@ -38,17 +38,23 @@ import htsjdk.variant.vcf.VCFInfoHeaderLine;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
@@ -62,6 +68,8 @@ import org.knime.core.node.BufferedDataTableHolder;
 import org.knime.core.node.NodeView;
 
 import com.github.lindenb.jvarkit.io.IOUtils;
+import com.github.lindenb.jvarkit.util.igv.IgvSocket;
+import com.github.lindenb.jvarkit.util.swing.AbstractGenericTable;
 import com.github.lindenb.jvarkit.util.vcf.VCFUtils;
 import com.github.lindenb.jvarkit.util.vcf.swing.DefaultVcfTable;
 import com.github.lindenb.knime5bio.AbstractNodeModel;
@@ -79,34 +87,47 @@ public class VcfNodeView<T extends AbstractNodeModel>
 		
 		private JTable genotypeTable;
 		private GenotypeTableModel genotypeTableModel;
-
 		
 		private JTable infoTable;
 		private InfoTableModel infoTableModel;
 		
+		private AbstractAction openIgvAction=null;
+		private IgvSocket igvSocket=new IgvSocket();
 		VcfNodeViewComponent(T nodeModel)
 			{
 			super(new BorderLayout(5, 5));
+			this.setBorder(new EmptyBorder(5, 5, 5, 5));
+			JPanel contentPane=new JPanel(new BorderLayout(5, 5));
+			this.add(contentPane,BorderLayout.CENTER);
+			
+			this.openIgvAction=new AbstractAction("View in IGV")
+				{
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					viewIgv();
+					}
+				};
+			this.openIgvAction.setEnabled(false);
 			this.nodeModel=nodeModel;
 			DefaultListModel<String> fileListModel=new DefaultListModel<>();
 			fileList =  new JList<String>(fileListModel);
 			fileList.setPreferredSize(new Dimension(500,1000));
 			JScrollPane scroll=new JScrollPane(fileList);
-			this.add(scroll,BorderLayout.WEST);
+			contentPane.add(scroll,BorderLayout.WEST);
 			
 			this.vcfTableModel=new DefaultVcfTable();
 			this.vcfTable = new JTable(this.vcfTableModel);
 			this.vcfTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			this.vcfTable.getSelectionModel().clearSelection();
 			scroll=new JScrollPane(this.vcfTable);
-			this.add(scroll,BorderLayout.CENTER);
+			contentPane.add(scroll,BorderLayout.CENTER);
 			
 			this.genotypeTableModel = new GenotypeTableModel();
 			this.genotypeTable = new JTable(this.genotypeTableModel);
 			this.genotypeTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			this.genotypeTable.getSelectionModel().clearSelection();
 			scroll=new JScrollPane(this.genotypeTable);
-			this.add(scroll,BorderLayout.EAST);
+			contentPane.add(scroll,BorderLayout.EAST);
 			
 			
 			this.infoTableModel = new InfoTableModel();
@@ -114,7 +135,7 @@ public class VcfNodeView<T extends AbstractNodeModel>
 			this.infoTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 			this.infoTable.getSelectionModel().clearSelection();
 			scroll=new JScrollPane(this.infoTable);
-			this.add(scroll,BorderLayout.SOUTH);
+			contentPane.add(scroll,BorderLayout.SOUTH);
 
 			
 			this.fileList.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -137,9 +158,11 @@ public class VcfNodeView<T extends AbstractNodeModel>
 			this.vcfTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			this.vcfTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 				@Override
-				public void valueChanged(ListSelectionEvent e) {
+				public void valueChanged(ListSelectionEvent e)
+					{
 					if(e.getValueIsAdjusting()) return;
 					int rowIndex = e.getFirstIndex();
+					openIgvAction.setEnabled(rowIndex!=-1);
 					if(rowIndex<0 || rowIndex>=VcfNodeViewComponent.this.vcfTableModel.getRowCount()) return ;
 					VcfNodeViewComponent.this.genotypeTableModel.reset(
 							VcfNodeViewComponent.this.vcfTableModel.getVCFHeader(),
@@ -153,6 +176,10 @@ public class VcfNodeView<T extends AbstractNodeModel>
 					}
 				});
 			
+			JPanel top=new JPanel(new FlowLayout());
+			this.add(top,BorderLayout.NORTH);
+			JButton button=new JButton(this.openIgvAction);
+			top.add(button);
 			reloadFileList();
 			}
 		
@@ -167,12 +194,15 @@ public class VcfNodeView<T extends AbstractNodeModel>
 					r= IOUtils.openURIForLineIterator(uri);
 					VCFUtils.CodecAndHeader cah=VCFUtils.parseHeader(r);
 					int nsamples=cah.header.getNGenotypeSamples();
+					if(nsamples==0 ) nsamples=1;
+					
 					while(r.hasNext() )
 						{
 						list.add(r.next());
 						if(nsamples*list.size()>=10000) break;
 						}
 					this.vcfTableModel.reset(cah.header,cah.codec);
+					this.vcfTableModel.getRows().clear();
 					this.vcfTableModel.getRows().addAll(list);
 					this.vcfTableModel.fireTableDataChanged();
 					}
@@ -230,7 +260,14 @@ public class VcfNodeView<T extends AbstractNodeModel>
 					}
 				}
 			}
-		
+		private void viewIgv()
+			{
+			int rowindex=this.vcfTable.getSelectedRow();
+			if(rowindex==-1) return;
+			final VariantContext ctx=this.vcfTableModel.getVariantContextAt(rowindex);
+			if(ctx==null) return;
+			this.igvSocket.show(ctx);
+			}
 		}
 	
 	@SuppressWarnings("serial")
@@ -273,7 +310,18 @@ public class VcfNodeView<T extends AbstractNodeModel>
 			if( g == null ) return null;
 			VCFFormatHeaderLine h = this.formats.get(columnIndex-1);
 			Object o = g.getAnyAttribute(h.getID());
-			if(o!=null && o.getClass().isArray())
+			if(o!=null && (o instanceof int[]))
+				{
+				int d[]=(int[])o;
+				StringBuilder sb=new StringBuilder();
+				for(int i:d)
+					{
+					if(sb.length()>0) sb.append(",");
+					sb.append(i);
+					}
+				return sb.toString();
+				}
+			else if(o!=null && o.getClass().isArray())
 				{
 				return Arrays.toString((Object[])o);
 				}
@@ -303,12 +351,17 @@ public class VcfNodeView<T extends AbstractNodeModel>
 			fireTableStructureChanged();
 			}
 		}
-	
+	private static class IdValueDesc
+		{
+		String id;
+		Object value;
+		VCFInfoHeaderLine h;
+		}
+
 	@SuppressWarnings("serial")
-	private class InfoTableModel extends AbstractTableModel
+	private class InfoTableModel extends AbstractGenericTable<IdValueDesc>
 		{
 		private VCFHeader header=null;
-		private List<String> data = new ArrayList<String>();
 				
 		@Override
 		public String getColumnName(int column)
@@ -317,66 +370,59 @@ public class VcfNodeView<T extends AbstractNodeModel>
 				{
 				case 0: return "Key";
 				case 1: return "Value";
-				case 3: return "Desc";
+				case 2: return "Description";
 				}
 			return null;
 			}
-		@Override
-		public int getRowCount() {
-			return this.data.size()/2;
-			}
-		
 		@Override
 		public int getColumnCount() {
 			return 3;
 			}
 		
 		@Override
-		public Object getValueAt(int rowIndex, int columnIndex)
-			{
-			if(columnIndex==2)
-				{
-				Object o= getValueAt(rowIndex,0);
-				if(o==null || this.header==null) return null;
-				String tag=String.valueOf(o);
-				VCFInfoHeaderLine h=this.header.getInfoHeaderLine(tag);
-				if(h==null) return null;
-				return h.getDescription();
+		public Object getValueOf(IdValueDesc o, int columnIndex) {
+			if(o==null || this.header==null) return null;
+			switch(columnIndex)
+				{	
+				case 0: return o.id;
+				case 1: return o.value;
+				case 2: return o.h.getDescription();
 				}
-			int idx= rowIndex*2+columnIndex;
-			if(idx<0 || idx>=this.data.size()) return null;
-			return this.data.get(idx);
+			return null;
 			}
+		
 		@Override
 		public Class<?> getColumnClass(int columnIndex) {
 			switch(columnIndex)
 				{
-				default: return String.class;
+				case 0: case 2: return String.class;
+				default: return Object.class;
 				}
 			}
 		
 		public void reset(VCFHeader header,VariantContext ctx)
 			{
-			
+			this.getRows().clear();
 			if(header==null || ctx==null)
 				{
-				this.data = Collections.emptyList();
 				this.header=null;
 				}
 			else
 				{
-				this.data= new ArrayList<>();
 				this.header=header;
 				for(VCFInfoHeaderLine h:header.getInfoHeaderLines())
 					{
 					for(Object o: VCFUtils.attributeAsList(ctx.getAttribute(h.getID())))
 						{
-						this.data.add(h.getID());
-						this.data.add(String.valueOf(o));
+						IdValueDesc ivd=new IdValueDesc();
+						ivd.id=h.getID();
+						ivd.value=o;
+						ivd.h=h;
+						this.getRows().add(ivd);
 						}
 					}
 				}
-			fireTableStructureChanged();
+			fireTableDataChanged();
 			}
 		}
 

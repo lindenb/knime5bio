@@ -23,7 +23,7 @@
   	<property type="column" name="vcfInput2" label="VCF indexe" description="Database VCF file" data-type="string"  port="index">
   </property>
   
-  <property type="string" name="joinType" label="Join type" description="How to apply join">
+  <property type="strings" name="joinType" label="Join type" description="How to apply join">
 	<enum label="Keep ALL">KeepAll</enum>	
 	<enum label="Exclude on match">ExcludeOnJoin</enum>	
 	<enum label="Include on match">IncludeOnJoin</enum>	
