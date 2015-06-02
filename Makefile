@@ -10,7 +10,7 @@ htsjdk.dist?= $(realpath ${jvarkit.dir}/htsjdk/dist)
 jvarkit.dist?=$(realpath ${jvarkit.dir}/dist)
 
 generated.dir=generated
-extra.jars=${htsjdk.dist}/htsjdk-1.129.jar:${htsjdk.dist}/commons-jexl-2.1.1.jar:${htsjdk.dist}/commons-logging-1.1.1.jar:${htsjdk.dist}/snappy-java-1.0.3-rc3.jar:${jvarkit.dist}/jvarkit-1.129.jar:${jvarkit.dir}/lib/BigWig.jar:${jvarkit.dir}/lib/log4j-1.2.15.jar
+extra.jars=${htsjdk.dist}/htsjdk-1.131.jar:${htsjdk.dist}/commons-jexl-2.1.1.jar:${htsjdk.dist}/commons-logging-1.1.1.jar:${htsjdk.dist}/snappy-java-1.0.3-rc3.jar:${jvarkit.dist}/jvarkit-1.131.jar:${jvarkit.dir}/lib/BigWig.jar:${jvarkit.dir}/lib/log4j-1.2.15.jar
 
 
 

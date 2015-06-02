@@ -118,7 +118,7 @@ import com.github.lindenb.jvarkit.util.vcf.VcfIterator;
 			{
 			cells=new DataCell[8];
 			}
-		cells[0]= new StringCell(ctx.getChr());
+		cells[0]= new StringCell(ctx.getContig());
 		cells[1]= new IntCell(ctx.getStart());
 		cells[2]= (!ctx.hasID()?DataType.getMissingCell():new StringCell(ctx.getID()));
 		cells[3]= new StringCell(ctx.getReference().getDisplayString());

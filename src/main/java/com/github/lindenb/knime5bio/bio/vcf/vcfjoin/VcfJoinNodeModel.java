@@ -180,7 +180,7 @@ public class VcfJoinNodeModel
 	                	boolean found_one=false;
 	                	
 	                	iter2 = indexedVcfFileReader.iterator(
-	                			ctx.getChr(),
+	                			ctx.getContig(),
 	                			Math.max(0, ctx.getStart()-1),
 	                			(ctx.getEnd()+1)
 	                			);
@@ -188,7 +188,7 @@ public class VcfJoinNodeModel
 	                	while(iter2.hasNext())
 	                		{
 	                		VariantContext ctx2=iter2.next();
-	                		if(!ctx.getChr().equals(ctx2.getChr())) continue;
+	                		if(!ctx.getContig().equals(ctx2.getContig())) continue;
 	                		if(ctx.getStart()!=ctx2.getStart()) continue;
 	                		if(!ctx.getReference().equals(ctx2.getReference())) continue;
 	                		
