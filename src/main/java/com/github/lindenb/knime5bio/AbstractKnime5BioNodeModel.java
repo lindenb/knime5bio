@@ -1,10 +1,18 @@
 package com.github.lindenb.knime5bio;
 
 
+import htsjdk.samtools.util.CloserUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+import org.knime.core.data.DataCell;
+import org.knime.core.data.DataRow;
+import org.knime.core.data.container.CloseableRowIterator;
+import org.knime.core.data.def.StringCell;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
@@ -170,5 +178,88 @@ public abstract class AbstractKnime5BioNodeModel extends
 			}
 		}
 
-	
+	protected String getOneRequiredResource(BufferedDataTable inTable2,int inUri2Index)
+		{
+		CloseableRowIterator iter=null;
+		String resource2=null;
+		try
+			{
+			 iter = inTable2.iterator();
+		     while(iter.hasNext())
+	                {
+	                DataRow row=iter.next();
+	                DataCell cell =row.getCell(inUri2Index);
+	                if(cell.isMissing())
+		            	{
+		            	getLogger().warn("Missing cells in "+getNodeName());
+		            	continue;
+		            	}
+		            if(!cell.getType().equals(StringCell.TYPE))
+		            	{
+		            	getLogger().error("not a StringCell type in "+cell);
+		            	continue;
+		            	}
+		            String uri = StringCell.class.cast(cell).getStringValue();
+		            if(uri.trim().isEmpty())
+		            	{
+		            	getLogger().error("ignore empty in "+cell);
+		            	continue;
+		            	}
+		            if(resource2!=null)
+		            	{
+		            	throw new RuntimeException("found two Resources but expected one:\n"+
+		            		uri+"\n"+resource2	
+		            		);
+		            	}	
+		            resource2=uri;
+	                }
+		     CloserUtil.close( iter);iter=null;
+		     if(resource2==null)
+		     	{
+	            throw new RuntimeException("input resource not found in "+inTable2.getSummary());
+		     	}
+		     return resource2;
+			}
+		finally
+			{
+			CloserUtil.close( iter);
+			}
+		}
+	protected List<String> getResourceSet(BufferedDataTable inTable2,int inUri2Index)
+		{
+		List<String> set=new ArrayList<>();
+		CloseableRowIterator iter=null;
+		try
+			{
+			 iter = inTable2.iterator();
+		     while(iter.hasNext())
+	                {
+	                DataRow row=iter.next();
+	                DataCell cell =row.getCell(inUri2Index);
+	                if(cell.isMissing())
+		            	{
+		            	getLogger().warn("Missing cells in "+getNodeName());
+		            	continue;
+		            	}
+		            if(!cell.getType().equals(StringCell.TYPE))
+		            	{
+		            	getLogger().error("not a StringCell type in "+cell);
+		            	continue;
+		            	}
+		            String uri = StringCell.class.cast(cell).getStringValue();
+		            if(uri.trim().isEmpty())
+		            	{
+		            	getLogger().error("ignore empty in "+cell);
+		            	continue;
+		            	}
+		            set.add(uri.trim());
+	                }
+		     CloserUtil.close( iter);iter=null;
+		     return set;
+			}
+		finally
+			{
+			CloserUtil.close( iter);
+			}
+		}
 	}

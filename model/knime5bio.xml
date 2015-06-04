@@ -37,6 +37,7 @@
   		<!-- <xi:include href="node.vcf-indextabix.xml"/>  -->
   		<xi:include href="node.vcf-concat.xml"/>
   		<xi:include href="node.vcf-headers.xml"/> 
+		<xi:include href="node.vcf-intersectbed.xml"/>
     </category>
 
   </category>
