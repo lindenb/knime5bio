@@ -2,10 +2,17 @@
 <node
 	name="vcfindextabix"
 	label="VCF: Index+Tabix" 
-	description="Sort a VCF, compress and index with tabix"
 	generate-model='true'
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	>
+
+  <description>
+     <h3>Motivation</h3>
+     <p>See  <a href="https://github.com/lindenb/jvarkit/wiki/VcfIndexTabix">https://github.com/lindenb/jvarkit/wiki/VcfIndexTabix</a>.  Index and sort a VCF with Tabix.</p>
+     <p>[fr]: indexe les fichiers BED avec tabix. Cela permet aux autres noeuds d acceder aux donnees plus rapidement. Le fichier est compresse avec bgzf et un fichier *.tbi est cree. Ce genre de fichier peux etre charge dans IGV.</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+
 
    <xi:include href="inport.vcf.xml"/>
    <xi:include href="outport.vcf_count.xml"/>

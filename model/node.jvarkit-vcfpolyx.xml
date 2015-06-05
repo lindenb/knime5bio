@@ -2,10 +2,15 @@
 <node
 	name="vcfpolyx"
 	label="VCF: PolyX" 
-	description="Number of poly-X bases around variations"
 	generate-model='true'
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	>
+
+  <description>
+     <h3>Motivation</h3>
+     <p>See <a href="https://github.com/lindenb/jvarkit/wiki/VCFPolyX">https://github.com/lindenb/jvarkit/wiki/VCFPolyX</a>. Number of repeated REF bases around POS.</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
 
    <xi:include href="inport.vcf.xml"/>
    <xi:include href="outport.vcf_count.xml"/>

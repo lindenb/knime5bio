@@ -1,6 +1,8 @@
 package com.github.lindenb.knime5bio;
 
 
+import htsjdk.samtools.util.AbstractIterator;
+import htsjdk.samtools.util.CloseableIterator;
 import htsjdk.samtools.util.CloserUtil;
 
 import java.util.ArrayList;
@@ -180,33 +182,17 @@ public abstract class AbstractKnime5BioNodeModel extends
 
 	protected String getOneRequiredResource(BufferedDataTable inTable2,int inUri2Index)
 		{
-		CloseableRowIterator iter=null;
+		CloseableIterator<String> iter=null;
 		String resource2=null;
 		try
 			{
-			 iter = inTable2.iterator();
+			 iter =stringColumnIterator(inTable2, inUri2Index);
 		     while(iter.hasNext())
 	                {
-	                DataRow row=iter.next();
-	                DataCell cell =row.getCell(inUri2Index);
-	                if(cell.isMissing())
-		            	{
-		            	getLogger().warn("Missing cells in "+getNodeName());
-		            	continue;
-		            	}
-		            if(!cell.getType().equals(StringCell.TYPE))
-		            	{
-		            	getLogger().error("not a StringCell type in "+cell);
-		            	continue;
-		            	}
-		            String uri = StringCell.class.cast(cell).getStringValue();
-		            if(uri.trim().isEmpty())
-		            	{
-		            	getLogger().error("ignore empty in "+cell);
-		            	continue;
-		            	}
+		            String uri = iter.next();
 		            if(resource2!=null)
 		            	{
+		            	iter.close();iter=null;
 		            	throw new RuntimeException("found two Resources but expected one:\n"+
 		            		uri+"\n"+resource2	
 		            		);
@@ -228,33 +214,14 @@ public abstract class AbstractKnime5BioNodeModel extends
 	protected List<String> getResourceSet(BufferedDataTable inTable2,int inUri2Index)
 		{
 		List<String> set=new ArrayList<>();
-		CloseableRowIterator iter=null;
+		CloseableIterator<String> iter=null;
 		try
 			{
-			 iter = inTable2.iterator();
+			 iter = stringColumnIterator(inTable2, inUri2Index);
 		     while(iter.hasNext())
 	                {
-	                DataRow row=iter.next();
-	                DataCell cell =row.getCell(inUri2Index);
-	                if(cell.isMissing())
-		            	{
-		            	getLogger().warn("Missing cells in "+getNodeName());
-		            	continue;
-		            	}
-		            if(!cell.getType().equals(StringCell.TYPE))
-		            	{
-		            	getLogger().error("not a StringCell type in "+cell);
-		            	continue;
-		            	}
-		            String uri = StringCell.class.cast(cell).getStringValue();
-		            if(uri.trim().isEmpty())
-		            	{
-		            	getLogger().error("ignore empty in "+cell);
-		            	continue;
-		            	}
-		            set.add(uri.trim());
+		            set.add(iter.next());
 	                }
-		     CloserUtil.close( iter);iter=null;
 		     return set;
 			}
 		finally
@@ -262,4 +229,60 @@ public abstract class AbstractKnime5BioNodeModel extends
 			CloserUtil.close( iter);
 			}
 		}
+	
+	protected CloseableIterator<String> stringColumnIterator(BufferedDataTable inTable2,int inUri2Index)
+		{
+		return new StringColumnIterator(inTable2, inUri2Index);
+		}
+
+	
+	private class StringColumnIterator
+		extends AbstractIterator<String>
+		implements CloseableIterator<String>
+		{
+		private int column;
+		private CloseableRowIterator iter=null;
+		public StringColumnIterator(BufferedDataTable table,int column)
+			{
+			this.column=column;
+			this.iter = table.iterator();
+			}
+		
+		
+		
+		@Override
+		protected String advance()
+			{
+			while(this.iter.hasNext())
+				{
+				DataRow row=this.iter.next();
+                DataCell cell =row.getCell(this.column);
+                if(cell.isMissing())
+	            	{
+	            	getLogger().warn("Missing cells in "+getNodeName());
+	            	continue;
+	            	}
+	            if(!cell.getType().equals(StringCell.TYPE))
+	            	{
+	            	getLogger().error("not a StringCell type in "+cell);
+	            	continue;
+	            	}
+	            String uri = StringCell.class.cast(cell).getStringValue();
+	            if(uri==null || uri.trim().isEmpty())
+	            	{
+	            	getLogger().error("ignore empty in "+cell);
+	            	continue;
+	            	}
+	            return uri;
+				}
+			return null;
+			}
+		
+		@Override
+		public void close()
+			{
+			CloserUtil.close(this.iter);
+			}
+		}
+	
 	}

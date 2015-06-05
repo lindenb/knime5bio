@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:xi="http://www.w3.org/2001/XInclude" name="bedindextabix" label="BED: Index+Tabix" description="Sort a BED, compress and index with tabix" generate-model="true">
+  
+  <description>
+     <h3>Motivation</h3>
+     <p>[fr]: index les fichiers BED avec tabix. Cela permet aux autres noeuds d acceder aux donnees plus rapidement. Le fichier est compresse avec bgzf et un fichier *.tbi est cree. Ce genre de fichier peux etre charge dans IGV.</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+
+  
+  <inPort name="input">
+    <column name="bed" label="Bed file" type="string">
+      <description><a href="https://genome.ucsc.edu/FAQ/FAQformat.html">A BED </a> file</description>
+    </column>
+  </inPort>
+  
+  <outPort name="outpout">
+    <column name="bed" label="BED file" type="string">
+      <description><a href="https://genome.ucsc.edu/FAQ/FAQformat.html">A BED </a> file</description>
+    </column>
+    <column name="items" label="Number of items" type="int">
+      <description>The number of variants written in the final BED file</description>
+    </column>
+  </outPort>
+  
+  <property type="column" name="bedInput" label="BED path" data-type="string">
+    <description>column containing the BED file</description>
+  </property>
+ 
+  <property type="bool" name="sort" label="Sort" description="Sort prior to compress" default="true"/>
+  <property type="int" name="maxRecordsinRam" label="Max Records in RAM" description="Max Records in RAM for caching" default="1000"></property>
+ 
+  <code>
+	<body><![CDATA[
+	
+	@Override
+	protected BufferedDataTable[] execute(
+			BufferedDataTable[] inData,
+			final ExecutionContext exec) throws Exception
+		{
+		if(inData.length!=1)
+			{
+			throw new RuntimeException("Boum");
+			}
+		com.github.lindenb.jvarkit.tools.misc.BedIndexTabix instance=null;
+		
+        htsjdk.samtools.util.CloseableIterator<String> iter=null;
+        BufferedDataTable inTable=inData[0];
+        DataTableSpec dataOutSpec = this.createOutTableSpec0();
+        BufferedDataContainer out_container = null;
+        int inUriIndex = this.findBedInputRequiredColumnIndex(inTable.getDataTableSpec());
+
+		try {
+			instance= new com.github.lindenb.jvarkit.tools.misc.BedIndexTabix();
+			
+	
+			instance.setMaxRecordsInRam(this.getPropertyMaxRecordsinRamValue());
+			instance.setSort(this.isPropertySortValue());
+			if( instance.initializeKnime() != 0)
+				{
+				throw new RuntimeException("Cannot initialize");
+				}
+	
+
+			out_container = exec.createDataContainer(dataOutSpec);
+            int nRows=0;
+            double total=inTable.getRowCount();
+            iter = super.stringColumnIterator(inTable, inUriIndex);
+	        while(iter.hasNext())
+	                {
+	                String uri = iter.next();
+	                if(uri.isEmpty())
+	                	{
+		            	getLogger().error("Empty uri");
+		            	continue;
+	                	}
+	                /* create output file */
+	                java.io.File fileout = this.createFileForWriting(uri,".vcf.gz" );
+					/* create parent directory if it doesn't exist */
+	                if(fileout.getParentFile()!=null)
+	                	{
+	                	fileout.getParentFile().mkdirs();
+	                	}
+	                instance.setOutputFile(fileout);
+	                
+	            
+	                if(instance.executeKnime(java.util.Collections.singletonList(uri))!=0)
+	                	{
+	                	fileout.delete();
+	                	iter.close();iter=null;
+	                	throw new RuntimeException("error during processing"+getNodeName()+" "+uri);
+	                	}
+	               
+	                
+	                out_container.addRowToTable(new DefaultRow(
+	                	RowKey.createRowKey(nRows),
+	                	createDataCellsForOutTableSpec0(
+	                			fileout.getPath(),
+	                			instance.getBedLineCount()
+	                			)
+	                	));
+	               
+	                ++nRows;
+	                exec.checkCanceled();
+	                exec.setProgress(nRows/total);
+	                }
+	        	iter.close();
+	        	iter=null;
+	        	out_container.close();
+	            BufferedDataTable out0 = out_container.getTable();
+	            out_container=null;
+	            return this.internalTables(new BufferedDataTable[]{out0});
+	            }
+	        finally
+	            {
+	        	htsjdk.samtools.util.CloserUtil.close(iter);
+	        	htsjdk.samtools.util.CloserUtil.close(out_container);
+	            }
+	        }
+
+	 ]]></body>
+  </code>
+</node>

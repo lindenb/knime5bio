@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <node name="vcfmulti2oneallele" label="VCF Multi to One Allele" 
-	description="-one variant with N ALT alleles- to -N variants with one ALT-"
 	generate-model='true'
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	>
+
+  <description>
+     <h3>Motivation</h3>
+     <p>See <a href="https://github.com/lindenb/jvarkit/wiki/VcfMultiToOneAllele">https://github.com/lindenb/jvarkit/wiki/VcfMultiToOneAllele</a>. VCF: "one variant with N ALT alleles" to "N variants with one ALT". Genotypes are removed (no samples)</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+	
+
    <xi:include href="inport.vcf.xml"/>
    <xi:include href="outport.vcf_count.xml"/>
  

@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <node name="readfasta" label="Read Fasta" description="Reads a Fasta file">
+
+  <description>
+     <h3>Motivation</h3>
+     <p>Read a FASTA file into a KNIME table</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+
+
   <property type="file-read" name="fastaIn" >
       <extension>.fa</extension>
       <extension>.fasta</extension>

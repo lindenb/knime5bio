@@ -7,6 +7,12 @@
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	>
 
+  <description>
+     <h3>Motivation</h3>
+     <p>See  <a href="https://github.com/lindenb/jvarkit/wiki/VcfCadd">https://github.com/lindenb/jvarkit/wiki/VcfCadd</a>. Annotate a VCF with Combined Annotation Dependent Depletion (CADD) (Kircher &amp; al. A general framework for estimating the relative pathogenicity of human genetic variants. Nat Genet. 2014 Feb 2. doi: 10.1038/ng.2892. PubMed http://www.ncbi.nlm.nih.gov/pubmed/24487276. )</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+
    <xi:include href="inport.vcf.xml"/>
    <xi:include href="outport.vcf_count.xml"/>
 

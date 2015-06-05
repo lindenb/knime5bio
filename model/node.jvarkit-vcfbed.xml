@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <node name="vcfbed"
 	label="VCF-Bed" 
-	description="VCF: Annotate a VCF with the content of a BED file indexed with tabix or tribble"
 	generate-model='true'
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	>
+
+  <description>
+     <h3>Motivation</h3>
+     <p>See  <a href="https://github.com/lindenb/jvarkit/wiki/VCFBed">https://github.com/lindenb/jvarkit/wiki/VCFBed</a>. Annotate a VCF with the content of a BED file indexed with tabix or tribble</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+
 
    <xi:include href="inport.vcf.xml"/>
    <xi:include href="outport.vcf_count.xml"/>

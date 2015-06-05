@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<node name="vcfIn" label="VCF Intersection" 
-	description="Intersection between two sorted VCFs"
+<node name="vcfIn"
+	label="VCF Intersection" 
 	generate-model='true'
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	>
+	
+  <description>
+     <h3>Motivation</h3>
+     <p>DEPRECATED: use the vcf-join node.</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+	
 
    <xi:include href="inport.vcf.xml"/>
    <xi:include href="outport.vcf_count.xml"/>

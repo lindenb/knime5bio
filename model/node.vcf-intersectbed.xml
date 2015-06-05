@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <node name="vcfintersectbed"
 	label="VCF Intersect BED" 
-	description="VCF/BED intersection"
+
 	generate-model='false'
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	>
+
+  <description>
+     <h3>Motivation</h3>
+     <p>VCF/BED intersection</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+
 <inPort name="vcf">
     <column name="vcfIn" label="VCF file" type="string">
       <description><a href="http://www.htslib.org/doc/vcf.html">A Variant Call Format (VCF)</a> file. Can be gzipped or <a href="http://www.ncbi.nlm.nih.gov/pubmed/21208982">bgzipped</a></description>

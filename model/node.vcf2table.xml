@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <node name="vcf2table" label="VCF To KnimeTable" 
-	description="Load a VCF in a KNIME table."
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	>
+
+  <description>
+     <h3>Motivation</h3>
+     <p>Load one VCF in a KNIME table.</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+
+
    <xi:include href="inport.vcf.xml"/>
    <outPort name="output" columns-at-runtime="true">
    </outPort>

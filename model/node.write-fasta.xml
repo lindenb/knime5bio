@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<node name="writefasta" label="Write Fasta" description="Write a Fasta file">
+<node name="writefasta" label="Write Fasta" >
+
+  <description>
+     <h3>Motivation</h3>
+     <p>Write sequences to a Fasta file</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+
+
   <inPort name="input">
   </inPort>
   <property type="file-save" name="fastaOut" >

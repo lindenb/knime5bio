@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <node name="vcfJoin" label="VCF Join" 
-	description="Join Two stream of VCFs"
 	generate-model='false'
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	>
+
+  <description>
+     <h3>Motivation</h3>
+     <p>Noeud knime permettant d'include/exclure une serie de VCF versus un VCF (database). Une liste de tags peut etre specifiee pour copier les tags INFO de la database vers les vcf.</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+
+
 <inPort name="input">
     <column name="vcfIn1" label="VCF file" type="string">
       <description><a href="http://www.htslib.org/doc/vcf.html">A Variant Call Format (VCF)</a> file. Can be gzipped or <a href="http://www.ncbi.nlm.nih.gov/pubmed/21208982">bgzipped</a></description>

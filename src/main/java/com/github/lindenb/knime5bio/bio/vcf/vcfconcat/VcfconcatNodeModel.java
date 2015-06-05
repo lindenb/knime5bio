@@ -45,16 +45,11 @@ import com.github.lindenb.jvarkit.tools.vcfconcat.VcfConcat;
 import com.github.lindenb.jvarkit.util.vcf.VCFUtils;
 import com.github.lindenb.jvarkit.util.vcf.VcfIterator;
 
-/** BEGIN user imports */
-
-/** END user imports */
-
 
 /**
  * VcfconcatNodeModel
  * @author Pierre Lindenbaum
  */
-@javax.annotation.Generated("xslt-sandbox/knime2java")
 public class VcfconcatNodeModel
 	extends AbstractVcfconcatNodeModel
 	{

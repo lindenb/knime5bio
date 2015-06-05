@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <node name="vcfheaders" label="VCF Headers" 
-	description="Extract Headers in a VCF"
 	generate-model='false'
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	>
+  <description>
+     <h3>Motivation</h3>
+     <p>Creates 3 KNIME tables containing a description of the FILTER/INFO/FORMAT tag in a set of VCF files.</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>	
+
+
    <xi:include href="inport.vcf.xml"/>
    
    <outPort name="Filters" description="FILTER">

@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <node name="vcftrio" label="VCF Trio" 
-	description="Check for mendelian incompatibilities in a VCF."
 	generate-model='true'
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	>
+
+  <description>
+     <h3>Motivation</h3>
+     <p>See <a href="https://github.com/lindenb/jvarkit/wiki/VCFTrio">https://github.com/lindenb/jvarkit/wiki/VCFTrio</a>. Check for mendelian incompatibilities in a VCF.</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+
    <xi:include href="inport.vcf.xml"/>
    <xi:include href="outport.vcf_count.xml"/>
 

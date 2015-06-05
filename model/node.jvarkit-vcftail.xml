@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<node name="vcfTail" label="VCF Tail" 
-	description="Retains the last lines of a VCF file"
+<node name="vcfTail"
+	label="VCF Tail" 
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	>
+
+  <description>
+     <h3>Motivation</h3>
+     <p>See <a href="https://github.com/lindenb/jvarkit/wiki/VcfTail">https://github.com/lindenb/jvarkit/wiki/VcfTail</a>. Print the last variants of a VCF.</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+
+
    <xi:include href="inport.vcf.xml"/>
    <xi:include href="outport.vcf_count.xml"/>
 

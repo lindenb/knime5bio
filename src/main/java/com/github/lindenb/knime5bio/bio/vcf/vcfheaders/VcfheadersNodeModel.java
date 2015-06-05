@@ -26,6 +26,7 @@ SOFTWARE.
 
 */
 package com.github.lindenb.knime5bio.bio.vcf.vcfheaders;
+import htsjdk.samtools.util.CloseableIterator;
 import htsjdk.samtools.util.CloserUtil;
 import htsjdk.variant.vcf.VCFFilterHeaderLine;
 import htsjdk.variant.vcf.VCFFormatHeaderLine;
@@ -33,11 +34,9 @@ import htsjdk.variant.vcf.VCFHeader;
 import htsjdk.variant.vcf.VCFHeaderLineCount;
 import htsjdk.variant.vcf.VCFInfoHeaderLine;
 
-import java.util.List;
 
 import org.knime.core.node.*;
 import org.knime.core.data.*;
-import org.knime.core.data.container.CloseableRowIterator;
 import org.knime.core.data.def.*;
 
 import com.github.lindenb.jvarkit.util.vcf.VCFUtils;
@@ -68,7 +67,7 @@ public class VcfheadersNodeModel
 	protected BufferedDataTable[] execute(BufferedDataTable[] inData,
 			ExecutionContext exec) throws Exception
 		{
-        CloseableRowIterator iter=null;
+        CloseableIterator<String> iter=null;
         BufferedDataTable inTable=inData[0];
         BufferedDataContainer out_container[]=new BufferedDataContainer[3];
         VcfIterator vcfIiterator=null;
@@ -81,29 +80,10 @@ public class VcfheadersNodeModel
 			
 			int nRows=0;
             double total=inTable.getRowCount();
-            iter=inTable.iterator();
+            iter=stringColumnIterator(inTable, inUriIndex);
 	        while(iter.hasNext())
 	                {
-	                DataRow row=iter.next();
-	                ++nRows;
-	                DataCell cell =row.getCell(inUriIndex);
-
-		            if(cell.isMissing())
-		            	{
-		            	getLogger().warn("Missing cells in "+getNodeName());
-		            	continue;
-		            	}
-		            if(!cell.getType().equals(StringCell.TYPE))
-		            	{
-		            	getLogger().error("not a StringCell type in "+cell);
-		            	continue;
-		            	}
-	                String uri = StringCell.class.cast(cell).getStringValue();
-	                if(uri.isEmpty())
-	                	{
-		            	getLogger().error("Empty uri");
-		            	continue;
-	                	}
+	                String uri = iter.next();
 	                vcfIiterator = VCFUtils.createVcfIterator(uri);
 	                VCFHeader header=vcfIiterator.getHeader();
 	                for(VCFFilterHeaderLine h:header.getFilterLines())

@@ -162,6 +162,7 @@
 	</initialize>
 </node>
 
+
 <node name="vcfmulti2oneallele" type="vcf-filter" handler-class="com.github.lindenb.jvarkit.tools.misc.VcfMultiToOneAllele">
 	<initialize>
 			if( instance.initializeKnime() != 0)

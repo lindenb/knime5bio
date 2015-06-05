@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<node name="vcfindextabix" label="Index a VCF" 
-	description="Index a VCF file with tabix"
+<node name="vcfindextabix"
+	label="Index a VCF" 
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	>
+
+  <description>
+     <h3>Motivation</h3>
+     <p>See  <a href="https://github.com/lindenb/jvarkit/wiki/VcfIndexTabix">https://github.com/lindenb/jvarkit/wiki/VcfIndexTabix</a>.  In
+dex and sort a VCF with Tabix.</p>
+     <p>[fr]: indexe les fichiers BED avec tabix. Cela permet aux autres noeuds d acceder aux donnees plus rapidement. Le fichier est compr
+esse avec bgzf et un fichier *.tbi est cree. Ce genre de fichier peux etre charge dans IGV.</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+
+
+
    <xi:include href="inport.vcf.xml"/>
    <outPort name="output" columns-at-runtime="true">
    </outPort>

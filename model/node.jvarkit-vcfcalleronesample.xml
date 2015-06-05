@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<node name="vcfcalleronesample" label="vcf caller one sample" 
-	description="VCF with one sample called using different callers. *Only keep variant if it was found in  min&lt;=x=other-files&lt;=max"
+<node name="vcfcalleronesample"
+	label="vcf caller one sample" 
 	generate-model='true'
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	>
    <xi:include href="inport.vcf.xml"/>
    <xi:include href="outport.vcf_count.xml"/>
 
+  <description>
+     <h3>Motivation</h3>
+     <p>See  <a href="https://github.com/lindenb/jvarkit/wiki/VcfCompareCallersOneSample">https://github.com/lindenb/jvarkit/wiki/VcfCompareCallersOneSample</a>. Description: For my colleague Julien: VCF with one sample called using different callers. *Only keep variant if it was found in min&lt;=x=other-files&lt;max</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+
  <property type="column" name="vcfInput" label="VCF path" description="VCF files" data-type="string"  port="input"/>
   <property type="bool" name="ignoreAltAlleles" label="Ignore ALT" description="Ignore ALT alleles" default="false"/>
   <property type="int" name="minCountInclusive" label="min Count Inclusive" description="Min number of time (inclusive) we should find a variant in the other files" default="0"/>
   <property type="int" name="maxCountInclusive" label="max Count Inclusive" description="Nax number of time (inclusive) we should find a variant in the other files" default="Integer.MAX_VALUE -1 "/>
-  <description>
-  	Description: For my colleague Julien: VCF with one sample called using different callers. *Only keep variant if it was found in min&lt;=x=other-files&lt;=max
-     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
-  </description>
   
   <code>
   <import>

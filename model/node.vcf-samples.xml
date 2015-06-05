@@ -4,6 +4,13 @@
 	generate-model='false'
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	>
+
+  <description>
+     <h3>Motivation</h3>
+     <p>VCF/BED intersection. Keep/exclude variants overlaping a BED file.</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+  
    <xi:include href="inport.vcf.xml"/>
    
    <outPort name="output">

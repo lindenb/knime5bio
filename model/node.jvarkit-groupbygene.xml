@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <node name="groupByGene" label="Group By Gene" 
-	description="Group VCF by Gene"
 	generate-model='true'
 	xmlns:xi="http://www.w3.org/2001/XInclude"
 	>
+
+  <description>
+     <h3>Motivation</h3>
+     <p>See  <a href="https://github.com/lindenb/jvarkit/wiki/GroupByGene">https://github.com/lindenb/jvarkit/wiki/GroupByGene</a>. Group VCF data by gene/transcript. By default it tries to use data from VEP and SnpEff</p>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+
    <xi:include href="inport.vcf.xml"/>
    <outPort name="output" columns-at-runtime="true"/>
   
