@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node name="vcfmulti2one"
+	label="VCF Multi Sample to One Sample" 
+	generate-model='true'
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	>
+
+  <description>
+     <h3>Motivation</h3>
+     <p>See <a href="https://github.com/lindenb/jvarkit/wiki/VcfMultiToOne">https://github.com/lindenb/jvarkit/wiki/VcfMultiToOne</a>. Convert a multiple-samples VCF(s) to a VCF with one SAMPLE . Each variant is copied for each sample , and the original sample name is added in the INFO column.</p>
+     <h3>Example</h3>
+     <pre><![CDATA[$ curl -s "http://ftp-trace.ncbi.nih.gov/1000genomes/ftp/release/20130502/ALL.chr1.phase3_shapeit2_mvncall_integrated_v5.20130502.genotypes.vcf.gz" |\
+gunzip -c |\
+java -jar dist/vcfmulti2one.jar  -c -r -a  |\
+grep -v '##' |\
+grep -E '(CHROM|SAMPLENAME)' | head | verticalize 
+
+
+>>> 2
+$1   #CHROM : 1
+$2      POS : 10177
+$3       ID : .
+$4      REF : A
+$5      ALT : AC
+$6     QUAL : 100
+$7   FILTER : PASS
+$8     INFO : AA=|||unknown(NO_COVERAGE);AC=2130;AF=0.425319;AFR_AF=0.4909;AMR_AF=0.3602;AN=5008;DP=103152;EAS_AF=0.3363;EUR_AF=0.4056;NS=2504;SAMPLENAME=HG00096;SAS_AF=0.4949
+$9   FORMAT : GT
+$10  SAMPLE : 1|0
+<<< 2
+
+>>> 3
+$1   #CHROM : 1
+$2      POS : 10177
+$3       ID : .
+$4      REF : A
+$5      ALT : AC
+$6     QUAL : 100
+$7   FILTER : PASS
+$8     INFO : AA=|||unknown(NO_COVERAGE);AC=2130;AF=0.425319;AFR_AF=0.4909;AMR_AF=0.3602;AN=5008;DP=103152;EAS_AF=0.3363;EUR_AF=0.4056;NS=2504;SAMPLENAME=HG00097;SAS_AF=0.4949
+$9   FORMAT : GT
+$10  SAMPLE : 0|1
+<<< 3
+]]></pre>
+     <xi:include href="footer.html" xpointer="xpointer(/div/*)" parse="xml" />
+  </description>
+
+
+   <xi:include href="inport.vcf.xml"/>
+   <xi:include href="outport.vcf_count.xml"/>
+
+  <property type="column" name="vcfInput" label="Vcf Input" data-type="string" port="input"/>
+  <property type="bool" name="keepIfNoCall" label="discard if variant is no-call" default="true"/>
+  <property type="bool" name="keepIfHomRef" label="discard if variant is Hom-Ref" default="true"/>
+  <property type="bool" name="keepIfNotAvailable" label="discard if variant is not called" default="true"/>
+ 
+  <view class="com.github.lindenb.knime5bio.bio.VcfNodeView"/>
+
+<code><body><![CDATA[
+	/* @inheritDoc */
+	@Override
+    protected BufferedDataTable[] execute(
+    		final BufferedDataTable[] inData,
+            final ExecutionContext exec
+            ) throws Exception
+			{
+			BufferedDataTable inTable=inData[0];
+			int inUserVcfIndex = this.findVcfInputRequiredColumnIndex(inTable.getDataTableSpec());
+			com.github.lindenb.jvarkit.tools.onesamplevcf.VcfMultiToOne instance=new com.github.lindenb.jvarkit.tools.onesamplevcf.VcfMultiToOne();
+			DataTableSpec dataOutSpec = this.createOutTableSpec0();
+			BufferedDataContainer out_container = null;
+
+			try
+		    	{
+		    	out_container = exec.createDataContainer(dataOutSpec);
+				instance.setKeepHomRef(this.isPropertyKeepIfHomRefValue());
+				instance.setKeepNoCall(this.isPropertyKeepIfNoCallValue());
+				instance.setKeepNonAvailable(this.isPropertyKeepIfNoCallValue());
+				instance.executeKnime(this.getResourceSet(inTable, inUserVcfIndex));
+				
+				String filename="multi2one_"+System.currentTimeMillis();
+				/* create output file */
+				java.io.File fileout = createFileForWriting(filename+"."+md5(filename),".vcf.gz");
+				/* create parent directory if it doesn't exist */
+				if(fileout.getParentFile()!=null)
+					{
+					fileout.getParentFile().mkdirs();
+					}
+				instance.setOutputFile(fileout);
+
+				if(instance.executeKnime(super.getResourceSet(inTable, inUserVcfIndex))!=0)
+					{
+					fileout.delete();
+					throw new RuntimeException("error during processing"+getNodeName());
+					}
+				
+				
+				out_container.addRowToTable(new DefaultRow(
+						RowKey.createRowKey(1),
+						createDataCellsForOutTableSpec0(
+								fileout.getPath(),
+								instance.getVariantCount()
+								)
+						));
+
+		        /* create and fill array to be returned */
+				out_container.close();
+		        BufferedDataTable returnBufferedDataTable[]= new BufferedDataTable[]
+		        		{
+		        		out_container.getTable()
+		        		};
+		        
+		        out_container=null;
+		    	return returnBufferedDataTable;
+		    	}
+		catch(Exception err)
+			{
+			getLogger().error("Boum", err);
+			err.printStackTrace();
+			throw err;
+			}
+		finally
+			{
+			htsjdk.samtools.util.CloserUtil.close(out_container);
+			}
+		}
+ ]]></body></code>
+ 
+</node>
+

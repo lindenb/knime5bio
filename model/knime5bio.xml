@@ -30,6 +30,7 @@
 			<xi:include href="node.jvarkit-vcfindextabix.xml"/>
 			<xi:include href="node.jvarkit-bedindextabix.xml"/>
 			<xi:include href="node.jvarkit-vcfmulti2oneallele.xml"/>
+			<xi:include href="node.jvarkit-vcfmulti2one.xml"/>
   		</category>
   		<xi:include href="node.vcf-join.xml"/> 
   		<xi:include href="node.vcf-view.xml"/>  
