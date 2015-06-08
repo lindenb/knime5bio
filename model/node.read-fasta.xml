@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<node name="readfasta" label="Read Fasta" description="Reads a Fasta file">
+<node
+	name="readfasta"
+	label="Read Fasta"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	>
 
   <description>
      <h3>Motivation</h3>

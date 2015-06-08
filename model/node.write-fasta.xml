@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<node name="writefasta" label="Write Fasta" >
+<node name="writefasta"
+	label="Write Fasta"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	>
 
   <description>
      <h3>Motivation</h3>
