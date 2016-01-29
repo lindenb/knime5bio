@@ -1,5 +1,8 @@
 # KNIME5Bio
 
+C'est un premier jet de doc, Solena ne commence pas à m'embêter à chaques fois que tu trouves une cokille.
+
+
 ## Pourquoi de nouvelles extensions ?
 
 Pourquoi ne pas rester avec les extensions de knime4bio ?
@@ -18,13 +21,13 @@ G|intron_variant|MODIFIER||2475|Transcript|XM_005263441.1|protein_coding||27/27|
 ## Installation
 
 * java 8 est requis
-* telecharger et installer une version récente de Download KNIME Analytics Platform  : https://www.knime.org/downloads/overview . La version que j'ai utilisé est **3.1**.
+* telecharger et installer une version récente depuis Download KNIME Analytics Platform  : https://www.knime.org/downloads/overview . La version que j'ai utilisé est **3.1**.
 * n'ouvrez pas l'application knime pour le moment
 * localisez le repertoire 'plugins' de knime
 
 ![install01.jpg](install01.jpg)
 
-* supprimer un ancien fichier `com.github.lindenb.knime5bio*.jar` si il est présent dans le répertoire `plugins`.
+* supprimer un ancien fichier `com.github.lindenb.knime5bio*.jar` s'il est présent dans le répertoire `plugins`.
 * télécharger et installer le nouveau fichier  `com.github.lindenb.knime5bio*.jar` dans le répertoire `plugins`.
 * dans le repertoire du dessus (knime) ouvrez le fichier `knime.ini` avec un éditeur de texte (notepad...) et forcer knime à parler anglais... 
 
@@ -61,7 +64,7 @@ Il est nécessaire de définir un répertoire de travail sur votre machine où s
 
 Pour définir ce répertoire de travail, faire un click-droit sur le projet & ajouter la variable `com.github.lindenb.knime5bio.working.directory` (type=STRING)
 
-![workflowvariable01.jpg](workflowvariable01.jpg)
+![worfklowvariable01.jpg](worfklowvariable01.jpg)
 
 
 Une fois knime lancé, les nouveaux noeuds devraient apparaitre sous `community nodes`
