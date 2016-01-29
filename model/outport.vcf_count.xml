@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<outPort name="outpout" xmlns:xi="http://www.w3.org/2001/XInclude">
-  	  	<xi:include href="column.vcfout.xml"/>
-  	  	<column name="countVariants" label="Number of variants" type="int">
-  	  		<description>The number of variants written in the final VCF file</description>
-  	  	</column>
-</outPort>
-
