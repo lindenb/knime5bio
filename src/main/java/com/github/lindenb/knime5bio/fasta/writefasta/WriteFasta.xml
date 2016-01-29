@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node count-in="1" count-out="1">
+
+	<settings>
+		  <setting type="column" name="title" label="Title" description="Fasta title" index="0" data-type="string" required="true">
+		  </setting>
+		
+		  <setting type="column" name="sequence" label="Sequence" description="Fasta Sequence" index="0" data-type="string" required="true">
+		  </setting>
+		
+		  <setting type="int" name="fold" required="true" label="Fold size" description="Fold sequences greater than..." default="60">
+		  </setting>
+		  
+		   <setting type="output-file" name="outputfile" label="Filename" description="Output file" required="true">
+		  	 <suffix>.fa</suffix>
+		  	 <suffix>.fasta</suffix>
+		  	 <suffix>.fa.gz</suffix>
+		  	 <suffix>.fasta.gz</suffix>
+		  </setting>
+	</settings>
+
+	<ports>
+		<inPort name="fastaTable" label="FastTable" index="0"/>
+	</ports>
+</node>

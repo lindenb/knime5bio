@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node gatk='true'>
+	<description>Compute the most likely genotype combination and phasing for trios and parent/child pairs.
+This tool performs two functions:
+
+Compute the most likely genotype combination of trios and parent/child pairs given their genotype likelihoods and a mutation prior;
+Phase all sites were parent/child transmission can be inferred unambiguously.
+The tool ultimately reports the genotype combination (and hence phasing) probability.
+</description>
+	<settings>
+		<setting type="gatk.jar"/>
+		<setting name="vcf" type="column" index="0" required="true" data-type="string">
+			<description>Input VCF file</description>
+		</setting>
+		
+		  <setting name="ped" type="input-file" required="true">
+		    <label>Pedigree</label>
+		    <description>The PED file is a white-space (space or tab) delimited file: the first six columns are mandatory:
+		
+		    Family ID
+		    Individual ID
+		    Paternal ID
+		    Maternal ID
+		    Sex (1=male; 2=female; other=unknown)
+		    Phenotype
+		</description>
+			<suffix>.ped</suffix>
+		  </setting>	
+		
+		
+				<!--  GENERATED BELOW -->
+
+
+				
+  <setting gatk="true" name="DeNovoPrior" type="double" required="true" default="1E-8">
+    <label>DeNovoPrior</label>
+    <description>Prior for de novo mutations</description>
+  </setting>
+  
+  <setting gatk="true" name="FatherAlleleFirst" type="boolean">
+    <label>FatherAlleleFirst</label>
+    <description>Prior for de novo mutations</description>
+  </setting>
+
+ 
+  		
+	</settings>
+
+	<ports>
+		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
+		<outPort index="0" name="Out-Port name">
+			<column name="VCF" type="string"/>
+			<column name="MendelianIncompatibilities" type="string"/>
+		</outPort>
+	</ports>
+</node>

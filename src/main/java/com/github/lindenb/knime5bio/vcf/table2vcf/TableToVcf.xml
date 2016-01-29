@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>Save a File to VCF</description>
+  <settings>
+  </settings>
+  <ports>
+	 <inPort id="vcf"/>
+   	 <outPort index="0" name="VCF File" >
+   	 	<column name="VCF" type="string"/>
+   	 </outPort>
+  </ports>
+</node>

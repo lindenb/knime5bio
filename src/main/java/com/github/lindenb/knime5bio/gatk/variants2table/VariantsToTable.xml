@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node gatk='true'>
+	<description>Extract specific fields from a VCF file to a tab-delimited table <a>https://www.broadinstitute.org/gatk/guide/tooldocs/org_broadinstitute_gatk_tools_walkers_variantutils_VariantsToTable.php</a></description>
+ 
+ <settings>
+ 		<setting type="gatk.jar"/>
+		<setting name="vcf" type="column" index="0" required="true" data-type="string">
+			<description>Input VCF file</description>
+		</setting>
+		<!--  GENERATED BELOW -->
+ 
+ 
+  <setting gatk="true" name="allowMissingData" type="boolean">
+    <label>allowMissingData</label>
+    <description>By default, this tool throws a UserException when it encounters a field without a value in some record.  This
+ is generally useful when you mistype -F CHROM, so that you get a friendly warning about CHROM not being
+ found before the tool runs through 40M 1000G records.  However, in some cases you genuinely want to allow such
+ fields (e.g., AC not being calculated for filtered records, if included).  When provided, this argument
+ will cause VariantsToTable to write out NA values for missing fields instead of throwing an error.</description>
+  </setting>
+  <setting gatk="true" name="fields" type="string" gatk-split="true" required="false" multiline="true">
+    <label>fields</label>
+    <description>-F NAME can be any standard VCF column (CHROM, ID, QUAL) or any binding in the INFO field (e.g., AC=10).
+ Note that to capture GENOTYPE (FORMAT) field values, see the GF argument.  This argument accepts any number
+ of inputs.  So -F CHROM -F POS is allowed.</description>
+  </setting>
+  <setting gatk="true" name="genotypeFields" type="string" required="false" multiline="true">
+    <label>genotypeFields</label>
+    <description>-GF NAME can be any binding in the FORMAT field (e.g., GQ, PL).
+ Note this argument accepts any number of inputs.  So -GF GQ -GF PL is allowed.</description>
+  </setting>
+  <setting gatk="true" name="maxRecords" type="boolean" required="false">
+    <label>maxRecords</label>
+    <description>If provided, then this tool will exit with success after this number of VCF records have been emitted to the file.</description>
+  </setting>
+  <setting gatk="true" name="moltenize" type="boolean">
+    <label>moltenize</label>
+    <description>By default, this tool emits one line per usable VCF record (or per allele if the -SMA flag is provided).  Using the -moltenize flag
+ will cause records to be split into multiple lines of output: one for each field provided with -F or one for each combination of sample
+ and field provided with -GF.  Note that the "Sample" column for -F fields will always be "site".</description>
+  </setting>
+
+  <setting gatk="true" name="showFiltered" type="boolean">
+    <label>showFiltered</label>
+    <description>By default this tool only emits values for fields where the FILTER field is either PASS or . (unfiltered).
+ Throwing this flag will cause VariantsToTable to emit values regardless of the FILTER field value.</description>
+  </setting>
+
+  <setting gatk="true" name="splitMultiAllelic" type="boolean">
+    <label>splitMultiAllelic</label>
+    <description>By default, records with multiple ALT alleles will comprise just one line of output; note that in general this can make your resulting file
+ unreadable/malformed for certain tools like R, as the representation of multi-allelic INFO field values are often comma-separated lists
+ of values.  Using the flag will cause multi-allelic records to be split into multiple lines of output (one for each allele in the ALT field);
+ INFO field values that are not lists are copied for each of the output records while only the appropriate entry is used for lists.</description>
+  </setting>
+		
+	</settings>
+
+	<ports>
+		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
+		<outPort index="0" name="Out-Port name">
+			<column name="VCF" type="string"/>
+		</outPort>
+	</ports>
+</node>

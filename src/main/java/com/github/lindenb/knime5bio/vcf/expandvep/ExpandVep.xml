@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>Expand the VEP columns</description>
+  <settings>
+    
+   
+  </settings>
+  <ports>
+		<inPort id="vcf"/>
+		<outPort index="0" name="expanded vep" />
+  </ports>
+</node>

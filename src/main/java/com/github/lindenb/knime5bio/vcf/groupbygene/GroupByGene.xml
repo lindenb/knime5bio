@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>Group VCF data by gene/transcript. By default it uses data from VEP , SnpEff</description>
+  <settings>
+    
+    <setting name="maxRecordsInRam" type="int" default="10000" required="true">
+      <description>When writing large files that need to be sorted, this will specify the number of records stored in RAM </description>
+    </setting>
+
+  </settings>
+  <ports>
+		<inPort id="vcf"/>
+		<outPort id="groupGene" index="0" name="groupGene" label="group by gene"/>
+  </ports>
+</node>

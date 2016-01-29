@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: idm2320 Compiled on 2015-06-08T14:59:28+02:00
+Bundle-SymbolicName: com.github.lindenb.knime5bio.bio.fasta.readfasta; singleton:=true
+Bundle-Version: ___VERSION___
+Bundle-ClassPath: com_github_lindenb_knime5bio.jar,___EXTRAJARS___
+Bundle-Activator: com.github.lindenb.knime5bio.fasta.readfasta.ReadFastaNodePlugin
+Bundle-Vendor: Pierre Lindenbaum
+Require-Bundle: org.eclipse.core.runtime,org.knime.workbench.core,org.knime.workbench.repository,org.knime.base
+Bundle-ActivationPolicy: lazy
+Export-Package: com.github.lindenb.knime5bio.fasta.readfasta
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>Get the INFO from a VCF and use it for another VCF.</description>
+  <settings>
+    <setting name="TABIX" type="input-file" default="" required="true">
+      <description>The VCF file indexed with TABIX or tribble. Source of the annotations</description>
+    </setting>
+    <setting name="tagsAsString" type="string" required="true" multiline="true" cols="10" rows="5">
+      <description>tag1,tag2,tag... the INFO keys to peek from the indexed file</description>
+    </setting>
+    <setting name="peekTagPrefix" type="string" default="" required="false">
+      <description>prefix all database tags with this prefix to avoid collisions</description>
+    </setting>
+    <setting name="altAlleleCheck" type="boolean" default="false">
+      <description>**ALL** alt allele must be found in indexed file.</description>
+    </setting>
+    <setting name="peekId" type="boolean" default="false">
+      <description>Replace the ID field if it exists</description>
+    </setting>
+  </settings>
+  <ports>
+		<inPort id="vcf"/>
+		<outPort id="vcf"/>
+  </ports>
+</node>

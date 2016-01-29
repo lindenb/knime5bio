@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>Reads a KNIME table containings ONE row with a path and convert it to a TABLE</description>
+  <settings>
+    <setting name="path" type="column" index="0" data-type="string"  label="Path" required="true">
+       <description>Column containing File Path</description>
+	</setting>
+  </settings>
+  <ports>
+		<inPort name="pathTable" label="Path Table" index="0"/>
+		<outPort name="outputTable" label="Output Table" index="0" at-runtime="true"/>
+  </ports>
+</node>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node gatk='true'>
+	<description>Filter variant calls based on INFO and FORMAT annotations <a>https://www.broadinstitute.org/gatk/guide/tooldocs/org_broadinstitute_gatk_tools_walkers_filters_VariantFiltration.php</a></description>
+ 
+ <settings>
+ 		<setting type="gatk.jar"/>
+		<setting name="vcf" type="column" index="0" required="true" data-type="string">
+			<description>Input VCF file</description>
+		</setting>
+		<!--  GENERATED BELOW -->
+ 
+ 
+ 
+ 
+  <setting gatk="true" name="clusterSize" type="int" required="false">
+    <label>clusterSize</label>
+    <description>Works together with the --clusterWindowSize argument.</description>
+  </setting>
+ 
+  <setting gatk="true" name="clusterWindowSize" type="int" required="false">
+    <label>clusterWindowSize</label>
+    <description>Works together with the --clusterSize argument.  To disable the clustered SNP filter, set this value to less than 1.</description>
+  </setting>
+  
+  <setting gatk="true" name="filterExpression" type="string" required="false" multiline="true" rows="5" cols="50">
+    <label>filterExpression</label>
+    <description>VariantFiltration accepts any number of JEXL expressions (so you can have two named filters by using
+ --filterName One --filterExpression "X &lt; 1" --filterName Two --filterExpression "X &gt; 2").</description>
+  </setting>
+  
+  <setting gatk="true" name="filterName" type="string" required="false" multiline="false">
+    <label>filterName</label>
+    <description>This name is put in the FILTER field for variants that get filtered.  Note that there must be a 1-to-1 mapping between filter expressions and filter names.</description>
+  </setting>
+  
+  <setting gatk="true" name="filterNotInMask" type="boolean">
+    <label>filterNotInMask</label>
+    <description>By default, if the -mask argument is used, any variant falling in a mask will be filtered.
+ If this argument is used, logic is reversed, and variants falling outside a given mask will be filtered.
+ Use case is, for example, if we have an interval list or BED file with "good" sites.
+ Note that it is up to the user to adapt the name of the mask to make it clear that the reverse logic was used
+ (e.g. if masking against Hapmap, use -maskName=hapmap for the normal masking and -maskName=not_hapmap for the reverse masking).</description>
+  </setting>
+  
+  <setting gatk="true" name="genotypeFilterExpression" type="string" required="false" multiline="true" rows="5" cols="50">
+    <label>genotypeFilterExpression</label>
+    <description>Similar to the INFO field based expressions, but used on the FORMAT (genotype) fields instead.
+ VariantFiltration will add the sample-level FT tag to the FORMAT field of filtered samples (this does not affect the record's FILTER tag).
+ One can filter normally based on most fields (e.g. "GQ &lt; 5.0"), but the GT (genotype) field is an exception. We have put in convenience
+ methods so that one can now filter out hets ("isHet == 1"), refs ("isHomRef == 1"), or homs ("isHomVar == 1"). Also available are
+ expressions isCalled, isNoCall, isMixed, and isAvailable, in accordance with the methods of the Genotype object.</description>
+  </setting>
+  
+  <setting gatk="true" name="genotypeFilterName" type="string" required="false" multiline="true">
+    <label>genotypeFilterName</label>
+    <description>Similar to the INFO field based expressions, but used on the FORMAT (genotype) fields instead.</description>
+  </setting>
+  <setting gatk="true" name="invalidatePreviousFilters" type="boolean">
+    <label>invalidatePreviousFilters</label>
+    <description>Invalidate previous filters applied to the VariantContext, applying only the filters here</description>
+  </setting>
+  <setting gatk="true" name="invertFilterExpression" type="boolean">
+    <label>invertFilterExpression</label>
+    <description>Invert the selection criteria for --filterExpression</description>
+  </setting>
+  <setting gatk="true" name="invertGenotypeFilterExpression" type="boolean">
+    <label>invertGenotypeFilterExpression</label>
+    <description>Invert the selection criteria for --genotypeFilterExpression</description>
+  </setting>
+  <setting gatk="true" name="mask" type="input-file" required="false">
+    <label>mask</label>
+    <description>Any variant which overlaps entries from the provided mask rod will be filtered. If the user wants logic to be reversed,
+ i.e. filter variants that do not overlap with provided mask, then argument -filterNotInMask can be used.
+ Note that it is up to the user to adapt the name of the mask to make it clear that the reverse logic was used
+ (e.g. if masking against Hapmap, use -maskName=hapmap for the normal masking and -maskName=not_hapmap for the reverse masking).</description>
+  		<suffix>.bed</suffix>
+  		<suffix>.bed.gz</suffix>
+  		<suffix>.vcf</suffix>
+  		<suffix>.vcf.gz</suffix>
+  </setting>
+  <setting gatk="true" name="maskExtension" type="int" required="false">
+    <label>maskExtension</label>
+    <description/>
+  </setting>
+  <setting gatk="true" name="maskName" type="string" required="false">
+    <label>maskName</label>
+    <description>When using the -mask argument, the maskName will be annotated in the variant record.
+ Note that when using the -filterNotInMask argument to reverse the masking logic,
+ it is up to the user to adapt the name of the mask to make it clear that the reverse logic was used
+ (e.g. if masking against Hapmap, use -maskName=hapmap for the normal masking and -maskName=not_hapmap for the reverse masking).</description>
+  </setting>
+  
+  <setting gatk="true" name="missingValuesInExpressionsShouldEvaluateAsFailing" type="boolean">
+    <label>missingValuesInExpressionsShouldEvaluateAsFailing</label>
+    <description>By default, if JEXL cannot evaluate your expression for a particular record because one of the annotations is not present, the whole expression evaluates as PASSing.
+ Use this argument to have it evaluate as failing filters instead for these cases.</description>
+  </setting>
+  
+  <setting gatk="true" name="setFilteredGtToNocall" type="boolean">
+    <label>setFilteredGtToNocall</label>
+    <description>If this argument is provided, set filtered genotypes to no-call (./.).</description>
+  </setting>
+
+
+		
+	</settings>
+
+	<ports>
+		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
+		<outPort index="0" name="Out-Port name">
+			<column name="VCF" type="string"/>
+		</outPort>
+	</ports>
+</node>

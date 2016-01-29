@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node gatk="true" >
+	<description>CombineVariants reads in variants records from separate ROD (Reference-Ordered Data) sources and combines them into  a single VCF</description>
+	<settings>
+		<setting type="gatk.jar"/>
+		<setting name="vcf" type="column" index="0" required="true" data-type="string">
+			<description id="column.vcf.files"/>
+		</setting>
+	
+	</settings>
+
+	<ports>
+		<inPort index="0" name="In-Port name" label="VCF input">
+		</inPort>
+		<outPort index="0" name="Out-Port name" label="Combined VCF">
+			<column name="VCF" type="string"/>
+		</outPort>
+	</ports>
+</node>

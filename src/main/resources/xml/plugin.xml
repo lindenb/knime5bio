@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse  version="3.0" ?><plugin>
+  <extension point="org.knime.workbench.repository.categories">
+    <category level-id="knime5bio" name="Bio" path="/community/" description="Knime5bio"/>
+    <category level-id="fasta" name="Fasta" path="/community/knime5bio/" description="Fasta"/>
+    <category level-id="vcf" name="VCF" path="/community/knime5bio/" description="VCF tools"/>
+    <category level-id="jvarkit" name="JVARKIT" path="/community/knime5bio/vcf/" description="Tools from jvarkit"/>
+    <category level-id="gatk" name="GATK" path="/community/knime5bio/" description="GATK"/>
+    <category level-id="utils" name="Utilities" path="/community/knime5bio/" description="Utilities"/>
+  </extension>
+  
+  <extension point="org.knime.workbench.repository.nodes">
+  				<node category-path="/community/knime5bio/utils"
+		    	  factory-class="com.github.lindenb.knime5bio.util.file2table.FileToTableNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.util.file2table.FileToTableNodeFactory"
+				/>
+  		
+  
+  
+		    <node category-path="/community/knime5bio/fasta"
+		    	  factory-class="com.github.lindenb.knime5bio.fasta.readfasta.ReadFastaNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.fasta.readfasta.ReadFastaNodeFactory"
+				/>
+			<node category-path="/community/knime5bio/fasta"
+		    	  factory-class="com.github.lindenb.knime5bio.fasta.writefasta.WriteFastaNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.fasta.writefasta.WriteFastaNodeFactory"
+				/>
+				
+			
+			<!--  VCF -->
+			 <node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.groupbygene.GroupByGeneNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.groupbygene.GroupByGeneNodeFactory"
+				/>
+		    <node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.expandvep.ExpandVepNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.expandvep.ExpandVepNodeFactory"
+				/>
+		    <node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.extractinfo.ExtractInfoNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.extractinfo.ExtractInfoNodeFactory"
+				/>
+
+		    <node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.vcf2table.VcfToTableNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.vcf2table.VcfToTableNodeFactory"
+				/>
+		   <node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.table2vcf.TableToVcfNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.table2vcf.TableToVcfNodeFactory"
+				/>
+			
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.filterjs.VcfFilterJsNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.filterjs.VcfFilterJsNodeFactory"
+				/>
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.multi2oneallele.Multi2OneAlleleNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.multi2oneallele.Multi2OneAlleleNodeFactory"
+				/>
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.multi2oneinfo.Multi2OneInfoNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.multi2oneinfo.Multi2OneInfoNodeFactory"
+				/>
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.indexvcf.IndexVcfNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.indexvcf.IndexVcfNodeFactory"
+				/>	
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.filterso.FilterSONodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.filterso.FilterSONodeFactory"
+				/>
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.bioalcidae.BioAlcidaeNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.bioalcidae.BioAlcidaeNodeFactory"
+				/>
+			
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.vcfpeekvcf.VcfPeekVcfNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.vcfpeekvcf.VcfPeekVcfNodeFactory"
+				/>
+			
+				
+			<!--  GATK -->	
+		
+		<node category-path="/community/knime5bio/gatk"
+		    	  factory-class="com.github.lindenb.knime5bio.gatk.leftalign.LeftAlignAndTrimVariantsNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.gatk.leftalign.LeftAlignAndTrimVariantsNodeFactory"
+				/>
+		
+			<node category-path="/community/knime5bio/gatk"
+		    	  factory-class="com.github.lindenb.knime5bio.gatk.phasebytransmission.PhaseByTransmissionNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.gatk.phasebytransmission.PhaseByTransmissionNodeFactory"
+				/>
+			
+			
+			<node category-path="/community/knime5bio/gatk"
+		    	  factory-class="com.github.lindenb.knime5bio.gatk.variantfiltration.VariantFiltrationNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.gatk.variantfiltration.VariantFiltrationNodeFactory"
+				/>
+			
+		
+		
+			<node category-path="/community/knime5bio/gatk"
+		    	  factory-class="com.github.lindenb.knime5bio.gatk.selectvariants.SelectVariantsNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.gatk.selectvariants.SelectVariantsNodeFactory"
+				/>
+			<node category-path="/community/knime5bio/gatk"
+		    	  factory-class="com.github.lindenb.knime5bio.gatk.combinevariants.CombineVariantsNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.gatk.combinevariants.CombineVariantsNodeFactory"
+				/>
+			<node category-path="/community/knime5bio/gatk"
+		    	  factory-class="com.github.lindenb.knime5bio.gatk.variants2table.VariantsToTableNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.gatk.variants2table.VariantsToTableNodeFactory"
+				/>
+			
+  </extension>
+</plugin>

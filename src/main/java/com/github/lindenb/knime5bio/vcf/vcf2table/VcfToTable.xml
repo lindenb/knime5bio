@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node >
+	<description>Load a VCF file into a Knime Table.</description>
+	<settings>
+		<setting name="vcf" type="column" index="0" required="true" data-type="string">
+			<description>A table with one line, containing the path to a VCF file.</description>
+		</setting>
+	
+	</settings>
+
+	<ports>
+		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
+		
+		
+		<outPort id="vcf"/>
+	</ports>
+</node>

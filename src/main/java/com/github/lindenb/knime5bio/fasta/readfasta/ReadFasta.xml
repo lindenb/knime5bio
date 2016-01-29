@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node count-in="1" count-out="1">
+
+	<settings>
+		<setting name="maxSequences" label="max sequences" type="int" default=" Integer.MAX_VALUE -1 " required="true">
+		</setting>
+		<setting name="fastaFile" type="input-file" default="" required="true">
+			<suffix>.fa</suffix>
+			<suffix>.fasta</suffix>
+			<suffix>.fa.gz</suffix>
+			<suffix>.fasta.gz</suffix>
+		</setting>
+		<setting name="toUpper" label="Convert to Upper Case" type="boolean" default="false">
+		</setting>
+	</settings>
+
+	<ports>
+		<outPort index="0" name="sequences" label="Sequences" >
+			<column name="title" type="string"/>
+			<column name="sequence" type="string"/>
+		</outPort>
+	</ports>
+</node>

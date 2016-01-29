@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet 
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:jsonx="http://www.ibm.com/xmlns/prod/2009/jsonx"
+	version="1.0"
+	exclude-result-prefixes="xsl jsonx"
+	>
+<xsl:import href="mod.node.xsl"/>
+<xsl:output method="xml" indent="yes" encoding="UTF-8" />
+
+<xsl:template match="/">
+<xsl:apply-templates select="jsonx:object/jsonx:array[@name='arguments']" mode="settings"/>
+</xsl:template>
+
+<xsl:template match="jsonx:array" mode="settings">
+<settings>
+<xsl:apply-templates select="jsonx:object" mode="setting"/>
+</settings>
+</xsl:template>
+
+<xsl:template match="jsonx:object[jsonx:string/@name='out']" mode="setting">
+</xsl:template>
+
+<xsl:template match="jsonx:object" mode="setting">
+<xsl:variable name="type" select="jsonx:string[@name='type']/text()"/>
+<setting  gatk="true">
+<xsl:attribute name="name"><xsl:value-of select="translate(jsonx:string[@name='name']/text(),'-','')"/></xsl:attribute>
+
+<xsl:variable name="knimeType">
+	<xsl:choose>
+		<xsl:when test="$type='int' or $type='Integer'">boolean</xsl:when>
+		<xsl:when test="$type='boolean' or $type='Boolean'">boolean</xsl:when>
+		<xsl:when test="$type='Set[String]' or $type='ArrayList[String]' or $type='List[String]'">string</xsl:when>
+	    <xsl:when test="$type='Set[File]'">input-file</xsl:when>
+	    <xsl:when test="$type='RodBinding[VariantContext]' or $type='File'">input-file</xsl:when>
+	    <xsl:when test="$type='List[Type]'">string-list</xsl:when>
+	    <xsl:when test="$type='NumberAlleleRestriction'">string</xsl:when>
+		<xsl:otherwise><xsl:value-of select="$type"/></xsl:otherwise>
+	</xsl:choose>
+
+</xsl:variable>
+
+<xsl:attribute name="type">
+	<xsl:value-of select="$knimeType"/>
+</xsl:attribute>
+
+<xsl:choose>
+	<xsl:when test="$knimeType = 'string'">
+		<xsl:attribute name="gatk-split">false</xsl:attribute>
+	</xsl:when>
+    <xsl:otherwise></xsl:otherwise>
+</xsl:choose>
+
+
+
+
+<xsl:choose>
+	<xsl:when test="$type='boolean' or $type='Boolean'"></xsl:when>
+    <xsl:otherwise><xsl:attribute name="required">false</xsl:attribute></xsl:otherwise>
+</xsl:choose>
+
+<xsl:if test="$type='Set[String]' or $type='ArrayList[String]' or $type='List[String]'">
+<xsl:attribute name="multiline">true</xsl:attribute>
+</xsl:if>
+
+
+
+
+<label><xsl:value-of select="translate(translate(jsonx:string[@name='name']/text(),'-',''),'_',' ')"/></label>
+
+<description><xsl:value-of select="jsonx:string[@name='fulltext']"/></description>
+
+<xsl:if test="$type='RodBinding[VariantContext]'">
+	<suffix>.vcf</suffix>
+	<suffix>.vcf.gz</suffix>
+</xsl:if>
+
+<xsl:if test="$type='NumberAlleleRestriction'">
+	<enum>
+		<item default="true">ALL</item>
+		<item>BIALLELIC</item>
+		<item>MULTIALLELIC</item>
+	</enum>
+</xsl:if>
+
+<xsl:if test="$type='List[Type]'">
+	<enum>
+		<item>INDEL</item>
+		<item>MIXED</item>
+		<item>MNP</item>
+		<item>SYMBOLIC</item>
+		<item>VARIATION</item>
+	</enum>
+</xsl:if>
+
+
+</setting>
+</xsl:template>
+
+
+</xsl:stylesheet>

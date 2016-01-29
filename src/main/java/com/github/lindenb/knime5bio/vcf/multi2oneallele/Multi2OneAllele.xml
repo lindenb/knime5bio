@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>'one variant with N ALT alleles' to 'N variants with one ALT'</description>
+  <settings>
+    <setting name="print_samples" label="Print Samples" type="boolean" default="false">
+      <description>print sample name. set genotype to ./. if both allele of the genotype are in 'ALT'</description>
+    </setting>
+  </settings>
+  <ports>
+		<inPort id="vcf"/>
+		<outPort id="vcf"/>
+  </ports>
+</node>

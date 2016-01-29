@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>Filter a VCF file annotated with SNPEff or VEP with terms from Sequence-Ontology. Reasoning : Children of user's SO-terms will be also used.</description>
+  <settings>
+    <setting name="userTermsAsString" type="string" multiline="true" required="false">
+      <description>add this SO:ACN</description>
+    </setting>
+    <setting name="userAcnFile" type="input-file" required="false">
+      <description>file of SO accession numbers</description>
+    </setting>
+    <setting name="invert" type="boolean" default="false">
+      <description>invert selection</description>
+    </setting>
+    <setting name="disableReasoning" type="boolean" default="false">
+      <description>disable reasoning, don't use term's children.</description>
+    </setting>
+  </settings>
+  <ports>
+		<inPort id="vcf"/>
+		<outPort id="vcf"/>
+  </ports>
+</node>

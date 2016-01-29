@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>Index and sort a VCF on the fly with Tabix</description>
+  <settings>
+  	<setting name="vcf" type="column" index="0" required="true" data-type="string" >
+			<description>Input VCF file</description>
+	</setting>
+     <setting name="maxRecordsInRam" type="int" default="500000" required="true">
+      <description>When writing VCF files that need to be sorted, this will specify the number of records stored in RAM before spilling to disk. Increasing this number reduces the number of file handles needed to sort a VCF file, and increases the amount of VCFa needed.</description>
+    </setting>
+    <setting name="sort" type="boolean" default="false">
+      <description>sort VCF prior to saving</description>
+    </setting>
+  
+  </settings>
+  <ports>
+		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
+		<outPort index="0" name="VCF output">
+			<column name="VCF" type="string"/>
+		</outPort>
+  </ports>
+</node>

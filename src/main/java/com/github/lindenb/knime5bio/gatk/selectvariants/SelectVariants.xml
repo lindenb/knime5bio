@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node gatk='true'>
+	<description>Select a subset of variants from a larger callset https://www.broadinstitute.org/gatk/guide/tooldocs/org_broadinstitute_gatk_tools_walkers_variantutils_SelectVariants.php </description>
+	<settings>
+		<setting type="gatk.jar"/>
+		<setting name="vcf" type="column" index="0" required="true" data-type="string">
+			<description>Input VCF file</description>
+		</setting>
+		<!--  GENERATED BELOW -->
+		
+				
+  <setting gatk="true" name="concordance" type="input-file" required="false">
+    <label>concordance</label>
+    <description>A site is considered concordant if (1) we are not looking for specific samples and there is a variant called
+ in both the variant and concordance tracks or (2) every sample present in the variant track is present in the
+ concordance track and they have the sample genotype call.</description>
+    <suffix>.vcf</suffix>
+    <suffix>.vcf.gz</suffix>
+  </setting>
+  <setting gatk="true" name="discordance" type="input-file" required="false">
+    <label>discordance</label>
+    <description>A site is considered discordant if there exists some sample in the variant track that has a non-reference genotype
+ and either the site isn't present in this track, the sample isn't present in this track,
+ or the sample is called reference in this track.</description>
+    <suffix>.vcf</suffix>
+    <suffix>.vcf.gz</suffix>
+  </setting>
+  <setting gatk="true" name="exclude_sample_expressions" type="string" multiline="true" required="false" >
+    <label>exclude sample expressions</label>
+    <description>Using a regular expression allows you to match multiple sample names that have that pattern in common. Note that sample exclusion takes precedence
+ over inclusion, so that if a sample is in both lists it will be excluded. This  argument can be specified multiple times in order to use multiple
+ different matching patterns.</description>
+  </setting>
+  <setting gatk="true" name="exclude_sample_file" type="input-file" required="false">
+    <label>exclude sample file</label>
+    <description>Sample names should be in a plain text file listing one sample name per line. Note that sample exclusion takes precedence over inclusion, so that
+ if a sample is in both lists it will be excluded. This argument can be specified multiple times in order to
+ provide multiple sample list files.</description>
+  </setting>
+  <setting gatk="true" name="exclude_sample_name" type="string" multiline="true" required="false">
+    <label>exclude sample name</label>
+    <description>Note that sample exclusion takes precedence over inclusion, so that if a sample is in both lists it will be
+ excluded. This argument can be specified multiple times in order to provide multiple sample names.</description>
+  </setting>
+  <setting gatk="true" name="excludeFiltered" type="boolean">
+    <label>excludeFiltered</label>
+    <description>If this flag is enabled, sites that have been marked as filtered (i.e. have anything other than `.` or `PASS`
+ in the FILTER field) will be excluded from the output.</description>
+  </setting>
+  <setting gatk="true" name="excludeIDs" type="input-file" required="false">
+    <label>excludeIDs</label>
+    <description>If a file containing a list of IDs is provided to this argument, the tool will not select variants whose ID
+ field is present in this list of IDs. The matching is done by exact string matching. The expected file format
+ is simply plain text with one ID per line.</description>
+  </setting>
+  <setting gatk="true" name="excludeNonVariants" type="boolean">
+    <label>excludeNonVariants</label>
+    <description/>
+  </setting>
+  <setting gatk="true" name="forceValidOutput" type="boolean">
+    <label>forceValidOutput</label>
+    <description>If this argument is provided, the output will be compliant with the version in the header, however it will also
+ cause the tool to run slower than without the argument. Without the argument the header will be compliant with
+ the up-to-date version, but the output in the body may not be compliant. If an up-to-date input file is used,
+ then the output will also be up-to-date regardless of this argument.</description>
+  </setting>
+  <setting gatk="true" name="invertMendelianViolation" type="boolean">
+    <label>invertMendelianViolation</label>
+    <description>If this flag is enabled, this tool will select only variants that do not correspond to a mendelian violation as
+ determined on the basis of family structure. Requires passing a pedigree file using the engine-level
+ `-ped` argument.</description>
+  </setting>
+  <setting gatk="true" name="invertselect" type="boolean">
+    <label>invertselect</label>
+    <description>Invert the selection criteria for -select.</description>
+  </setting>
+  <setting gatk="true" name="keepIDs" type="input-file" required="false">
+    <label>keepIDs</label>
+    <description>If a file containing a list of IDs is provided to this argument, the tool will only select variants whose ID
+ field is present in this list of IDs. The matching is done by exact string matching. The expected file format
+ is simply plain text with one ID per line.</description>
+  </setting>
+  <setting gatk="true" name="keepOriginalAC" type="boolean">
+    <label>keepOriginalAC</label>
+    <description>When subsetting a callset, this tool recalculates the AC, AF, and AN values corresponding to the contents of the
+ subset. If this flag is enabled, the original values of those annotations will be stored in new annotations called
+ AC_Orig, AF_Orig, and AN_Orig.</description>
+  </setting>
+  <setting gatk="true" name="keepOriginalDP" type="boolean">
+    <label>keepOriginalDP</label>
+    <description>When subsetting a callset, this tool recalculates the site-level (INFO field) DP value corresponding to the contents of the
+ subset. If this flag is enabled, the original value of the DP annotation will be stored in a new annotation called
+ DP_Orig.</description>
+  </setting>
+  <setting gatk="true" name="maxFilteredGenotypes" type="int" required="false">
+    <label>maxFilteredGenotypes</label>
+    <description>If this argument is provided, select sites where at most a maximum number of samples are filtered at the genotype level.</description>
+  </setting>
+  <setting gatk="true" name="maxFractionFilteredGenotypes" type="double" required="false">
+    <label>maxFractionFilteredGenotypes</label>
+    <description>If this argument is provided, select sites where a fraction or less of the samples are filtered at the genotype level.</description>
+  </setting>
+  <setting gatk="true" name="maxIndelSize" type="int"  required="false">
+    <label>maxIndelSize</label>
+    <description>If this argument is provided, indels that are larger than the specified size will be excluded.</description>
+  </setting>
+  <setting gatk="true" name="mendelianViolation" type="boolean">
+    <label>mendelianViolation</label>
+    <description>If this flag is enabled, this tool will select only variants that correspond to a mendelian violation as
+ determined on the basis of family structure. Requires passing a pedigree file using the engine-level
+ `-ped` argument.</description>
+  </setting>
+  <setting gatk="true" name="mendelianViolationQualThreshold" type="double"  required="false">
+    <label>mendelianViolationQualThreshold</label>
+    <description>This argument specifies the genotype quality (GQ) threshold that all members of a trio must have in order
+ for a site to be accepted as a mendelian violation. Note that the `-mv` flag must be set for this argument to have an effect.</description>
+  </setting>
+  <setting gatk="true" name="minFilteredGenotypes" type="int"  required="false">
+    <label>minFilteredGenotypes</label>
+    <description>If this argument is provided, select sites where at least a minimum number of samples are filtered at the genotype level.</description>
+  </setting>
+  <setting gatk="true" name="minFractionFilteredGenotypes" type="double"  required="false">
+    <label>minFractionFilteredGenotypes</label>
+    <description>If this argument is provided, select sites where a fraction or more of the samples are filtered at the genotype level.</description>
+  </setting>
+  <setting gatk="true" name="minIndelSize" type="int"  required="false">
+    <label>minIndelSize</label>
+    <description>If this argument is provided, indels that are smaller than the specified size will be excluded.</description>
+  </setting>
+  
+  <setting gatk="true" name="preserveAlleles" type="boolean">
+    <label>preserveAlleles</label>
+    <description>The default behavior of this tool is to remove bases common to all remaining alleles after subsetting
+ operations have been completed, leaving only their minimal representation. If this flag is enabled, the original
+ alleles will be preserved as recorded in the input VCF.</description>
+  </setting>
+  <setting gatk="true" name="remove_fraction_genotypes" type="double"  required="false">
+    <label>remove fraction genotypes</label>
+    <description>The value of this argument should be a number between 0 and 1 specifying the fraction of total variants to be
+ randomly selected from the input callset and set to no-call (./). Note that this is done using a probabilistic
+ function, so the final result is not guaranteed to carry the exact fraction requested. Can be used for large fractions.</description>
+  </setting>
+  <setting gatk="true" name="removeUnusedAlternates" type="boolean"  required="false">
+    <label>removeUnusedAlternates</label>
+    <description>When this flag is enabled, all alternate alleles that are not present in the (output) samples will be removed.
+ Note that this even extends to biallelic SNPs - if the alternate allele is not present in any sample, it will be
+ removed and the record will contain a '.' in the ALT column. Note also that sites-only VCFs, by definition, do
+ not include the alternate allele in any genotype calls.</description>
+  </setting>
+  <setting gatk="true" name="restrictAllelesTo" type="string">
+    <label>restrictAllelesTo</label>
+    <description>When this argument is used, we can choose to include only multiallelic or biallelic sites, depending on how many alleles are listed in the ALT column of a VCF.
+ For example, a multiallelic record such as:
+     1    100 .   A   AAA,AAAAA
+ will be excluded if `-restrictAllelesTo BIALLELIC` is used, because there are two alternate alleles, whereas a record such as:
+     1    100 .   A  T
+ will be included in that case, but would be excluded if `-restrictAllelesTo MULTIALLELIC` is used.
+ Valid options are ALL (default), MULTIALLELIC or BIALLELIC.</description>
+    <enum>
+      <item default="true">ALL</item>
+      <item>BIALLELIC</item>
+      <item>MULTIALLELIC</item>
+    </enum>
+  </setting>
+  <setting gatk="true" name="sample_expressions" type="string" multiline="true">
+    <label>sample expressions</label>
+    <description>Using a regular expression allows you to match multiple sample names that have that pattern in common. This
+ argument can be specified multiple times in order to use multiple different matching patterns.</description>
+  </setting>
+  <setting gatk="true" name="sample_file" type="input-file" required="false">
+    <label>sample file</label>
+    <description>Sample names should be in a plain text file listing one sample name per line. This argument can be specified multiple times in order to provide
+ multiple sample list files.</description>
+  </setting>
+  <setting gatk="true" name="sample_name" type="string" multiline="true">
+    <label>sample name</label>
+    <description>This argument can be specified multiple times in order to provide multiple sample names.</description>
+  </setting>
+  <setting gatk="true" name="select_random_fraction" type="double"  required="false">
+    <label>select random fraction</label>
+    <description>The value of this argument should be a number between 0 and 1 specifying the fraction of total variants to be
+ randomly selected from the input callset. Note that this is done using a probabilistic function, so the final
+ result is not guaranteed to carry the exact fraction requested. Can be used for large fractions.</description>
+  </setting>
+  <setting gatk="true" name="selectexpressions" type="string" multiline="true">
+    <label>selectexpressions</label>
+    <description>See example commands above for detailed usage examples. Note that these expressions are evaluated *after* the
+ specified samples are extracted and the INFO field annotations are updated.</description>
+  </setting>
+  <setting gatk="true" name="selectTypeToExclude" type="string-list" required="false" multiple="true">
+    <label>selectTypeToExclude</label>
+    <description>This argument excludes particular kinds of variants out of a list. If left empty, there is no type selection
+ and all variant types are considered for other selection criteria. Valid types are INDEL, SNP, MIXED, MNP,
+ SYMBOLIC, NO_VARIATION. Can be specified multiple times.</description>
+    <enum>
+      <item>INDEL</item>
+      <item>MIXED</item>
+      <item>MNP</item>
+      <item>SYMBOLIC</item>
+      <item>VARIATION</item>
+    </enum>
+  </setting>
+  <setting gatk="true" name="selectTypeToInclude" type="string-list"  required="false" multiple="true">
+    <label>selectTypeToInclude</label>
+    <description>This argument selects particular kinds of variants out of a list. If left empty, there is no type selection
+ and all variant types are considered for other selection criteria. Valid types are INDEL, SNP, MIXED, MNP,
+ SYMBOLIC, NO_VARIATION. Can be specified multiple times.</description>
+    <enum>
+      <item>INDEL</item>
+      <item>MIXED</item>
+      <item>MNP</item>
+      <item>SYMBOLIC</item>
+      <item>VARIATION</item>
+    </enum>
+  </setting>
+  <setting gatk="true" name="setFilteredGtToNocall" type="boolean">
+    <label>setFilteredGtToNocall</label>
+    <description>If this argument is provided, set filtered genotypes to no-call (./.).</description>
+  </setting>
+  <setting gatk="true" name="variant" type="input-file" required="true">
+    <label>variant</label>
+    <description>Variants from this VCF file are used by this tool as input.
+ The file must at least contain the standard VCF header lines, but
+ can be empty (i.e., no variants are contained in the file).</description>
+    <suffix>.vcf</suffix>
+    <suffix>.vcf.gz</suffix>
+  </setting>
+
+		
+	</settings>
+
+	<ports>
+		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
+		<outPort index="0" name="Out-Port name">
+			<column name="VCF" type="string"/>
+		</outPort>
+	</ports>
+</node>

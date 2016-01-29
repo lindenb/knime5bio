@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet 
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:j="http://github.com/lindenb/jvarkit/"
+	version="1.0"
+	exclude-result-prefixes="xsl"
+	>
+<xsl:import href="mod.node.xsl"/>
+<xsl:output method="xml" indent="yes" encoding="UTF-8" />
+
+<xsl:template match="/">
+<xsl:apply-templates select="j:app"/>
+</xsl:template>
+
+<xsl:template match="j:app">
+ <node>
+   <description><xsl:apply-templates select="j:description"/></description>
+   <settings>
+     <xsl:apply-templates select="j:options/j:option"/>
+   </settings>
+   	<ports>
+		<inPort index="0" name="In-Port name" label="VCF Table">
+		</inPort>
+		<outPort index="0" label="VCF Table" at-runtime="true">
+		</outPort>
+	</ports>
+  </node>
+</xsl:template>
+
+
+<xsl:template match="j:option">
+  <setting>
+    <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
+    <xsl:attribute name="type"><xsl:value-of select="@type"/></xsl:attribute>
+    <xsl:if test="@default">
+    <xsl:attribute name="default"><xsl:value-of select="@default"/></xsl:attribute>
+    </xsl:if>
+     <description><xsl:apply-templates select="j:description"/></description>  
+  </setting>
+</xsl:template>
+
+</xsl:stylesheet>

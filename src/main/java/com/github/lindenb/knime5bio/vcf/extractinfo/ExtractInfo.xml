@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>Extract Info column(s)</description>
+  <settings>
+    
+    <setting name="infoTag" type="string" label="INFO Tag" multiline="true" rows="5" cols="10" required="true">
+      <description>The INFO tag(s)</description>
+    </setting>
+  </settings>
+  <ports>
+		<inPort id="vcf"/>
+		<outPort id="vcf"/>
+  </ports>
+</node>

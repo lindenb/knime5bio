@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node >
+	<description>Filter a VCF table with a Javascript expression</description>
+	<settings>
+		<setting name="vcfExpr" type="string"  multiline="true" required="true" label="javascript">
+			<description>A Javascript expression</description>
+			<default>/** Sample having a unique genotype: */
+function accept(ctx)
+    {
+    var x,y,g1,g2,count_same=0;
+    var sampleList=header.getSampleNamesInOrder();
+    /** loop over one sample */
+    for(x=0;x &lt; sampleList.size();++x)
+        {
+        g1=ctx.getGenotype( sampleList.get(x) );
+        /** ignore non-called */
+        if(! g1.isCalled() ) continue;
+        count_same=0;
+        /** loop over the other samples */
+        for(y=0;y&lt; sampleList.size() &amp;&amp; count_same==0 ;++y)
+            {
+            if(x==y) continue;/* same sample ?*/
+            g2=ctx.getGenotype( sampleList.get(y) );
+            /** ignore non-called */
+            if(! g2.isCalled() ) continue;
+            /** is g1==g2 ? */
+            if( g1.sameGenotype( g2 ) )
+                {
+                count_same++;
+                }
+            }
+        /* found no other same genotype */
+        if(count_same==0) return true;
+        }
+    return false;
+    }
+accept(variant);			
+			</default>
+		</setting>
+	</settings>
+
+	<ports>
+		<inPort id="vcf"/>
+		<outPort id="vcf"/>
+	</ports>
+</node>

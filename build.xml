@@ -1,0 +1,11 @@
+<project name="gatknime" default="make" basedir=".">
+    <description>Build gatknime</description>
+	
+<target name="make">
+	<exec executable="make">
+		<arg value="-f"/>
+		<arg value="Makefile"/>
+	</exec>
+</target>	
+	
+</project>

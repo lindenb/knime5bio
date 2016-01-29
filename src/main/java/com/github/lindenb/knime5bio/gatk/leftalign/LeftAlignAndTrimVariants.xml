@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node gatk='true'>
+	<description>Left-align indels in a variant callset <a>https://www.broadinstitute.org/gatk/guide/tooldocs/org_broadinstitute_gatk_tools_walkers_variantutils_LeftAlignAndTrimVariants.php</a></description>
+ 
+ <settings>
+ 		<setting type="gatk.jar"/>
+		<setting name="vcf" type="column" index="0" required="true" data-type="string">
+			<description>Input VCF file</description>
+		</setting>
+		<!--  GENERATED BELOW -->
+ 
+ 
+  <setting gatk="true" name="dontTrimAlleles" type="boolean">
+    <label>dontTrimAlleles</label>
+    <description>If this argument is set, bases common to all alleles will not be removed and will not leave their minimal representation.</description>
+  </setting>
+
+  <setting gatk="true" name="splitMultiallelics" type="boolean">
+    <label>splitMultiallelics</label>
+    <description>If this argument is set, split multiallelic records and left-align individual alleles.
+ If this argument is not set, multiallelic records are not attempted to left-align and will be copied as is.</description>
+  </setting>
+		
+	</settings>
+
+	<ports>
+		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
+		<outPort index="0" name="Out-Port name">
+			<column name="VCF" type="string"/>
+		</outPort>
+	</ports>
+</node>
