@@ -1,6 +1,6 @@
 # KNIME5Bio
 
-C'est un premier jet de doc, Solena ne commence pas à m'embêter à chaques fois que tu trouves une cokille.
+C'est un premier jet de doc, Solena ne commence pas à m'embêter à chaques fois que tu trouves une coquille.
 
 
 ## Pourquoi de nouvelles extensions ?
@@ -134,7 +134,7 @@ variant.getGenotype("Chouquette").isHet()
 
 ##### Example 6
 
-on peut faire bien plus compliqué... le script suivant accepte le variant si plus de deux samples ont une depth > 200.
+on peut faire bien plus compliqué... le script suivant accepte le variant si plus de deux échantillons ont une depth < 200.
 Pour ce genre de filtration: faire appel à moi pour eviter d'extraire les données avec KNIME avec une suite de noeuds...
 
 ```
