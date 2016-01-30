@@ -43,4 +43,114 @@ accept(variant);
 		<inPort id="vcf"/>
 		<outPort id="vcf"/>
 	</ports>
+	
+	<documentation>The script binds the following variables:
+	  <ul>
+	    <li><b>variant</b> : the current variation; a org.broadinstitute.variant.variantcontext.VariantContext ( <a>https://samtools.github.io/htsjdk/javadoc/htsjdk/htsjdk/variant/variantcontext/VariantContext.html</a> )</li>
+	    <li><b>header</b> : the VCF header org.broadinstitute.variant.vcf.VCFHeader ( <a>https://samtools.github.io/htsjdk/javadoc/htsjdk/htsjdk/variant/vcf/VCFHeader.html</a> ).</li>
+	  </ul>
+	  the script should return '1' or true if the current variant should be printed.
+
+
+<h2>Examples</h2>
+
+<h3>Example 1</h3>
+prints a VARIATION if two samples at least have a DP&lt;200 
+<pre>
+function myfilterFunction()
+	{
+	var samples=header.genotypeSamples;
+	var countOkDp=0;
+
+
+	for(var i=0; i&lt; samples.size();++i)
+		{
+		var sampleName=samples.get(i);
+		if(! variant.hasGenotype(sampleName)) continue;
+		var genotype = variant.genotypes.get(sampleName);
+		if( ! genotype.hasDP()) continue;
+		var dp= genotype.getDP();
+		if(dp &lt; 200 ) countOkDp++;
+		}
+	return (countOkDp&gt;2)
+	}
+myfilterFunction();
+</pre>
+
+<h3>Example 2</h3>
+<pre>
+function has_missense(v)
+	{
+	if(!v.getClass().getName().equals("java.lang.String"))
+		{
+		var i;
+		for(i=0;i&lt; v.size();++i)
+			{
+			if(has_missense(v.get(i))) return true;
+			}
+		return false;
+		}
+	if(v.indexOf("non_coding_exon_variant")!=-1) return 0;
+	return v.indexOf("missense")!=-1;
+	}
+
+function accept(v)
+	{
+	if(v.isIndel()) return 0;
+	var vep=v.getAttribute("CSQ");
+	if(vep==null ) return 0;
+
+	var pred=v.getAttribute("PRED");
+	if(pred==null ) return 0;	
+	if(!has_missense(vep) &amp;&amp; has_missense(pred)) return 1;
+	return 0;
+	}
+	
+accept(variant);
+</pre>
+
+<h3>Example 3</h3>
+Sample having a unique genotype:
+<pre>
+function accept(ctx)
+	{
+	var x,y,g1,g2,count_same=0;
+	var sampleList=header.getSampleNamesInOrder();
+	/** loop over one sample */
+	for(x=0;x &lt; sampleList.size();++x)
+		{
+		g1=ctx.getGenotype( sampleList.get(x) );
+		/** ignore non-called */
+		if(! g1.isCalled() ) continue;
+		count_same=0;
+		/** loop over the other samples */
+		for(y=0;y&lt; sampleList.size() &amp;&amp; count_same==0 ;++y)
+			{
+			if(x==y) continue;/* same sample ?*/
+			g2=ctx.getGenotype( sampleList.get(y) );
+			/** ignore non-called */
+			if(! g2.isCalled() ) continue;
+			/** is g1==g2 ? */
+			if( g1.sameGenotype( g2 ) )
+				{
+				count_same++;
+				}
+			}
+		/* found no other same genotype */
+		if(count_same==0) return true;
+		}
+	return false;
+	}
+accept(variant);
+</pre>
+
+<h3>Example 4</h3>
+filter homozygotes for sample NA12878
+<pre>
+variant.getGenotype("NA12878").isHom()'
+</pre>
+	  
+	  
+	</documentation>
+	
 </node>

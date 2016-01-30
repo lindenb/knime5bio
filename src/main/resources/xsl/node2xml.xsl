@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet 
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	 xmlns="http://knime.org/node/v2.8"
 	version="1.0"
 	exclude-result-prefixes="xsl"
 	>
@@ -23,10 +24,16 @@ e/v2.10 http://knime.org/node/v2.10.xsd">
     
     <shortDescription>
         <xsl:apply-templates select="." mode="description"/>
+       
     </shortDescription>
     
     <fullDescription>
-        <intro><xsl:value-of select="$nodeName"/></intro>
+        <intro>
+        <xsl:apply-templates select="." mode="description"/><br/>
+         <xsl:apply-templates select="documentation"/>
+        
+        </intro>
+        
         <xsl:for-each select="settings/setting">
         	<option>
         		<xsl:attribute name="name">
@@ -68,6 +75,27 @@ e/v2.10 http://knime.org/node/v2.10.xsd">
     -->
 </knimeNode>
 </xsl:template>
+
+<xsl:template match="documentation">
+<xsl:apply-templates select="p|h|br|b|i|u|tt|a|url|ul|ol|li|h2|h3|h4|pre|sub|table|text()"/>
+</xsl:template>
+
+<xsl:template match="p|h|br|b|i|u|tt|ul|ol|h2|h3|h4|pre|sub|table|li">
+<xsl:variable name="tag" select="name()"/>
+<xsl:element name="{$tag}">
+<xsl:apply-templates select="p|h|br|b|i|u|tt|a|url|ul|ol|li|h2|h3|h4|pre|sub|table|text()"/>
+</xsl:element>
+</xsl:template>
+
+<xsl:template match="a|url">
+<a>
+<xsl:choose>
+<xsl:when test="@href"><xsl:value-of select="@href"/></xsl:when>
+<xsl:otherwise><xsl:apply-templates/></xsl:otherwise> 
+</xsl:choose>
+</a>
+</xsl:template>
+
 
 
 </xsl:stylesheet>
