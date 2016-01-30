@@ -54,30 +54,50 @@ accept(variant);
 
 <h2>Examples</h2>
 
-<h3>Example 1</h3>
-prints a VARIATION if two samples at least have a DP&lt;200 
+<h3>Example</h3>
+
+on souhaite garder les indels. La variable **variant** contient justement la méthod <a href="https://samtools.github.io/htsjdk/javadoc/htsjdk/htsjdk/variant/variantcontext/VariantContext.html#isIndel--">isIndel()</a> . Le script sera donc:
+
+<pre>variant.isIndel()</pre>
+
+##### Example 2
+
+on souhaite virer les indels. le signe '==' est l'operateur d'égalité
+
+<pre>variant.isIndel() == false</pre>
+
+
+<h3>Example</h3>
+
+on souhaite garder les indels ou bien les variants ayant un ID. L'operateur `||` sert à exprimer 'ou bien'. On se sert de [hasId()](https://samtools.github.io/htsjdk/javadoc/htsjdk/htsjdk/variant/variantcontext/VariantContext.html#hasID--)
+
+<pre>variant.isIndel() || variant.hasId()</pre>
+
+<h3> Example</h3>
+
+on souhaite garder les indels ou bien les variants ayant un ID. Les deux doivent avoir un seul allele alternatif.  L'operateur `&amp;&amp;` sert à exprimer 'ET'. On se sert de [getAlternateAlleles()](https://samtools.github.io/htsjdk/javadoc/htsjdk/htsjdk/variant/variantcontext/VariantContext.html#getAlternateAlleles--) pour avoir la liste des alleles alternatifs. Cette liste possède une méthode 'size' permettant d'avoir sa taille.
+
+<pre>( variant.isIndel() || variant.hasId() ) &amp;&amp; variant.getAlternateAlleles().size() == 1</pre>
+
+
+<h3>Example</h3>
+
+on veut que le génotype de l'échantillon "Chouquette" soit Heterozygote.
+<ul>
+  <li> [getGenotype(name)](https://samtools.github.io/htsjdk/javadoc/htsjdk/htsjdk/variant/variantcontext/VariantContext.html#getGenotype-java.lang.String-) permet d'avoir le génotype d'un individus. Il retourne un objet de type [Genotype](https://samtools.github.io/htsjdk/javadoc/htsjdk/htsjdk/variant/variantcontext/Genotype.html)</li>
+  <li>Cet objet de type  [Genotype](https://samtools.github.io/htsjdk/javadoc/htsjdk/htsjdk/variant/variantcontext/Genotype.html) a une méthode [isHet()](https://samtools.github.io/htsjdk/javadoc/htsjdk/htsjdk/variant/variantcontext/Genotype.html#isHet--)</li>
+</ul>
+<pre>variant.getGenotype("Chouquette").isHet()</pre>
+
+
+<h3>Example</h3>
+filter homozygotes for sample NA12878
 <pre>
-function myfilterFunction()
-	{
-	var samples=header.genotypeSamples;
-	var countOkDp=0;
-
-
-	for(var i=0; i&lt; samples.size();++i)
-		{
-		var sampleName=samples.get(i);
-		if(! variant.hasGenotype(sampleName)) continue;
-		var genotype = variant.genotypes.get(sampleName);
-		if( ! genotype.hasDP()) continue;
-		var dp= genotype.getDP();
-		if(dp &lt; 200 ) countOkDp++;
-		}
-	return (countOkDp&gt;2)
-	}
-myfilterFunction();
+variant.getGenotype("NA12878").isHom()'
 </pre>
 
-<h3>Example 2</h3>
+<h3>Example</h3>
+Detecter "non_coding_exon_variant" dans le champ INFO 'PRED'.
 <pre>
 function has_missense(v)
 	{
@@ -109,7 +129,7 @@ function accept(v)
 accept(variant);
 </pre>
 
-<h3>Example 3</h3>
+<h3>Example</h3>
 Sample having a unique genotype:
 <pre>
 function accept(ctx)
@@ -144,12 +164,7 @@ function accept(ctx)
 accept(variant);
 </pre>
 
-<h3>Example 4</h3>
-filter homozygotes for sample NA12878
-<pre>
-variant.getGenotype("NA12878").isHom()'
-</pre>
-	  
+
 	  
 	</documentation>
 	
