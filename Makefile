@@ -140,6 +140,7 @@ endef
 
 all: ${dist.dir}/com.github.lindenb.knime5bio_${plugin.version}.jar
 
+$(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/veprest/VepRest,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/vcf2table/VcfToTable,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/sortingindex/SortingIndex,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/cmpcallers/CmpCallers,1,,,,,))
@@ -212,7 +213,8 @@ ${dist.dir}/com_github_lindenb_knime5bio.jar : $(sort ${knime.jars} ${extra.jars
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/gatk/leftalign/LeftAlignAndTrimVariantsNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/gatk/phasebytransmission/PhaseByTransmissionNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/fasta/writefasta/WriteFastaNodeModel.java \
-	${this.dir}src/main/java/com/github/lindenb/knime5bio/fasta/readfasta/ReadFastaNodeModel.java
+	${this.dir}src/main/java/com/github/lindenb/knime5bio/fasta/readfasta/ReadFastaNodeModel.java \
+	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/veprest/VepRestNodeModel.java
 	mkdir -p $(dir $@) ${tmp.dir}
 	${JAVAC} -Xlint -d ${tmp.dir} -g -classpath "$(subst $(SPACE),:,$(filter %.jar,$^))" -sourcepath ${this.dir}src/main/java:${this.dir}src/main/generated-code/java $(filter %.java,$^)
 	(cd ${this.dir}src/main/generated-code/java && find -type f \( -name "*Factory.xml" -o -name "*.png" \) -exec cp --parent '{}' ${tmp.dir} ';')

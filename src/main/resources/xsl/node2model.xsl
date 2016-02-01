@@ -369,7 +369,7 @@ public <xsl:if test="$abstract = 'true'">abstract</xsl:if> class <xsl:if test="$
 	<xsl:when test="@type='int'">
 		final static int <xsl:apply-templates select="." mode="config-default"/> = <xsl:choose>
 			<xsl:when test="@default"><xsl:value-of select="@default"/></xsl:when>
-			<xsl:otherwise>0"</xsl:otherwise>
+			<xsl:otherwise>0</xsl:otherwise>
 			</xsl:choose>;
 		protected final SettingsModelInteger <xsl:apply-templates select="." mode="fieldName"/> = new SettingsModelInteger(
 			<xsl:apply-templates select="." mode="config-name"/>,

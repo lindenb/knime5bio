@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>Invoke Ensembl VEP online API. Output is an extra Column containing the VEP response. </description>
+<settings>
+	<setting name="vepuri" type="string" label="VEP URL" default="http://grch37.rest.ensembl.org/vep/human/region/" required="true">
+		<description>VEP rest URL</description>
+	</setting>
+	<setting name="extraParams" type="string" label="Extra Params" required="true" default="protein=1&amp;numbers=1&amp;hgvs=1&amp;domains=1&amp;ccds=1&amp;canonical=1&amp;Conservation=1&amp;ExAC=1">
+		<description>Extra HTTP-Escaped VEP URL params</description>
+	</setting>
+	
+	<setting name="waitSeconds" type="int" label="Wait (seconds)" default="1" required="true">
+		<description>Wait x seconds between each call to Ensembl</description>
+	</setting>
+  </settings>
+  
+  <ports>
+		<inPort id="vcf"/>
+		<outPort index="0" name="vepresponse" label="VEP response" at-runtime="true"/>
+  </ports>
+</node>

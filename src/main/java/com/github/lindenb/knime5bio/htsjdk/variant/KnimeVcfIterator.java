@@ -110,13 +110,8 @@ public class KnimeVcfIterator implements VcfIterator {
 		}
 
 	
-	private void fill()
-		{
-		if(this.peekVariant!=null) return;
-		if(this.iter==null || !this.iter.hasNext()) return;
-		
+	public KnimeVariantContext decode(final DataRow row) {
 		final StringBuilder sb=new StringBuilder();
-		final DataRow row = iter.next();
 		int idx=0;
 		sb.append(StringCell.class.cast(row.getCell(idx++)).getStringValue());
 		sb.append("\t");
@@ -145,10 +140,18 @@ public class KnimeVcfIterator implements VcfIterator {
 
 				}
 			}
-		this.peekVariant  = new KnimeVariantContext(
+		return new KnimeVariantContext(
 					getCodec().decode(sb.toString()),
 					row
 					);
+	}
+	
+	private void fill()
+		{
+		if(this.peekVariant!=null) return;
+		if(this.iter==null || !this.iter.hasNext()) return;
+		final DataRow row = iter.next();
+		this.peekVariant  = this.decode(row);
 		}
 	@Override
 	public KnimeVariantContext next() {
