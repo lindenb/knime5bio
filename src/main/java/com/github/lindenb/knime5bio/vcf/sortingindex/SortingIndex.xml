@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>Append one column to a table CHROM/POS containing a sorting Reference Ordering index.
+  Can be used to sort a BED or a VCF using the same order than the REF.</description>
+  <settings>
+    	<setting type="reference.fasta"/>
+    	<setting type="column" name="CHROM" label="CHROM" index="0" data-type="string" required="true">
+    		<descritipn>CHROM column</descritipn>
+    	</setting>
+     	<setting type="column" name="POS" label="POS" index="0" data-type="int" required="true">
+    		<descritipn>POS column</descritipn>
+    	</setting>
+  </settings>
+  <ports>
+		<inPort index="0" name="Input"/>
+		<outPort index="0" name="Output"/>
+  </ports>
+</node>

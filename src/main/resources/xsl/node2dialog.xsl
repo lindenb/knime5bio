@@ -170,7 +170,8 @@ public <xsl:if test="$abstract = 'true'">abstract</xsl:if> class <xsl:if test="$
 					</xsl:choose>,//addNoneCol
 					<xsl:choose>
 						<xsl:when test="@data-type='string'">org.knime.core.data.StringValue.class</xsl:when>
-						<xsl:otherwise><xsl:message terminate="yes">column/@data-type missing</xsl:message></xsl:otherwise>
+						<xsl:when test="@data-type='int'">org.knime.core.data.IntValue.class</xsl:when>
+						<xsl:otherwise><xsl:message terminate="yes">column/@data-type missing or unknown</xsl:message></xsl:otherwise>
 					</xsl:choose>
 					);
 		

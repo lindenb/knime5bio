@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>
+  Compare two VCFs and print common/exclusive information for each sample/genotype.
+  Both files must be sorted ROD.</description>
+  <settings>
+    <setting name="exampleFile" type="output-file" required="false" label="Examples.xml">
+      <description>Write a few Variants in this XML file. Optional</description>
+    </setting>
+        <setting name="numberOfExampleVariants"  label="number Of Example Variants" type="int" default="10" required="true">
+      <description>number of variants to dump in the example file</description>
+    </setting>
+    <setting name="captureFile" type="input-file" required='false' label="Capture BED">
+      <description>Limit to variants in that BED region</description>
+      <suffix>.bed</suffix>
+    </setting>
+    <setting name="homRefIsNoCall" label="Hom Ref is NO-CALL" type="boolean" default="false">
+      <description>Treat HomRef as No Call (created when comparing merged vcf with GATK: there is no homref, everything is nocall)</description>
+    </setting>
+  </settings>
+  <ports>
+		<inPort index="0" id="vcf"/>
+		<inPort index="2" id="vcf"/>
+		<outPort index="0" name="CmpCallerOutput" label="Compare" at-runtime="true"/>
+  </ports>
+  
+  <documentation>
+  See <a>https://github.com/lindenb/jvarkit/wiki/VcfCompareCallers</a>
+  <h3>Columns</h3>
+  <ul>
+<li>off_target_only_1 : variant for this sample is found in vcf1 but not in vcf2, but variant is off target</li>
+<li>off_target_only_2 : variant for this sample is found in vcf2 but not in vcf1, but variant is off target</li>
+<li>off_target_both : variant for this sample is found in both vcf, but it variant off target</li>
+<li>unique_to_file_1 :  variant for this sample is found in vcf1 but not in vcf2 (in target)</li>
+<li>unique_to_file_1_snp : variant for this sample is found in vcf1 but not in vcf2 (in target) and it is a snp</li>
+<li>unique_to_file_1_indel : variant for this sample is found in vcf1 but not in vcf2 (in target) and it is an indel</li>
+<li>unique_to_file_2 :  variant for this sample is found in vcf2 but not in vcf1 (in target)</li>
+<li>unique_to_file_2_snp: variant for this sample is found in vcf2 but not in vcf1 (in target) and it is a snp</li>
+<li>unique_to_file_2_indel: variant for this sample is found in vcf2 but not in vcf1 (in target) and it is an indel</li>
+<li>both_missing: there is no genotype for this variant (chrom/pos/ref), while some other samples can have a called genotype.</li>
+<li>common_context: a genotype is available for this sample for this context in vcf1 and vcf2.</li>
+<li>common_context_snp:  a genotype is available for this sample for this context in vcf1 and vcf2 and it's a snp.</li>
+<li>common_context_indel:  a genotype is available for this sample for this context in vcf1 and vcf2 and it's an indel.</li>
+<li>common_context_discordant_id:  a genotype is available for this sample for this context in vcf1 and vcf2  but the column ID was not the same.</li>
+<li>called_and_same : vcf1 and vcf2 have the same genotype for this sample and variant (chrom/pos/ref).</li>
+<li>called_and_same_hom_ref :  vcf1 and vcf2 have the same hom-ref genotype for this sample and variant (chrom/pos/ref).</li>
+<li>called_and_same_hom_var :  vcf1 and vcf2 have the same hom-var genotype for this sample and variant (chrom/pos/ref).</li>
+<li>called_and_same_het : vcf1 and vcf2 have the same het genotype for this sample and variant (chrom/pos/ref).</li>
+<li>called_but_discordant : vcf1 and vcf2 don't have the same genotype for this variant and sample.</li>
+<li>called_but_discordant_hom1_het2 :  vcf1 and vcf2 don't have the same genotype for this variant and sample. vcf1 is hom and vcf2 is het</li>
+<li>called_but_discordant_het1_hom2 :  vcf1 and vcf2 don't have the same genotype for this variant and sample. vcf1 is het and vcf2 is hom</li>
+<li>called_but_discordant_hom1_hom2 :  vcf1 and vcf2 don't have the same genotype for this variant and sample. vcf1 is hom and vcf2 is hom</li>
+<li>called_but_discordant_het1_het2 :  vcf1 and vcf2 don't have the same genotype for this variant and sample. vcf1 is het and vcf2 is het</li>
+<li>called_but_discordant_others :  vcf1 and vcf2 don't have the same genotype for this variant and sample. other cases.</li>
+</ul>
+
+  
+  
+  </documentation>
+  
+</node>

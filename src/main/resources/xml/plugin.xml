@@ -74,12 +74,20 @@
 		    	  factory-class="com.github.lindenb.knime5bio.vcf.bioalcidae.BioAlcidaeNodeFactory"
 		    	  id="com.github.lindenb.knime5bio.vcf.bioalcidae.BioAlcidaeNodeFactory"
 				/>
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.cmpcallers.CmpCallersNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.cmpcallers.CmpCallersNodeFactory"
+				/>
 			
 			<node category-path="/community/knime5bio/vcf"
 		    	  factory-class="com.github.lindenb.knime5bio.vcf.vcfpeekvcf.VcfPeekVcfNodeFactory"
 		    	  id="com.github.lindenb.knime5bio.vcf.vcfpeekvcf.VcfPeekVcfNodeFactory"
 				/>
 			
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.sortingindex.SortingIndexNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.sortingindex.SortingIndexNodeFactory"
+				/>
 				
 			<!--  GATK -->	
 		
