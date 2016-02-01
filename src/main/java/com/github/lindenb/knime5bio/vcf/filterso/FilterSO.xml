@@ -19,4 +19,11 @@
 		<inPort id="vcf"/>
 		<outPort id="vcf"/>
   </ports>
+  <documentation>
+  See also: <a>https://github.com/lindenb/jvarkit/wiki/VcffilterSequenceOntology</a>.
+  
+  <h3>Example</h3>
+ To list the variants having a "<b>feature_elongation</b>" : use <b>SO:0001907</b>  ( <a>http://www.sequenceontology.org/browser/current_release/term/SO:0001907</a>) .
+  
+  </documentation>
 </node>

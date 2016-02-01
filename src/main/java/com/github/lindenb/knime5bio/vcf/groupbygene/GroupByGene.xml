@@ -12,4 +12,17 @@
 		<inPort id="vcf"/>
 		<outPort id="groupGene" index="0" name="groupGene" label="group by gene"/>
   </ports>
+  <documentation>
+ 
+  <h3>Example output</h3>
+  
+  <pre>#chrom  min.POS    max.POS    gene.name  gene.type         samples.affected  count.variations  M10475  M10478  M10500  M128215
+chr10   52004315   52004315   ASAH2      vep-gene-name     2                 1                 0       0       1       1
+chr10   52497529   52497529   ASAH2B     vep-gene-name     2                 1                 0       1       1       0
+chr10   48003992   48003992   ASAH2C     vep-gene-name     3                 1                 1       1       1       0
+chr10   126678092  126678092  CTBP2      vep-gene-name     1                 1                 0       0       0       1</pre>
+ <h3>See also</h3>
+ <a>https://github.com/lindenb/jvarkit/wiki/GroupByGene</a>
+ 
+  </documentation>
 </node>
