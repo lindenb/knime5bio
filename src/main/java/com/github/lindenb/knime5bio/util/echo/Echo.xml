@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>Echo a String to a Table.</description>
+  <settings>
+    <setting name="echoString" type="string" multiline="true" label="Text" default="" required="true">
+       <description>Text</description>
+	</setting>
+  </settings>
+  <ports>
+		<outPort name="output" label="Head Table" index="0">
+			<column name="LINE" type="string"/>
+		</outPort>
+  </ports>
+</node>

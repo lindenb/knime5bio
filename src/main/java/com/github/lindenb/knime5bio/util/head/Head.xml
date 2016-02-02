@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>display the first rows of a TABLE</description>
+  <settings>
+    <setting name="count" type="int" label="Number of rows" default="10" required="true">
+       <description>Number of rows</description>
+	</setting>
+  </settings>
+  <ports>
+		<inPort name="input" label="Input Table" index="0"/>
+		<outPort name="output" label="Head Table" index="0"/>
+  </ports>
+</node>

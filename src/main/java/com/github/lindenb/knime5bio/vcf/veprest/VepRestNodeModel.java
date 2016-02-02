@@ -1,4 +1,6 @@
 package com.github.lindenb.knime5bio.vcf.veprest;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URLEncoder;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -42,7 +44,7 @@ public class VepRestNodeModel extends AbstractVepRestNodeModel {
      		final DocumentBuilder domBuilder = dbf.newDocumentBuilder();
      		
      		long lastCall=System.currentTimeMillis();
-     		final DataTableSpec spec0 = inData[0].getSpec();
+     		final DataTableSpec spec0 = inData[1].getSpec();
      		final DataTableSpec outspec = new DataTableSpec(
      				spec0,
      				new DataTableSpec(new DataColumnSpecCreator("VEP",XMLCell.TYPE).createSpec())
@@ -80,27 +82,39 @@ public class VepRestNodeModel extends AbstractVepRestNodeModel {
 	     				Thread.sleep((long)__waitSeconds.getIntValue()*1000L-diff);
 	     				}
 	     			
-	     			final Document doc = domBuilder.parse(uri.toString());
+	     			Document lastdoc=null ;
+	     			try
+	     				{
+	     				lastdoc=domBuilder.parse(uri.toString());
+	     				}
+	     			catch(Exception err) {
+	     				lastdoc=domBuilder.newDocument();
+	     				Element errorTag = lastdoc.createElement("error");
+	     				errorTag.setAttribute("message", String.valueOf(err.getMessage()));
+	     				lastdoc.appendChild(errorTag);
+	     				StringWriter sw= new StringWriter();
+	     				err.printStackTrace(new PrintWriter(sw));
+	     				errorTag.appendChild(lastdoc.createTextNode(sw.toString()));
+	     				}
 	     			if(dom==null) {
-	     				dom=doc;
+	     				dom=lastdoc;
 	     				}
 	     			else
 	     				{
 	     				final Element root1 = dom.getDocumentElement();
-	     				final Element root2 = doc.getDocumentElement();
+	     				final Element root2 = lastdoc.getDocumentElement();
 	     				for(Node c2=root2.getFirstChild();c2!=null;c2=c2.getNextSibling()) {
 	     					if(c2.getNodeType()!=Node.ELEMENT_NODE) continue;
 	     					root1.appendChild(dom.importNode(c2, true));
 	     					}
 	     				}
 	     			}
-     			
+
      			container.addRowToTable( new AppendedColumnRow(row,
      					dom==null?DataType.getMissingCell():XMLCellFactory.create(dom))
      					);
      			
      			exec.checkCanceled();
-     			iter.next();
      			}
      		vcfIn.close();vcfIn=null;
      		iter.close();iter=null;

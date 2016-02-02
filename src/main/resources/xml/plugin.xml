@@ -10,11 +10,23 @@
   </extension>
   
   <extension point="org.knime.workbench.repository.nodes">
+  
+  		<!--  util -->
+  
   				<node category-path="/community/knime5bio/utils"
 		    	  factory-class="com.github.lindenb.knime5bio.util.file2table.FileToTableNodeFactory"
 		    	  id="com.github.lindenb.knime5bio.util.file2table.FileToTableNodeFactory"
 				/>
+  				<node category-path="/community/knime5bio/utils"
+		    	  factory-class="com.github.lindenb.knime5bio.util.head.HeadNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.util.head.HeadNodeFactory"
+				/>
+  				<node category-path="/community/knime5bio/utils"
+		    	  factory-class="com.github.lindenb.knime5bio.util.echo.EchoNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.util.echo.EchoNodeFactory"
+				/>
   		
+  		<!--  fasta -->
   
   
 		    <node category-path="/community/knime5bio/fasta"

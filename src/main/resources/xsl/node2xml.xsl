@@ -77,13 +77,13 @@ e/v2.10 http://knime.org/node/v2.10.xsd">
 </xsl:template>
 
 <xsl:template match="documentation">
-<xsl:apply-templates select="p|h|br|b|i|u|tt|a|url|ul|ol|li|h2|h3|h4|pre|sub|table|text()"/>
+<xsl:apply-templates select="p|h|br|b|i|u|tt|a|url|ul|ol|li|h2|h3|h4|pre|sub|table|tr|td|img|text()"/>
 </xsl:template>
 
-<xsl:template match="p|h|br|b|i|u|tt|ul|ol|h2|h3|h4|pre|sub|table|li">
+<xsl:template match="p|h|br|b|i|u|tt|ul|ol|h2|h3|h4|pre|sub|table|tr|td|li">
 <xsl:variable name="tag" select="name()"/>
 <xsl:element name="{$tag}">
-<xsl:apply-templates select="p|h|br|b|i|u|tt|a|url|ul|ol|li|h2|h3|h4|pre|sub|table|text()"/>
+<xsl:apply-templates select="p|h|br|b|i|u|tt|a|url|ul|ol|li|h2|h3|h4|pre|sub|table|tr|td|img|text()"/>
 </xsl:element>
 </xsl:template>
 
@@ -96,6 +96,15 @@ e/v2.10 http://knime.org/node/v2.10.xsd">
 </a>
 </xsl:template>
 
-
+<xsl:template match="img">
+<img>
+<xsl:attribute name="src">
+<xsl:choose>
+<xsl:when test="@src"><xsl:value-of select="@src"/></xsl:when>
+<xsl:otherwise><xsl:apply-templates/></xsl:otherwise> 
+</xsl:choose>
+</xsl:attribute>
+</img>
+</xsl:template>
 
 </xsl:stylesheet>

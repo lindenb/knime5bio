@@ -18,4 +18,18 @@
 		<inPort id="vcf"/>
 		<outPort index="0" name="vepresponse" label="VEP response" at-runtime="true"/>
   </ports>
+  
+  <documentation>
+  
+  <h3>VEP</h3>
+  
+    The VEP service is described here: <a>http://rest.ensembl.org/documentation/info/vep_region_get</a>
+  
+  <h3>Screenshot</h3>
+  <img src="https://pbs.twimg.com/media/CaMpK6_WIAAoVp7.jpg"/>
+  
+  One can later filter out the VEP output using a <b>xpath</b> node:
+  <img src="https://pbs.twimg.com/media/CaMtT8gWQAA9lSH.jpg"/>
+  
+  </documentation>
 </node>
