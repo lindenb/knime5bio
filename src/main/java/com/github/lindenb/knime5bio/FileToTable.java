@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import javax.print.DocFlavor.STRING;
-
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataColumnSpecCreator;
@@ -20,6 +18,7 @@ import org.knime.core.data.def.BooleanCell;
 import org.knime.core.data.def.DefaultRow;
 import org.knime.core.data.def.DoubleCell;
 import org.knime.core.data.def.IntCell;
+import org.knime.core.data.def.LongCell;
 import org.knime.core.data.def.StringCell;
 import org.knime.core.node.BufferedDataContainer;
 import org.knime.core.node.BufferedDataTable;
@@ -34,7 +33,7 @@ private final ExecutionContext exec;
 private BufferedReader r=null;
 private Pattern pattern = Pattern.compile("[\t]");
 
-private enum ColType {DOUBLE,INTEGER,BOOLEAN,STRING};
+private enum ColType {DOUBLE,LONG,INTEGER,BOOLEAN,STRING};
 
 private static class ColDef {
 	String name="";
@@ -54,6 +53,7 @@ private static class ColDef {
 			{
 			case DOUBLE: if(isNA(s)) return DataType.getMissingCell();return new DoubleCell(Double.parseDouble(s));
 			case INTEGER: if(isNA(s)) return DataType.getMissingCell(); return new IntCell(Integer.parseInt(s));
+			case LONG: if(isNA(s)) return DataType.getMissingCell(); return new LongCell(Long.parseLong(s));
 			case BOOLEAN: return BooleanCell.BooleanCellFactory.create(
 					s.equalsIgnoreCase("true") || s.equalsIgnoreCase("T") ? true :  false
 					);
@@ -67,6 +67,7 @@ private static class ColDef {
 			{
 			case DOUBLE: dataType = DataType.getType(DoubleCell.class); break;
 			case INTEGER: dataType = DataType.getType(IntCell.class); break;
+			case LONG: dataType = DataType.getType(LongCell.class); break;
 			case BOOLEAN: dataType = DataType.getType(BooleanCell.class); break;
 			default: dataType = DataType.getType(StringCell.class);  break;
 			}
@@ -90,6 +91,15 @@ private static class ColDef {
 				case INTEGER: {
 					if(isNA(s)) return colType;
 					try { new Integer(s); }
+					catch (Exception e) {
+						gotType=false;
+						colType=ColType.LONG;
+						}
+					break;
+					}
+				case LONG: {
+					if(isNA(s)) return colType;
+					try { new Long(s); }
 					catch (Exception e) {
 						gotType=false;
 						colType=ColType.DOUBLE;

@@ -45,6 +45,12 @@
 		    	  factory-class="com.github.lindenb.knime5bio.vcf.veprest.VepRestNodeFactory"
 		    	  id="com.github.lindenb.knime5bio.vcf.veprest.VepRestNodeFactory"
 				/>
+				
+			 <node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.renamechr.RenameContigNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.renamechr.RenameContigNodeFactory"
+				/>	
+			
 			
 			 <node category-path="/community/knime5bio/vcf"
 		    	  factory-class="com.github.lindenb.knime5bio.vcf.groupbygene.GroupByGeneNodeFactory"

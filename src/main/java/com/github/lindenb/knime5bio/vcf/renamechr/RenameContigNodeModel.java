@@ -1,4 +1,4 @@
-package com.github.lindenb.knime5bio.vcf.indexvcf;
+package com.github.lindenb.knime5bio.vcf.renamechr;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Optional;
@@ -6,8 +6,6 @@ import java.util.Optional;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataRow;
 import org.knime.core.data.DataTableSpec;
-import org.knime.core.data.RowKey;
-import org.knime.core.data.container.CloseableRowIterator;
 import org.knime.core.data.def.DefaultRow;
 import org.knime.core.data.def.StringCell;
 import org.knime.core.node.BufferedDataContainer;
@@ -15,28 +13,38 @@ import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.InvalidSettingsException;
 
-import com.github.lindenb.jvarkit.tools.misc.VcfIndexTabix;
+import com.github.lindenb.jvarkit.tools.misc.ConvertVcfChromosomes;
 import com.github.lindenb.jvarkit.util.vcf.VCFUtils;
 import com.github.lindenb.jvarkit.util.vcf.VcfIterator;
+import com.github.lindenb.knime5bio.LogRowIterator;
 
 import htsjdk.samtools.util.CloserUtil;
+import htsjdk.variant.variantcontext.writer.VariantContextWriter;
 
 
-
-public class IndexVcfNodeModel extends AbstractIndexVcfNodeModel {
+public class RenameContigNodeModel extends AbstractRenameContigNodeModel {
 @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception
-        {
+    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, 
+    		final ExecutionContext exec) throws Exception
+        {     	
 		final BufferedDataTable inTable = inData[0];
+		BufferedDataContainer container = null;
+		LogRowIterator iter = null;
 		final int vcfColumn = super.findColumnIndexByName(inTable,super.getSettingsModelVcf());
 		this.assureNodeWorkingDirectoryExists();
-		CloseableRowIterator iter=null;
-		try {
-	    	final DataTableSpec spec0 = createOutTableSpec0(inData);
-	    	final BufferedDataContainer container = exec.createDataContainer(spec0);
+		ConvertVcfChromosomes application = new ConvertVcfChromosomes();
+     	try {
+     		application.setMappingFile(new File(super.__mappingFile.getStringValue()));
+     		application.setIgnore_if_no_mapping(super.__ignore_if_no_mapping.getBooleanValue());
+     		application.setUse_original_chrom_name_if_no_mapping(super.__use_original_chrom_name_if_no_mapping.getBooleanValue());
+    		checkEmptyListOfThrowables(application.initializeKnime());
 
-			
-			iter = inTable.iterator();
+    		
+    		
+	    	final DataTableSpec spec0 = createOutTableSpec0(inData);
+	    	container = exec.createDataContainer(spec0);
+
+			iter = new LogRowIterator("Rename Contig ",inTable,exec);
 			while (iter.hasNext()) {
 				final DataRow row = iter.next();
 				final DataCell cell = row.getCell(vcfColumn);
@@ -49,25 +57,22 @@ public class IndexVcfNodeModel extends AbstractIndexVcfNodeModel {
 					throw new FileNotFoundException("cannot find " + inFile);
 				if (!inFile.isFile())
 					throw new FileNotFoundException("not a file: " + inFile);
-				final File outFile = super.createFileForWriting(Optional.of("SelectVariants"), ".vcf.gz");
-				final VcfIndexTabix application = new VcfIndexTabix();
+				final File outFile = super.createFileForWriting(Optional.of("RenameContig"), ".vcf.gz");
 				VcfIterator r=null;
+				VariantContextWriter w=null;
 				try {
-					application.setMaxRecordsInRam(super.__maxRecordsInRam.getIntValue());
-					application.setSort(super.isSettingsModelSortBoolean());
-					application.addTmpDirectory(outFile.getParentFile());
-					super.checkEmptyListOfThrowables(application.initializeKnime());
 					r= VCFUtils.createVcfIteratorFromFile(inFile);
-					super.checkEmptyListOfThrowables(application.doVcfToVcf(inFile.getPath(), r, outFile));
+					w = VCFUtils.createVariantContextWriter(outFile);
+					super.checkEmptyListOfThrowables(application.doVcfToVcf(inFile.getPath(), r, w));
 				}
 				finally
 				{
+					iter.close();
 					CloserUtil.close(r);
-					application.disposeKnime();
+					CloserUtil.close(w);
 				}
 				
 				
-				application.setOutputFile(outFile);
 
 				if (!outFile.exists()) {
 					throw new RuntimeException("Output file was not created");
@@ -80,12 +85,12 @@ public class IndexVcfNodeModel extends AbstractIndexVcfNodeModel {
 			container.close();
 	        BufferedDataTable out = container.getTable();
 	        return new BufferedDataTable[]{out};
-
+		} catch (Exception e) {
+			getLogger().error("boum", e);
+			e.printStackTrace();
+			throw e;
 		} finally {
-			
+			application.disposeKnime();
 		}
-		    	
-	
-    	}
-		
+        }
 }

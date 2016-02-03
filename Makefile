@@ -27,24 +27,24 @@ plugin.version=2016.01.21
 knime.root?= ${HOME}/package/knime_3.1.0
 
 htsjdk.root?=${HOME}/src/htsjdk
-htsjdk.jars=$(realpath $(addsuffix .jar,$(addprefix ${htsjdk.root}/dist/,apache-ant-1.8.2-bzip2 commons-compress-1.4.1 commons-jexl-2.1.1 commons-logging-1.1.1 htsjdk-2.0.1 ngs-java-1.2.2 snappy-java-1.0.3-rc3 xz-1.5)))
+htsjdk.jars=$(realpath $(addsuffix .jar,$(addprefix ${htsjdk.root}/dist/,apache-ant-1.8.2-bzip2 commons-compress-1.4.1 commons-jexl-2.1.1 commons-logging-1.1.1 htsjdk-2.1.0 ngs-java-1.2.2 snappy-java-1.0.3-rc3 xz-1.5)))
 
 
 ifneq ($(words ${htsjdk.jars}),8)
-$(error expected count($$htsjdk.jar)=8 but got '$(words ${htsjdk.jars})' for ${htsjdk.jars})
+$(error expected count($$htsjdk.jar)=8 but got N='$(words ${htsjdk.jars})' for ${htsjdk.jars})
 endif
 
 jvarkit.root?=${HOME}/src/jvarkit
 ifeq ($(realpath ${jvarkit.root}),)
 $(error cannot find $$jvarit.root = ${jvarkit.root})
 endif
-jvarkit.jars?=$(shell find $(realpath ${jvarkit.root})/dist* -type f -name "vcfcomparecallers.jar" -o -name "groupbygene.jar" -o -name "vcfpeekvcf.jar" -o -name "vcfmulti2oneinfo.jar" -o -name "vcffilterso.jar" -o -name "vcfmulti2oneallele.jar" -o -name "vcffilterjs.jar" -o -name "bioalcidae.jar"  -o -name "vcfindextabix.jar" ) \
+jvarkit.jars?=$(shell find $(realpath ${jvarkit.root})/dist* -type f -name "vcfrenamechr.jar" -o -name "vcfcomparecallers.jar" -o -name "groupbygene.jar" -o -name "vcfpeekvcf.jar" -o -name "vcfmulti2oneinfo.jar" -o -name "vcffilterso.jar" -o -name "vcfmulti2oneallele.jar" -o -name "vcffilterjs.jar" -o -name "bioalcidae.jar"  -o -name "vcfindextabix.jar" ) \
 	$(realpath $(addprefix ${jvarkit.root}/,lib/commons-cli/commons-cli/1.3.1/commons-cli-1.3.1.jar lib/org/slf4j/slf4j-api/1.7.13/slf4j-api-1.7.13.jar lib/org/slf4j/slf4j-simple/1.7.13/slf4j-simple-1.7.13.jar ))
 	
 
 
-ifneq ($(words ${jvarkit.jars}),12)
-$(error expected count($$jvarkit.jars)=12 but got '$(words ${jvarkit.jars})' for ${jvarkit.jars})
+ifneq ($(words ${jvarkit.jars}),13)
+$(error expected count($$jvarkit.jars)=13 but got '$(words ${jvarkit.jars})' for ${jvarkit.jars})
 endif
 
 
@@ -141,6 +141,7 @@ endef
 all: ${dist.dir}/com.github.lindenb.knime5bio_${plugin.version}.jar
 
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/veprest/VepRest,1,,,,,))
+$(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/renamechr/RenameContig,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/vcf2table/VcfToTable,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/sortingindex/SortingIndex,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/cmpcallers/CmpCallers,1,,,,,))
@@ -196,6 +197,7 @@ ${dist.dir}/com_github_lindenb_knime5bio.jar : $(sort ${knime.jars} ${extra.jars
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/util/file2table/FileToTableNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/util/head/HeadNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/util/echo/EchoNodeModel.java \
+	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/renamechr/RenameContigNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/cmpcallers/CmpCallersNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/indexvcf/IndexVcfNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/sortingindex/SortingIndexNodeModel.java \

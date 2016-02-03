@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>Rename chromosomes in a VCF (eg. convert hg19/ucsc to grch37/ensembl). Rename the CHROM in variant as well as in the ##contig headers.</description>
+  <settings>
+  	  <setting name="vcf" type="column" index="0" required="true" data-type="string" >
+			<description>Input VCF file</description>
+	 </setting>
+  	
+    <setting name="mappingFile" type="input-file" required="true">
+      <description>load a custom name mapping. Format (chrom-source\\tchrom-dest\\n)+</description>
+    </setting>
+    <setting name="ignore_if_no_mapping" type="boolean" default="false">
+      <description>if no mapping found, skip that record</description>
+    </setting>
+    <setting name="use_original_chrom_name_if_no_mapping" type="boolean" default="false">
+      <description>if no mapping found, use the original name instead of throwing an error.</description>
+    </setting>
+
+  </settings>
+  <ports>
+		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
+		<outPort index="0" name="VCF output">
+			<column name="VCF" type="string"/>
+		</outPort>
+  </ports>
+  <documentation>
+  <h3>See also</h3>
+  see also <a>https://github.com/lindenb/jvarkit/wiki/VcfRenameChromosomes</a>
+  
+  </documentation>
+  
+</node>
