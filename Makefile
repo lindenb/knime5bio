@@ -167,6 +167,8 @@ $(eval $(call generatecode,com/github/lindenb/knime5bio/gatk/combinevariants/Com
 $(eval $(call generatecode,com/github/lindenb/knime5bio/gatk/variants2table/VariantsToTable,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/gatk/leftalign/LeftAlignAndTrimVariants,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/gatk/phasebytransmission/PhaseByTransmission,1,,,,,))
+$(eval $(call generatecode,com/github/lindenb/knime5bio/bed/mergebed/MergeBed,1,,,,,))
+$(eval $(call generatecode,com/github/lindenb/knime5bio/bed/intersectbed/IntersectBed,1,,,,,))
 
 	
 
@@ -220,6 +222,8 @@ ${dist.dir}/com_github_lindenb_knime5bio.jar : $(sort ${knime.jars} ${extra.jars
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/gatk/phasebytransmission/PhaseByTransmissionNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/fasta/writefasta/WriteFastaNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/fasta/readfasta/ReadFastaNodeModel.java \
+	${this.dir}src/main/java/com/github/lindenb/knime5bio/bed/mergebed/MergeBedNodeModel.java \
+	${this.dir}src/main/java/com/github/lindenb/knime5bio/bed/intersectbed/IntersectBedNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/veprest/VepRestNodeModel.java
 	mkdir -p $(dir $@) ${tmp.dir}
 	${JAVAC} -Xlint -d ${tmp.dir} -g -classpath "$(subst $(SPACE),:,$(filter %.jar,$^))" -sourcepath ${this.dir}src/main/java:${this.dir}src/main/generated-code/java $(filter %.java,$^)

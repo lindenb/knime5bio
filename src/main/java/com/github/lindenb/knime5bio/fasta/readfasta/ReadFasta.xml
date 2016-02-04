@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <node count-in="1" count-out="1">
-
+  <description>Read Fasta File</description>
 	<settings>
 		<setting name="maxSequences" label="max sequences" type="int" default=" Integer.MAX_VALUE -1 " required="true">
 		</setting>

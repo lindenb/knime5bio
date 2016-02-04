@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse  version="3.0" ?><plugin>
   <extension point="org.knime.workbench.repository.categories">
-    <category level-id="knime5bio" name="Bio" path="/community/" description="Knime5bio"/>
+    <category level-id="knime5bio" name="Knime5Bio" path="/community/" description="Knime5bio"/>
     <category level-id="fasta" name="Fasta" path="/community/knime5bio/" description="Fasta"/>
+    <category level-id="bed" name="Bed" path="/community/knime5bio/" description="BED"/>
     <category level-id="vcf" name="VCF" path="/community/knime5bio/" description="VCF tools"/>
     <category level-id="jvarkit" name="JVARKIT" path="/community/knime5bio/vcf/" description="Tools from jvarkit"/>
     <category level-id="gatk" name="GATK" path="/community/knime5bio/" description="GATK"/>
@@ -37,8 +38,19 @@
 		    	  factory-class="com.github.lindenb.knime5bio.fasta.writefasta.WriteFastaNodeFactory"
 		    	  id="com.github.lindenb.knime5bio.fasta.writefasta.WriteFastaNodeFactory"
 				/>
-				
-			
+  		<!--  bed -->
+  
+  
+		    <node category-path="/community/knime5bio/bed"
+		    	  factory-class="com.github.lindenb.knime5bio.bed.mergebed.MergeBedNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.bed.mergebed.MergeBedNodeFactory"
+				/>
+		    <node category-path="/community/knime5bio/bed"
+		    	  factory-class="com.github.lindenb.knime5bio.bed.intersectbed.IntersectBedNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.bed.intersectbed.IntersectBedNodeFactory"
+				/>
+
+
 			<!--  VCF -->
 			
 			 <node category-path="/community/knime5bio/vcf"
