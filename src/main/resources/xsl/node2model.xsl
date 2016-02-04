@@ -18,6 +18,7 @@ import org.knime.core.node.BufferedDataTable;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataType;
 import org.knime.core.data.def.StringCell;
+import org.knime.core.data.def.IntCell;
 import org.knime.core.data.def.DoubleCell;
 import org.knime.core.node.InvalidSettingsException;
 
@@ -114,7 +115,9 @@ public <xsl:if test="$abstract = 'true'">abstract</xsl:if> class <xsl:if test="$
 		colspecs[ <xsl:value-of select="position() -1"/> ] = new org.knime.core.data.DataColumnSpecCreator(
 			"<xsl:value-of select="@name"/>" , <xsl:choose>
 			<xsl:when test="@type='string'">org.knime.core.data.DataType.getType(org.knime.core.data.def.StringCell.class</xsl:when>
-			<xsl:message terminate="yes">unknown column type</xsl:message>
+			<xsl:when test="@type='int'">org.knime.core.data.DataType.getType(org.knime.core.data.def.IntCell.class</xsl:when>
+			<xsl:when test="@type='double'">org.knime.core.data.DataType.getType(org.knime.core.data.def.DoubleCell.class</xsl:when>
+			<xsl:otherwise><xsl:message terminate="yes">createDataCellsForOutTableSpec:unknown column type</xsl:message></xsl:otherwise>
 			</xsl:choose>)).createSpec();
 		</xsl:for-each>
 		return new DataTableSpec(colspecs);		
@@ -129,7 +132,9 @@ public <xsl:if test="$abstract = 'true'">abstract</xsl:if> class <xsl:if test="$
 			<xsl:text>final </xsl:text>
 			<xsl:choose>
 				<xsl:when test="@type='string'">CharSequence</xsl:when>
-				<xsl:message terminate="yes">unknown column type</xsl:message>
+				<xsl:when test="@type='int'">Integer</xsl:when>
+				<xsl:when test="@type='double'">Double</xsl:when>
+				<xsl:otherwise><xsl:message terminate="yes">createDataCellsForOutTableSpec:unknown column type</xsl:message></xsl:otherwise>
 			</xsl:choose>
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="@name"/>
@@ -141,7 +146,9 @@ public <xsl:if test="$abstract = 'true'">abstract</xsl:if> class <xsl:if test="$
 		__cells[<xsl:value-of select="position() -1"/>] = ( <xsl:value-of select="@name"/> !=null? 
 			<xsl:choose>
 				<xsl:when test="@type='string'">new StringCell( <xsl:value-of select="@name"/>.toString() ) </xsl:when>
-				<xsl:message terminate="yes">unknown column type</xsl:message>
+				<xsl:when test="@type='int'">new IntCell( <xsl:value-of select="@name"/> ) </xsl:when>
+				<xsl:when test="@type='double'">new DoubleCell( <xsl:value-of select="@name"/> ) </xsl:when>
+				<xsl:otherwise><xsl:message terminate="yes">createDataCellsForOutTableSpec:unknown column type</xsl:message></xsl:otherwise>
 			</xsl:choose>
 			:  DataType.getMissingCell() ) ;
 		</xsl:for-each>

@@ -32,7 +32,7 @@
 
 <xsl:template match="setting[@type='reference.fasta']">
 <setting name="referenceGenome" label="path to REF" type="input-file" histoty-id="ref.faidx" required="true" >
-	<description>Reference Genome</description>
+	<description>Reference Genome. Indexed with Tabix (*.fai) and with Picard (*.dict)</description>
 	<suffixes id="fasta"/>
 </setting>
 </xsl:template>

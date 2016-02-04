@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <node>
- 	 <description>Merge Bed Files</description>
+ 	 <description>Extend/slop Bed Files</description>
 
 	<settings>
+	 <setting type="reference.fasta"/>
+		
+	
+	 <setting name="extendBases" type="int" default="0" required="true" label="Extend">
+			<description>Extend by 'x' bases</description>
+	 </setting>
+		
   	  <setting name="BED" type="column" index="0" required="true" data-type="string" >
 			<description>Input BED file</description>
 	 </setting>
-	 <setting name="mergeAllTogether" type="boolean" default="false" label="merge all BED together">
-			<description>merge all BED together (concatenate)</description>
-	 </setting>
-	 
 	</settings>
 
 	<ports>
 		<inPort index="0" name="In-Port name">BED INPUT</inPort>
-		<outPort index="0" name="Merged BED">
+		<outPort index="0" name="Extended BED">
 			<column name="BED" type="string"/>
 		</outPort>
 	</ports>

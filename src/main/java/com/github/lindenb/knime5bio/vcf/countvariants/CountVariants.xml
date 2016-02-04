@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node>
+ 	 <description>Count Variants in VCF Files</description>
+	<settings>
+	  	  <setting name="VCF" type="column" index="0" required="true" data-type="string" >
+				<description>Input VCF file</description>
+		 </setting>
+	</settings>
+
+	<ports>
+		<inPort index="0" name="VCF">VCF</inPort>
+		<outPort index="0" name="Count Variants">
+			<column name="VCF" type="string"/>
+			<column name="COUNT" type="int"/>
+		</outPort>
+	</ports>
+</node>

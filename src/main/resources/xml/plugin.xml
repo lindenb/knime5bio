@@ -49,7 +49,10 @@
 		    	  factory-class="com.github.lindenb.knime5bio.bed.intersectbed.IntersectBedNodeFactory"
 		    	  id="com.github.lindenb.knime5bio.bed.intersectbed.IntersectBedNodeFactory"
 				/>
-
+			<node category-path="/community/knime5bio/bed"
+		    	  factory-class="com.github.lindenb.knime5bio.bed.slop.SlopBedNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.bed.slop.SlopBedNodeFactory"
+				/>
 
 			<!--  VCF -->
 			
@@ -124,6 +127,16 @@
 		    	  factory-class="com.github.lindenb.knime5bio.vcf.sortingindex.SortingIndexNodeFactory"
 		    	  id="com.github.lindenb.knime5bio.vcf.sortingindex.SortingIndexNodeFactory"
 				/>
+			
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.interbed.InterBedNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.interbed.InterBedNodeFactory"
+				/>
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.countvariants.CountVariantsNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.countvariants.CountVariantsNodeFactory"
+				/>	
+				
 				
 			<!--  GATK -->	
 		

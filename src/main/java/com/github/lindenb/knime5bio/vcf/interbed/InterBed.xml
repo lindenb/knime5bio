@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node>
+ 	 <description>Intersect one Bed and multiple VCF Files</description>
+	<settings>
+	  	  <setting name="BED" type="column" index="0" required="true" data-type="string" >
+				<description>Input BED file</description>
+		 </setting>
+	  	  <setting name="VCF" type="column" index="1" required="true" data-type="string" >
+				<description>Input VCF file</description>
+		 </setting>
+ 		 <setting name="inverse" type="boolean" default="false" >
+				<description>Inverse selection</description>
+		 </setting>
+	</settings>
+
+	<ports>
+		<inPort index="0" name="BED">BED</inPort>
+		<inPort index="1" name="VCF">VCF</inPort>
+		<outPort index="0" name="Intersect VCF">
+			<column name="VCF" type="string"/>
+		</outPort>
+	</ports>
+</node>

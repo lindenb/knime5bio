@@ -1,16 +1,14 @@
-package com.github.lindenb.knime5bio.bed.mergebed;
+package com.github.lindenb.knime5bio.bed.slop;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collection;
 import java.util.Optional;
 
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataRow;
-import org.knime.core.data.RowKey;
 import org.knime.core.data.def.DefaultRow;
 import org.knime.core.data.def.StringCell;
 import org.knime.core.node.BufferedDataContainer;
@@ -21,28 +19,37 @@ import org.knime.core.node.InvalidSettingsException;
 import com.github.lindenb.jvarkit.io.IOUtils;
 import com.github.lindenb.knime5bio.LogRowIterator;
 
+import htsjdk.samtools.SAMSequenceDictionary;
+import htsjdk.samtools.SAMSequenceRecord;
+import htsjdk.samtools.reference.ReferenceSequenceFile;
+import htsjdk.samtools.reference.ReferenceSequenceFileFactory;
 import htsjdk.samtools.util.CloserUtil;
-import htsjdk.samtools.util.Interval;
-import htsjdk.samtools.util.IntervalTreeMap;
 import htsjdk.tribble.bed.BEDCodec;
 import htsjdk.tribble.bed.BEDFeature;
 
-public class MergeBedNodeModel extends AbstractMergeBedNodeModel {
+public class SlopBedNodeModel extends AbstractSlopBedNodeModel {
     @Override
     protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception
         {
+    	final int extend = super.__extendBases.getIntValue();
     	final int bedColumn = super.findColumnIndexByName(inData[0],super.__BED);
     	BufferedDataContainer container0 = null;
         LogRowIterator iter =null;
         BufferedReader in=null;
-        final boolean mergeAllTogether = super.__mergeAllTogether.getBooleanValue();
-        final IntervalTreeMap<Interval> intervals = new IntervalTreeMap<>();
+        PrintWriter pw=null;
+        ReferenceSequenceFile refFile=null;
         try
             {
+        	//get dict
+        	refFile = ReferenceSequenceFileFactory.getReferenceSequenceFile(	super.getSettingsModelReferenceGenomeFile());
+        	final SAMSequenceDictionary dict = refFile.getSequenceDictionary();
+        	refFile.close();
+        	refFile=null;
+        	if(dict==null) throw new IOException("Cannot get dict for reference sequence");
+        	
 			container0 = exec.createDataContainer(super.createOutTableSpec0());
 
-        	
-        	iter =  new LogRowIterator("Merge",inData[0], exec);
+        	iter =  new LogRowIterator("Slop",inData[0], exec);
         	while(iter.hasNext())
         		{
 				final DataRow row = iter.next();
@@ -57,60 +64,42 @@ public class MergeBedNodeModel extends AbstractMergeBedNodeModel {
 				if (!inFile.isFile())
 					throw new FileNotFoundException("not a file: " + inFile);
 				final BEDCodec codec = new BEDCodec();
+				final File outFile = super.createFileForWriting(Optional.of("slop"), ".bed.gz");
+				pw = IOUtils.openFileForPrintWriter(outFile);
 				in = IOUtils.openFileForBufferedReading(inFile);
-				
-				
-				
 				String line;
 				while((line=in.readLine())!=null)
 					{
 					final BEDFeature feat = codec.decode(line);
 					if(feat==null) continue;
-					boolean inserted=false;
-					Interval interval = new Interval(feat.getContig(), feat.getStart(), feat.getEnd());//feat use 1-based 
-
-					while(!inserted)
-						{
-						inserted=true;
-						Collection<Interval> overlapping = intervals.getOverlapping(interval);
-						if(overlapping!=null && !overlapping.isEmpty())
-							{
-							inserted=false;
-							Interval first = overlapping.iterator().next();
-							intervals.remove(first);
-							interval = new Interval(
-									interval.getContig(),
-									Math.min(interval.getStart(),first.getStart()),
-									Math.max(interval.getEnd(),first.getEnd())
-									);
-							}
-						}
-					intervals.put(interval, interval);
+					final SAMSequenceRecord ssr = dict.getSequence(feat.getContig());
+					if(ssr==null) throw new IOException("Unknown sequence in "+line);
+					
+					int start = Math.min(ssr.getSequenceLength(),Math.max(1,feat.getStart() - extend));
+					
+					int end =  Math.max(1,Math.min(ssr.getSequenceLength(),feat.getEnd() + extend));
+					if(start> end) continue;
+					pw.print(ssr.getSequenceName());
+					pw.print("\t");
+					pw.print(start - 1 );//interval is 1-based
+					pw.print("\t");
+					pw.print(end);
+					pw.println();
+					
 					}
 		        in.close();in=null;
-		        
-		        if(!mergeAllTogether)
-		        	{
-					final File outFile =dump(intervals);
-					container0.addRowToTable(new DefaultRow(
-							row.getKey(),
-							super.createDataCellsForOutTableSpec0(outFile.getPath()))
-							);
-					intervals.clear();
-		        	}
-		        
+		        pw.flush();
+				pw.close();pw=null;
+				container0.addRowToTable(new DefaultRow(
+						row.getKey(),
+						super.createDataCellsForOutTableSpec0(outFile.getPath()))
+						);
         		}
         	iter.close();iter=null;
         	
-        	 if(mergeAllTogether)
-	        	 {
-				final File outFile =dump(intervals);
-	
-				container0.addRowToTable(new DefaultRow(
-						RowKey.createRowKey(1L),
-						super.createDataCellsForOutTableSpec0(outFile.getPath()))
-						);
-	        	 }
+        	
+
+			
 			container0.close();
             BufferedDataTable out0 = container0.getTable();
             container0=null;
@@ -118,33 +107,11 @@ public class MergeBedNodeModel extends AbstractMergeBedNodeModel {
             }
         finally
             {
+          	CloserUtil.close(refFile);
           	CloserUtil.close(in);
           	CloserUtil.close(iter);
           	CloserUtil.close(container0);
             }
         }
-    private File dump( final IntervalTreeMap<Interval> intervals) throws IOException
-    	{
-    	PrintWriter pw=null;
-    	try {
-			final File outFile = super.createFileForWriting(Optional.of("merge"), ".bed.gz");
-			pw = IOUtils.openFileForPrintWriter(outFile);
-			for(Interval interval:intervals.keySet())
-				{
-				pw.print(interval.getContig());
-				pw.print("\t");
-				pw.print(interval.getStart()-1);//interval is 1-based
-				pw.print("\t");
-				pw.print(interval.getEnd());
-				pw.println();
-				}
-			pw.flush();
-			pw.close();pw=null;
-			return outFile;
-    		}
-    	finally
-    		{
-    		CloserUtil.close(pw);
-    		}
-    	}
+
 }

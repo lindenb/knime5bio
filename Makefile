@@ -159,6 +159,8 @@ $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/multi2oneinfo/Multi2
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/filterjs/VcfFilterJs,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/indexvcf/IndexVcf,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/bioalcidae/BioAlcidae,1,,,,,))
+$(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/interbed/InterBed,1,,,,,))
+$(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/countvariants/CountVariants,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/fasta/readfasta/ReadFasta,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/fasta/writefasta/WriteFasta,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/gatk/selectvariants/SelectVariants,1,,,,,))
@@ -169,6 +171,7 @@ $(eval $(call generatecode,com/github/lindenb/knime5bio/gatk/leftalign/LeftAlign
 $(eval $(call generatecode,com/github/lindenb/knime5bio/gatk/phasebytransmission/PhaseByTransmission,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/bed/mergebed/MergeBed,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/bed/intersectbed/IntersectBed,1,,,,,))
+$(eval $(call generatecode,com/github/lindenb/knime5bio/bed/slop/SlopBed,1,,,,,))
 
 	
 
@@ -213,6 +216,8 @@ ${dist.dir}/com_github_lindenb_knime5bio.jar : $(sort ${knime.jars} ${extra.jars
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/multi2oneallele/Multi2OneAlleleNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/multi2oneinfo/Multi2OneInfoNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/filterjs/VcfFilterJsNodeModel.java \
+	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/interbed/InterBedNodeModel.java \
+	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/countvariants/CountVariantsNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/bioalcidae/BioAlcidaeNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/gatk/selectvariants/SelectVariantsNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/gatk/variantfiltration/VariantFiltrationNodeModel.java \
@@ -224,6 +229,7 @@ ${dist.dir}/com_github_lindenb_knime5bio.jar : $(sort ${knime.jars} ${extra.jars
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/fasta/readfasta/ReadFastaNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/bed/mergebed/MergeBedNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/bed/intersectbed/IntersectBedNodeModel.java \
+	${this.dir}src/main/java/com/github/lindenb/knime5bio/bed/slop/SlopBedNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/veprest/VepRestNodeModel.java
 	mkdir -p $(dir $@) ${tmp.dir}
 	${JAVAC} -Xlint -d ${tmp.dir} -g -classpath "$(subst $(SPACE),:,$(filter %.jar,$^))" -sourcepath ${this.dir}src/main/java:${this.dir}src/main/generated-code/java $(filter %.java,$^)
