@@ -22,9 +22,9 @@ import htsjdk.samtools.util.CloserUtil;
 
 public class CountVariantsNodeModel extends AbstractCountVariantsNodeModel {
     @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception
+    protected BufferedDataTable[] execute(final BufferedDataTable inData, final ExecutionContext exec) throws Exception
         {
-    	final int vcfColumn = super.findColumnIndexByName(inData[0],super.__VCF);
+    	final int vcfColumn = super.findColumnIndexByName(inData,super.__VCF);
     	BufferedDataContainer container0 = null;
         LogRowIterator iter =null;
         BufferedReader in=null;
@@ -34,7 +34,7 @@ public class CountVariantsNodeModel extends AbstractCountVariantsNodeModel {
 			container0 = exec.createDataContainer(super.createOutTableSpec0());
 
         	
-        	iter =  new LogRowIterator("Count",inData[0], exec);
+        	iter =  new LogRowIterator("Count",inData, exec);
         	while(iter.hasNext())
         		{
 				final DataRow row = iter.next();

@@ -16,8 +16,8 @@ import com.github.lindenb.knime5bio.gatk.GatkRunner;
 
 
 public class CombineVariantsNodeModel extends AbstractCombineVariantsNodeModel {
-@Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception
+	@Override
+    protected BufferedDataTable[] execute(final BufferedDataTable inData, final ExecutionContext exec) throws Exception
         {
 		final GatkRunner gatkRunner=new GatkRunner();
 		this.assureNodeWorkingDirectoryExists();
@@ -25,7 +25,7 @@ public class CombineVariantsNodeModel extends AbstractCombineVariantsNodeModel {
 		
 			gatkRunner.setLogger(this.getLogger());
 			gatkRunner.setGatkJarFile(super.getSettingsModelGatkpathFile());
-			final Set<File> vcfFiles = super.collectFilesInOneColumn(inData[0], super.__vcf);
+			final Set<File> vcfFiles = super.collectFilesInOneColumn(inData, super.__vcf);
 	    	if(vcfFiles.isEmpty())
 	    		{
 	    		throw new RuntimeException("no vcf to be merged");
@@ -61,7 +61,7 @@ public class CombineVariantsNodeModel extends AbstractCombineVariantsNodeModel {
 		    	throw new RuntimeException("Output file was not created");
 		    	}
 		    
-	    	final DataTableSpec spec0 = createOutTableSpec0(inData);
+	    	final DataTableSpec spec0 = createOutTableSpec0();
 	    	final BufferedDataContainer container = exec.createDataContainer(spec0);
 	    	container.addRowToTable(
 	    			new DefaultRow(RowKey.createRowKey(1L),

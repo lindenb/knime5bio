@@ -10,7 +10,8 @@ import com.github.lindenb.knime5bio.htsjdk.variant.KnimeVcfIterator;
 
 public class Multi2OneAlleleNodeModel extends AbstractMulti2OneAlleleNodeModel {
 @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, 
+    protected BufferedDataTable[] execute(final BufferedDataTable header,
+    		final BufferedDataTable body,
     		final ExecutionContext exec) throws Exception
         {     	
 		final VcfMultiToOneAllele application = new VcfMultiToOneAllele();
@@ -19,7 +20,7 @@ public class Multi2OneAlleleNodeModel extends AbstractMulti2OneAlleleNodeModel {
     		application.setPrint_samples(super.isSettingsModelPrint_samplesBoolean());     		
     		checkEmptyListOfThrowables(application.initializeKnime());
 
-     		final VcfIterator vcfIn = new KnimeVcfIterator( inData[0],inData[1] );
+     		final VcfIterator vcfIn = new KnimeVcfIterator(header,body);
      		final KnimeVariantContextWriter vcfOut = new KnimeVariantContextWriter(exec);
      		checkEmptyListOfThrowables(application.doVcfToVcf(this.getNodeName(),vcfIn,vcfOut));
 			vcfIn.close();

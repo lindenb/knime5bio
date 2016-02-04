@@ -20,7 +20,9 @@ public class BioAlcidaeNodeModel extends AbstractBioAlcidaeNodeModel {
      BioAlcidaeNodeModel() {
      }
 @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, 
+    protected BufferedDataTable[] execute(
+    		final BufferedDataTable headerTable, 
+    		final BufferedDataTable bodyTable, 
     		final ExecutionContext exec) throws Exception
         {   
 		VcfIterator iter=null;
@@ -28,7 +30,7 @@ public class BioAlcidaeNodeModel extends AbstractBioAlcidaeNodeModel {
 		this.assureNodeWorkingDirectoryExists();
 		final File outFile = super.createFileForWriting(Optional.of("BioAlcidae"), ".txt");
 		try {
-	    	final DataTableSpec spec0 = createOutTableSpec0(inData);
+	    	final DataTableSpec spec0 = createOutTableSpec0();
 	    	final BufferedDataContainer container = exec.createDataContainer(spec0);
 
 	    	application.setFormatString("VCF");
@@ -47,7 +49,7 @@ public class BioAlcidaeNodeModel extends AbstractBioAlcidaeNodeModel {
 			
 			
 			application.initializeJavaScript();
-			iter = new KnimeVcfIterator(inData[0], inData[1]);
+			iter = new KnimeVcfIterator(headerTable,bodyTable);
 			application.executeAsVcf(iter);
 	 	
 			

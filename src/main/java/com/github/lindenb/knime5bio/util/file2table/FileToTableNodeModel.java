@@ -12,10 +12,10 @@ public class FileToTableNodeModel extends AbstractFileToTableNodeModel {
      FileToTableNodeModel() {
      }
 @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, 
+    protected BufferedDataTable[] execute(final BufferedDataTable inData, 
     		final ExecutionContext exec) throws Exception
         {   
-		final Set<File> files = super.collectFilesInOneColumn(inData[0],super.__path);
+		final Set<File> files = super.collectFilesInOneColumn(inData,super.__path);
 		if(files.size()!=1) {
 			getLogger().info("expected one and only one file");
 			throw new IllegalStateException("expected one and only one file");

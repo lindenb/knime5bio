@@ -126,13 +126,14 @@ public class ExtractInfoNodeModel extends AbstractExtractInfoNodeModel {
 		}
 	
 	@Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, 
+    protected BufferedDataTable[] execute(final BufferedDataTable headerData,
+    		final BufferedDataTable bodyData,
     		final ExecutionContext exec) throws Exception
         {     	
 		VcfIterator vcfIn = null;
 		KnimeVariantContextWriter vcfOut=null;
      	try {
-     		vcfIn = new KnimeVcfIterator( inData[0],inData[1] );
+     		vcfIn = new KnimeVcfIterator(headerData,bodyData);
      		final VCFHeader header = vcfIn.getHeader();
      		
      		vcfOut = new ExtractInfoContextWriter(exec);

@@ -22,7 +22,11 @@ public class CmpCallersNodeModel extends AbstractCmpCallersNodeModel {
      CmpCallersNodeModel() {
      }
 @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, 
+    protected BufferedDataTable[] execute(
+    		final BufferedDataTable headerTable1, 
+    		final BufferedDataTable bodyTable1, 
+    		final BufferedDataTable headerTable2, 
+    		final BufferedDataTable bodyTable2, 
     		final ExecutionContext exec) throws Exception
         {   
 		VcfIterator iterators[]=new VcfIterator[]{null,null};
@@ -47,8 +51,8 @@ public class CmpCallersNodeModel extends AbstractCmpCallersNodeModel {
 			
 
 			checkEmptyListOfThrowables(application.initializeKnime());
-			iterators[0] = new KnimeVcfIterator(inData[0], inData[1]);
-			iterators[1] = new KnimeVcfIterator(inData[2], inData[3]);
+			iterators[0] = new KnimeVcfIterator(headerTable1, bodyTable1);
+			iterators[1] = new KnimeVcfIterator(headerTable2, bodyTable2);
 			checkEmptyListOfThrowables(application.compare(iterators[0],iterators[1]));
 			
 			

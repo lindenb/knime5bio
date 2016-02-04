@@ -14,8 +14,7 @@ import htsjdk.samtools.util.CloserUtil;
 
 public class EchoNodeModel extends AbstractEchoNodeModel {
 @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, 
-    		final ExecutionContext exec) throws Exception
+    protected BufferedDataTable[] execute(final ExecutionContext exec) throws Exception
  		{
 		BufferedDataContainer bdc = null;
 		long count = 0L;

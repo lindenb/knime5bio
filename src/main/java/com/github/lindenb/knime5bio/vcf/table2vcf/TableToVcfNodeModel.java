@@ -7,7 +7,6 @@ import org.knime.core.data.def.DefaultRow;
 import org.knime.core.node.BufferedDataContainer;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.ExecutionContext;
-import org.knime.core.node.InvalidSettingsException;
 import com.github.lindenb.jvarkit.util.vcf.VCFUtils;
 import com.github.lindenb.jvarkit.util.vcf.VcfIterator;
 import com.github.lindenb.knime5bio.htsjdk.variant.KnimeVcfIterator;
@@ -19,7 +18,8 @@ import htsjdk.variant.vcf.VCFHeader;
 
 public class TableToVcfNodeModel extends AbstractTableToVcfNodeModel {
 @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, 
+    protected BufferedDataTable[] execute(final BufferedDataTable inDataHeader,
+    		final BufferedDataTable inDataBody,
     		final ExecutionContext exec) throws Exception
         {
      	VcfIterator in=null;
@@ -28,7 +28,7 @@ public class TableToVcfNodeModel extends AbstractTableToVcfNodeModel {
  		final File outFile = super.createFileForWriting(Optional.empty(), ".vcf.gz");
 
      	try {
-     		in = new KnimeVcfIterator(inData[0],inData[1]);
+     		in = new KnimeVcfIterator(inDataHeader,inDataBody);
 			final VCFHeader header = in.getHeader();
 			outFile.getParentFile().mkdirs();
      		w = VCFUtils.createVariantContextWriter(outFile);

@@ -21,6 +21,8 @@ import org.knime.core.data.def.StringCell;
 import org.knime.core.data.def.IntCell;
 import org.knime.core.data.def.DoubleCell;
 import org.knime.core.node.InvalidSettingsException;
+import org.knime.core.node.ExecutionContext;
+
 
 //force javac 
 <xsl:if test="$abstract = 'true'">import <xsl:value-of select="$package"/>.<xsl:value-of select="concat($nodeName,'NodeModel')"/>;
@@ -54,6 +56,17 @@ public <xsl:if test="$abstract = 'true'">abstract</xsl:if> class <xsl:if test="$
 		super(NUMBER_INPUT_TABLES,NUMBER_OUTPUT_TABLES);
 		}
 	
+	
+    protected abstract BufferedDataTable[] execute(<xsl:for-each select="ports/inPort">
+	    final BufferedDataTable inData<xsl:value-of select="position() - 1"/>, </xsl:for-each>
+	    final ExecutionContext exec) throws Exception;
+	
+	
+	@Override
+    protected final BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception
+		{
+		return this.execute(<xsl:for-each select="ports/inPort">inData[<xsl:value-of select="position() - 1"/>],</xsl:for-each>exec);
+		}
 	
     protected DataTableSpec createOutDataTableSpec(final int index,final DataTableSpec[] inSpec)
     	{

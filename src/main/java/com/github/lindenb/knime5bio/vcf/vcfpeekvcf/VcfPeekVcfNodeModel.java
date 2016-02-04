@@ -10,7 +10,8 @@ import com.github.lindenb.knime5bio.htsjdk.variant.KnimeVcfIterator;
 
 public class VcfPeekVcfNodeModel extends AbstractVcfPeekVcfNodeModel {
 @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, 
+    protected BufferedDataTable[] execute(final BufferedDataTable inDataHeader,
+    		final BufferedDataTable inDataBody, 
     		final ExecutionContext exec) throws Exception
         {     	
 		final VcfPeekVcf application = new VcfPeekVcf();
@@ -23,7 +24,7 @@ public class VcfPeekVcfNodeModel extends AbstractVcfPeekVcfNodeModel {
     		application.setTagsAsString(super.getSettingsModelTagsAsStringString());
     		checkEmptyListOfThrowables(application.initializeKnime());
 
-     		final VcfIterator vcfIn = new KnimeVcfIterator( inData[0],inData[1] );
+     		final VcfIterator vcfIn = new KnimeVcfIterator(inDataHeader,inDataBody);
      	
      		final KnimeVariantContextWriter vcfOut = new KnimeVariantContextWriter(exec);
      		checkEmptyListOfThrowables(application.doVcfToVcf(this.getNodeName(),vcfIn,vcfOut));

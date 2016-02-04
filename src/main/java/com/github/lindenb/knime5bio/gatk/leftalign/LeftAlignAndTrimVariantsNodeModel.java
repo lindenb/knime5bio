@@ -21,14 +21,13 @@ import com.github.lindenb.knime5bio.gatk.GatkRunner;
 
 public class LeftAlignAndTrimVariantsNodeModel extends AbstractLeftAlignAndTrimVariantsNodeModel {
 @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception
+    protected BufferedDataTable[] execute(final BufferedDataTable inTable, final ExecutionContext exec) throws Exception
         {
-		final BufferedDataTable inTable = inData[0];
 		final int vcfColumn = super.findColumnIndexByName(inTable,super.getSettingsModelVcf());
 		CloseableRowIterator iter=null;
 		long nRows=1;
 		try {
-	    	final DataTableSpec spec0 = createOutTableSpec0(inData);
+	    	final DataTableSpec spec0 = createOutTableSpec0();
 	    	final BufferedDataContainer container = exec.createDataContainer(spec0);
 
 			

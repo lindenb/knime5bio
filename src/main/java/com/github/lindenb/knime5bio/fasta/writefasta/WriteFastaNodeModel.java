@@ -4,30 +4,28 @@ import java.io.PrintWriter;
 
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataRow;
-import org.knime.core.data.container.CloseableRowIterator;
 import org.knime.core.data.def.StringCell;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.ExecutionContext;
 
 import com.github.lindenb.jvarkit.io.IOUtils;
+import com.github.lindenb.knime5bio.LogRowIterator;
 
 import htsjdk.samtools.util.CloserUtil;
 
 public class WriteFastaNodeModel extends AbstractWriteFastaNodeModel{
     @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception
+    protected BufferedDataTable[] execute(final BufferedDataTable inData, final ExecutionContext exec) throws Exception
         {
-        CloseableRowIterator iter=null;
-        BufferedDataTable inTable=inData[0];
+    	LogRowIterator iter=null;
         int fold = super.__fold.getIntValue();
-        int tIndex = super.findColumnIndexByName(inData[0],super.__title);
-        int sIndex = super.findColumnIndexByName(inData[0],super.__sequence);
+        int tIndex = super.findColumnIndexByName(inData,super.__title);
+        int sIndex = super.findColumnIndexByName(inData,super.__sequence);
         PrintWriter w =null;
         try
             {
             w= IOUtils.openFileForPrintWriter(super.getSettingsModelOutputfileFile());
-            int nRows=0;
-            iter=inTable.iterator();
+            iter= new LogRowIterator("Fasta",inData, exec);
             while(iter.hasNext())
                 {
                 final DataRow row=iter.next();
@@ -52,14 +50,14 @@ public class WriteFastaNodeModel extends AbstractWriteFastaNodeModel{
                 w.println();
 
                 exec.checkCanceled();
-                exec.setProgress("writing... "+nRows);
-                ++nRows;
                 }
+            iter.close();iter=null;
             w.flush();
             return NO_BUFFERED_TABLE;
             }
         finally
             {
+            CloserUtil.close(iter);
             CloserUtil.close(w);
             }
         }

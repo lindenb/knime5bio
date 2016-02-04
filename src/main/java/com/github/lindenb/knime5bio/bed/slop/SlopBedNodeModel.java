@@ -29,10 +29,10 @@ import htsjdk.tribble.bed.BEDFeature;
 
 public class SlopBedNodeModel extends AbstractSlopBedNodeModel {
     @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception
+    protected BufferedDataTable[] execute(final BufferedDataTable inData, final ExecutionContext exec) throws Exception
         {
     	final int extend = super.__extendBases.getIntValue();
-    	final int bedColumn = super.findColumnIndexByName(inData[0],super.__BED);
+    	final int bedColumn = super.findColumnIndexByName(inData,super.__BED);
     	BufferedDataContainer container0 = null;
         LogRowIterator iter =null;
         BufferedReader in=null;
@@ -49,7 +49,7 @@ public class SlopBedNodeModel extends AbstractSlopBedNodeModel {
         	
 			container0 = exec.createDataContainer(super.createOutTableSpec0());
 
-        	iter =  new LogRowIterator("Slop",inData[0], exec);
+        	iter =  new LogRowIterator("Slop",inData, exec);
         	while(iter.hasNext())
         		{
 				final DataRow row = iter.next();

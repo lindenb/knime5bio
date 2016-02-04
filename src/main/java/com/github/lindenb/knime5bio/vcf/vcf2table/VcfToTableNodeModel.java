@@ -15,10 +15,10 @@ import htsjdk.variant.vcf.VCFHeader;
 
 public class VcfToTableNodeModel extends AbstractVcfToTableNodeModel {
 @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, 
+    protected BufferedDataTable[] execute(final BufferedDataTable inData, 
     		final ExecutionContext exec) throws Exception
         {
-     	final Set<File> files= super.collectFilesInOneColumn(inData[0], super.getSettingsModelVcf());
+     	final Set<File> files= super.collectFilesInOneColumn(inData, super.getSettingsModelVcf());
      	if(files.size()!=1)
      		{
      		throw new RuntimeException("Expected ONE VCF file in table but got "+files.size());

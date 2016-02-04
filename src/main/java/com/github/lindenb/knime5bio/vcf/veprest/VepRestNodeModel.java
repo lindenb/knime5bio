@@ -30,7 +30,9 @@ import htsjdk.variant.variantcontext.VariantContext;
 
 public class VepRestNodeModel extends AbstractVepRestNodeModel {
 @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, 
+    protected BufferedDataTable[] execute(
+    		final BufferedDataTable inDataheader,
+    		final BufferedDataTable inDatabody,
     		final ExecutionContext exec) throws Exception
         {   
 		BufferedDataContainer container=null;
@@ -44,7 +46,7 @@ public class VepRestNodeModel extends AbstractVepRestNodeModel {
      		final DocumentBuilder domBuilder = dbf.newDocumentBuilder();
      		
      		long lastCall=System.currentTimeMillis();
-     		final DataTableSpec spec0 = inData[1].getSpec();
+     		final DataTableSpec spec0 = inDatabody.getSpec();
      		final DataTableSpec outspec = new DataTableSpec(
      				spec0,
      				new DataTableSpec(new DataColumnSpecCreator("VEP",XMLCell.TYPE).createSpec())
@@ -54,8 +56,8 @@ public class VepRestNodeModel extends AbstractVepRestNodeModel {
      		
      		exec.createDataContainer(outspec);
      		
-     		vcfIn = new KnimeVcfIterator( inData[0],inData[1] );
-     		iter = inData[1].iterator();
+     		vcfIn = new KnimeVcfIterator( inDataheader,inDatabody );
+     		iter = inDatabody.iterator();
      		while(iter.hasNext())
      			{
      			final DataRow row= iter.next();

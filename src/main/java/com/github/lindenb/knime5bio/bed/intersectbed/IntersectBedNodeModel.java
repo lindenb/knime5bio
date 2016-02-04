@@ -4,9 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import org.knime.core.data.DataCell;
@@ -29,10 +26,11 @@ import htsjdk.tribble.bed.BEDCodec;
 import htsjdk.tribble.bed.BEDFeature;
 
 public class IntersectBedNodeModel extends AbstractIntersectBedNodeModel {
+	
     @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception
+    protected BufferedDataTable[] execute(final BufferedDataTable inData, final ExecutionContext exec) throws Exception
         {
-    	final int bedColumn = super.findColumnIndexByName(inData[0],super.__BED);
+    	final int bedColumn = super.findColumnIndexByName(inData,super.__BED);
     	BufferedDataContainer container0 = null;
         LogRowIterator iter =null;
         BufferedReader in=null;
@@ -40,7 +38,7 @@ public class IntersectBedNodeModel extends AbstractIntersectBedNodeModel {
         IntervalTreeMap<Interval> intervals = null;
         try
             {
-        	iter =  new LogRowIterator("Intersect",inData[0], exec);
+        	iter =  new LogRowIterator("Intersect",inData, exec);
         	while(iter.hasNext())
         		{
 				final DataRow row = iter.next();

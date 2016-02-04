@@ -15,15 +15,15 @@ public class HeadNodeModel extends AbstractHeadNodeModel {
      HeadNodeModel() {
      }
      @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, 
+    protected BufferedDataTable[] execute(final BufferedDataTable inData, 
     		final ExecutionContext exec) throws Exception
         {   
     	BufferedDataContainer bdc=null;
     	CloseableRowIterator iter = null;
     	int count=0;
 		try {
-			bdc = exec.createDataContainer(inData[0].getDataTableSpec());
-			iter = inData[0].iterator();
+			bdc = exec.createDataContainer(inData.getDataTableSpec());
+			iter = inData.iterator();
 			while(iter.hasNext()) {
 				bdc.addRowToTable(iter.next());
 				++count;

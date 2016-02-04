@@ -24,10 +24,9 @@ import htsjdk.variant.variantcontext.writer.VariantContextWriter;
 
 public class RenameContigNodeModel extends AbstractRenameContigNodeModel {
 @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, 
+    protected BufferedDataTable[] execute(final BufferedDataTable inTable, 
     		final ExecutionContext exec) throws Exception
         {     	
-		final BufferedDataTable inTable = inData[0];
 		BufferedDataContainer container = null;
 		LogRowIterator iter = null;
 		final int vcfColumn = super.findColumnIndexByName(inTable,super.getSettingsModelVcf());
@@ -41,7 +40,7 @@ public class RenameContigNodeModel extends AbstractRenameContigNodeModel {
 
     		
     		
-	    	final DataTableSpec spec0 = createOutTableSpec0(inData);
+	    	final DataTableSpec spec0 = createOutTableSpec0();
 	    	container = exec.createDataContainer(spec0);
 
 			iter = new LogRowIterator("Rename Contig ",inTable,exec);

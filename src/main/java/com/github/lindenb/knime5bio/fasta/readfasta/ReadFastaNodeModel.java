@@ -4,11 +4,10 @@ import org.knime.core.data.DataTableSpec;
 import org.knime.core.node.BufferedDataContainer;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.ExecutionContext;
-import org.slf4j.LoggerFactory;
 
 public class ReadFastaNodeModel extends AbstractReadFastaNodeModel {
     @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception
+    protected BufferedDataTable[] execute(final ExecutionContext exec) throws Exception
         {
         final int limit = super.__maxSequences.getIntValue();
         final String url = super.__fastaFile.getStringValue();
@@ -20,7 +19,7 @@ public class ReadFastaNodeModel extends AbstractReadFastaNodeModel {
             {
             r = this.openUriForBufferedReader(url);
 
-            final DataTableSpec dataspec0 = this.createOutTableSpec0(inData);
+            final DataTableSpec dataspec0 = this.createOutTableSpec0();
             final BufferedDataContainer container0 = exec.createDataContainer(dataspec0);
 
             String seqname="";

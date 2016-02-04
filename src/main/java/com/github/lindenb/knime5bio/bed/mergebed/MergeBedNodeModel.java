@@ -29,9 +29,9 @@ import htsjdk.tribble.bed.BEDFeature;
 
 public class MergeBedNodeModel extends AbstractMergeBedNodeModel {
     @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception
+    protected BufferedDataTable[] execute(final BufferedDataTable inData, final ExecutionContext exec) throws Exception
         {
-    	final int bedColumn = super.findColumnIndexByName(inData[0],super.__BED);
+    	final int bedColumn = super.findColumnIndexByName(inData,super.__BED);
     	BufferedDataContainer container0 = null;
         LogRowIterator iter =null;
         BufferedReader in=null;
@@ -42,7 +42,7 @@ public class MergeBedNodeModel extends AbstractMergeBedNodeModel {
 			container0 = exec.createDataContainer(super.createOutTableSpec0());
 
         	
-        	iter =  new LogRowIterator("Merge",inData[0], exec);
+        	iter =  new LogRowIterator("Merge",inData, exec);
         	while(iter.hasNext())
         		{
 				final DataRow row = iter.next();

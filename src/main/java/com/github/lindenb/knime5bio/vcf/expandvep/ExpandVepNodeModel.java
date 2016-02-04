@@ -110,7 +110,8 @@ public class ExpandVepNodeModel extends AbstractExpandVepNodeModel {
 		}
 	
 	@Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, 
+    protected BufferedDataTable[] execute(final BufferedDataTable headerData,
+    		final BufferedDataTable bodyData,
     		final ExecutionContext exec) throws Exception
         {     
 		final List<String> vepColumns= new ArrayList<>();
@@ -118,7 +119,7 @@ public class ExpandVepNodeModel extends AbstractExpandVepNodeModel {
 		VcfIterator vcfIn = null;
 		KnimeVariantContextWriter vcfOut=null;
      	try {
-     		vcfIn = new KnimeVcfIterator( inData[0],inData[1] );
+     		vcfIn = new KnimeVcfIterator(headerData,bodyData);
      		final VCFHeader header = vcfIn.getHeader();
      		
  			final VCFInfoHeaderLine info = header.getInfoHeaderLine("CSQ");

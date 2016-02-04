@@ -3,15 +3,10 @@ package com.github.lindenb.knime5bio.vcf.interbed;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataRow;
-import org.knime.core.data.RowKey;
 import org.knime.core.data.def.DefaultRow;
 import org.knime.core.data.def.StringCell;
 import org.knime.core.node.BufferedDataContainer;
@@ -34,9 +29,9 @@ import htsjdk.variant.variantcontext.writer.VariantContextWriter;
 
 public class InterBedNodeModel extends AbstractInterBedNodeModel {
     @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception
+    protected BufferedDataTable[] execute(final BufferedDataTable  bedTable,final BufferedDataTable  vcftable, final ExecutionContext exec) throws Exception
         {
-    	final int vcfColumn = super.findColumnIndexByName(inData[1],super.__VCF);
+    	final int vcfColumn = super.findColumnIndexByName(bedTable,super.__VCF);
     	BufferedDataContainer container0 = null;
         LogRowIterator iter =null;
         BufferedReader in=null;
@@ -46,7 +41,7 @@ public class InterBedNodeModel extends AbstractInterBedNodeModel {
         
         try
             {
-        	for(File bedFile:super.collectFilesInOneColumn(inData[0], super.__BED))
+        	for(File bedFile:super.collectFilesInOneColumn(bedTable, super.__BED))
         		{
 				final BEDCodec codec = new BEDCodec();
         		in = IOUtils.openFileForBufferedReading(bedFile);
@@ -63,7 +58,7 @@ public class InterBedNodeModel extends AbstractInterBedNodeModel {
 			container0 = exec.createDataContainer(super.createOutTableSpec0());
 
         	
-        	iter =  new LogRowIterator("Intersect",inData[1], exec);
+        	iter =  new LogRowIterator("Intersect",vcftable, exec);
         	while(iter.hasNext())
         		{
 				final DataRow row = iter.next();

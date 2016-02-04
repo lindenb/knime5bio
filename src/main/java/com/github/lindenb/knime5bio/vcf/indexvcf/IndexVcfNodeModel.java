@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataRow;
 import org.knime.core.data.DataTableSpec;
-import org.knime.core.data.RowKey;
 import org.knime.core.data.container.CloseableRowIterator;
 import org.knime.core.data.def.DefaultRow;
 import org.knime.core.data.def.StringCell;
@@ -25,14 +24,13 @@ import htsjdk.samtools.util.CloserUtil;
 
 public class IndexVcfNodeModel extends AbstractIndexVcfNodeModel {
 @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception
+    protected BufferedDataTable[] execute(final BufferedDataTable inTable, final ExecutionContext exec) throws Exception
         {
-		final BufferedDataTable inTable = inData[0];
 		final int vcfColumn = super.findColumnIndexByName(inTable,super.getSettingsModelVcf());
 		this.assureNodeWorkingDirectoryExists();
 		CloseableRowIterator iter=null;
 		try {
-	    	final DataTableSpec spec0 = createOutTableSpec0(inData);
+	    	final DataTableSpec spec0 = createOutTableSpec0();
 	    	final BufferedDataContainer container = exec.createDataContainer(spec0);
 
 			

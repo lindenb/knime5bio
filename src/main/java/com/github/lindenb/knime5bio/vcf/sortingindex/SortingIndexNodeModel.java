@@ -2,7 +2,6 @@ package com.github.lindenb.knime5bio.vcf.sortingindex;
 import java.io.File;
 
 import org.knime.core.data.DataCell;
-import org.knime.core.data.DataColumnDomainCreator;
 import org.knime.core.data.DataColumnSpecCreator;
 import org.knime.core.data.DataRow;
 import org.knime.core.data.DataTableSpec;
@@ -26,14 +25,14 @@ import htsjdk.samtools.util.CloserUtil;
 
 public class SortingIndexNodeModel extends AbstractSortingIndexNodeModel {
 @Override
-    protected BufferedDataTable[] execute(final BufferedDataTable[] inData, 
+    protected BufferedDataTable[] execute(final BufferedDataTable inData, 
     		final ExecutionContext exec) throws Exception
         {     	
 	 	ReferenceSequenceFile reference=null;
 		BufferedDataContainer container=null;
 		CloseableRowIterator iter = null;
-		final int chrom_index = super.findColumnIndexByName(inData[0], super.__CHROM);
-		final int pos_index = super.findColumnIndexByName(inData[0], super.__CHROM);
+		final int chrom_index = super.findColumnIndexByName(inData, super.__CHROM);
+		final int pos_index = super.findColumnIndexByName(inData, super.__POS);
      	try {
      		final File fasta = super.getSettingsModelReferenceGenomeFile();
      		reference = ReferenceSequenceFileFactory.getReferenceSequenceFile(fasta);
@@ -42,14 +41,14 @@ public class SortingIndexNodeModel extends AbstractSortingIndexNodeModel {
      		if(dict==null) throw new InvalidSettingsException("Cannot get dictionary of "+fasta);
      		
      		
-     		final DataTableSpec spec0 = inData[0].getSpec();
+     		final DataTableSpec spec0 = inData.getSpec();
      		final DataTableSpec outspec = new DataTableSpec(
      				spec0,
      				new DataTableSpec(new DataColumnSpecCreator("REFINDEX", LongCell.TYPE).createSpec())
      				);
      		
      		container = exec.createDataContainer(outspec);
-     		iter = inData[0].iterator();
+     		iter = inData.iterator();
      		while(iter.hasNext())
      			{
      			final DataRow row = iter.next();
