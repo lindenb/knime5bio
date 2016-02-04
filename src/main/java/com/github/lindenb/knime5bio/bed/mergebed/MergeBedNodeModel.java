@@ -39,6 +39,7 @@ public class MergeBedNodeModel extends AbstractMergeBedNodeModel {
         final IntervalTreeMap<Interval> intervals = new IntervalTreeMap<>();
         try
             {
+        	super.assureNodeWorkingDirectoryExists();
 			container0 = exec.createDataContainer(super.createOutTableSpec0());
 
         	
@@ -72,7 +73,15 @@ public class MergeBedNodeModel extends AbstractMergeBedNodeModel {
 					while(!inserted)
 						{
 						inserted=true;
-						Collection<Interval> overlapping = intervals.getOverlapping(interval);
+						
+						/* we need to extends by one base, to merge consecutive, but not overlaopping intervals. e.g: [1,9] and [10,20] */
+						final Interval intervalx1 = new Interval(
+								interval.getContig(),
+								Math.max(1, feat.getStart()-1),
+								feat.getEnd()+1);
+
+						
+						Collection<Interval> overlapping = intervals.getOverlapping(intervalx1);
 						if(overlapping!=null && !overlapping.isEmpty())
 							{
 							inserted=false;

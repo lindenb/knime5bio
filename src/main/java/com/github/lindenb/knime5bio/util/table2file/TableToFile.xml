@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>Convert a KNIME table to a table containing a path to a File</description>
+  <settings>
+    <setting name="printHeader" type="boolean" default="true" label="Print Header">
+       <description>Print Header</description>
+	</setting>
+      <setting name="extension" type="string"  label="File extension" required="false" default=".txt">
+       <description>File extension . e.g: '.txt'</description>
+      </setting>
+	  <setting name="nullValue" type="string"  label="NULL Value" required="false" default="N/A">
+       <description>value for 'null'</description>
+      </setting>
+  </settings>
+  <ports>
+		<inPort name="pathTable" label="Path Table" index="0"/>
+		<outPort name="outputTable" label="Output Table" index="0" >
+			<column name="TableToFile" type="string"/>
+		</outPort>
+  </ports>
+</node>

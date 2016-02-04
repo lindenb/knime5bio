@@ -28,6 +28,7 @@ public class TableToVcfNodeModel extends AbstractTableToVcfNodeModel {
  		final File outFile = super.createFileForWriting(Optional.empty(), ".vcf.gz");
 
      	try {
+     		super.assureNodeWorkingDirectoryExists();
      		in = new KnimeVcfIterator(inDataHeader,inDataBody);
 			final VCFHeader header = in.getHeader();
 			outFile.getParentFile().mkdirs();

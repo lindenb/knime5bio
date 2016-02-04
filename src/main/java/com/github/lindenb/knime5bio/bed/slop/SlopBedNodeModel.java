@@ -40,6 +40,7 @@ public class SlopBedNodeModel extends AbstractSlopBedNodeModel {
         ReferenceSequenceFile refFile=null;
         try
             {
+        	super.assureNodeWorkingDirectoryExists();
         	//get dict
         	refFile = ReferenceSequenceFileFactory.getReferenceSequenceFile(	super.getSettingsModelReferenceGenomeFile());
         	final SAMSequenceDictionary dict = refFile.getSequenceDictionary();

@@ -41,6 +41,7 @@ public class InterBedNodeModel extends AbstractInterBedNodeModel {
         
         try
             {
+        	super.assureNodeWorkingDirectoryExists();
         	for(File bedFile:super.collectFilesInOneColumn(bedTable, super.__BED))
         		{
 				final BEDCodec codec = new BEDCodec();

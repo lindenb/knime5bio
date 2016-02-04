@@ -25,10 +25,13 @@ public class BioAlcidaeNodeModel extends AbstractBioAlcidaeNodeModel {
     		final BufferedDataTable bodyTable, 
     		final ExecutionContext exec) throws Exception
         {   
+		String suffix = super.__extension.getStringValue().trim();
+		if(suffix.isEmpty()) suffix=".txt";
+		if(!suffix.startsWith(".")) suffix="."+suffix;
 		VcfIterator iter=null;
 		final BioAlcidae application = new BioAlcidae();
 		this.assureNodeWorkingDirectoryExists();
-		final File outFile = super.createFileForWriting(Optional.of("BioAlcidae"), ".txt");
+		final File outFile = super.createFileForWriting(Optional.of("BioAlcidae"), suffix);
 		try {
 	    	final DataTableSpec spec0 = createOutTableSpec0();
 	    	final BufferedDataContainer container = exec.createDataContainer(spec0);

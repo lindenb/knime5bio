@@ -2,7 +2,11 @@
 <node xmlns:j="http://github.com/lindenb/jvarkit/">
   <description>javascript version of awk for bioinformatics. Allow to reformat data See <url>https://github.com/lindenb/jvarkit/wiki/BioAlcidae</url></description>
   <settings>
-    <setting name="scriptExpr" type="string" multiline="true" label="Javascript Exrpression" required="false">
+      <setting name="extension" type="string"  label="File extension" required="false" default=".txt">
+       <description>File extension . e.g: '.txt'</description>
+      </setting>
+  
+    <setting name="scriptExpr" type="string" multiline="true" label="Javascript Expression" required="false">
        <description>Javascript Expression</description>
        <default>out.println("#CHROM\tSTART");
 while(iter.hasNext())

@@ -38,6 +38,7 @@ public class IntersectBedNodeModel extends AbstractIntersectBedNodeModel {
         IntervalTreeMap<Interval> intervals = null;
         try
             {
+        	super.assureNodeWorkingDirectoryExists();
         	iter =  new LogRowIterator("Intersect",inData, exec);
         	while(iter.hasNext())
         		{

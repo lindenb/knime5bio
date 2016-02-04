@@ -146,6 +146,7 @@ $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/vcf2table/VcfToTable
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/sortingindex/SortingIndex,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/cmpcallers/CmpCallers,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/util/file2table/FileToTable,1,,,,,))
+$(eval $(call generatecode,com/github/lindenb/knime5bio/util/table2file/TableToFile,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/util/head/Head,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/util/echo/Echo,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/groupbygene/GroupByGene,1,,,,,))
@@ -200,6 +201,7 @@ ${dist.dir}/com.github.lindenb.knime5bio_${plugin.version}.jar :${dist.dir}/com_
 
 ${dist.dir}/com_github_lindenb_knime5bio.jar : $(sort ${knime.jars} ${extra.jars} ) \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/util/file2table/FileToTableNodeModel.java \
+	${this.dir}src/main/java/com/github/lindenb/knime5bio/util/table2file/TableToFileNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/util/head/HeadNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/util/echo/EchoNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/renamechr/RenameContigNodeModel.java \
