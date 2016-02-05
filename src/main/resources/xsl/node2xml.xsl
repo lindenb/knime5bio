@@ -78,6 +78,18 @@ e/v2.10 http://knime.org/node/v2.10.xsd">
 
 <xsl:template match="documentation">
 <xsl:apply-templates select="p|h|br|b|i|u|tt|a|url|ul|ol|li|h2|h3|h4|pre|sub|table|tr|td|img|text()"/>
+<h3>Author</h3>
+Pierre Lindenbaum PhD <a href="http://twitter.com/yokofakun">@yokofakun</a> Institut du Thorax, U1087, 44000 Nantes.<p/>
+<h3>Source Code</h3>
+<xsl:variable name="src" select="concat('https://github.com/lindenb/knime5bio/blob/master/src/main/java/',translate($package,'.','/'),'/',$nodeName,'NodeModel.java')"/>
+<a>
+<xsl:attribute name="href"><xsl:value-of select="$src"/></xsl:attribute>
+<xsl:value-of select="$src"/>
+</a><p/>
+<h3>Report bugs / Contribute</h3>
+<a href="https://github.com/lindenb/knime5bio/issues">https://github.com/lindenb/knime5bio/issues</a><p/>
+<h3>License</h3>
+The project is licensed under the MIT license.<p/>
 </xsl:template>
 
 <xsl:template match="p|h|br|b|i|u|tt|ul|ol|h2|h3|h4|pre|sub|table|tr|td|li">

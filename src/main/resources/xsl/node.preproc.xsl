@@ -18,6 +18,9 @@
 <node >
 	<xsl:apply-templates select="@*"/>
 	<xsl:apply-templates select="*|text()"/>
+	<xsl:if test='not(documentation)'>
+	<documentation></documentation>
+	</xsl:if>
 </node>
 </xsl:template>
 
