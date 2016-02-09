@@ -2,6 +2,9 @@
 <node xmlns:j="http://github.com/lindenb/jvarkit/">
   <description>Filter a VCF file annotated with SNPEff or VEP with terms from Sequence-Ontology. Reasoning : Children of user's SO-terms will be also used.</description>
   <settings>
+  	<setting name="vcf" type="column" index="0" required="true" data-type="string" >
+				<description>Input VCF file</description>
+		</setting>
     <setting name="userTermsAsString" type="string" multiline="true" required="false">
       <description>add this SO:ACN</description>
     </setting>
@@ -16,8 +19,10 @@
     </setting>
   </settings>
   <ports>
-		<inPort id="vcf"/>
-		<outPort id="vcf"/>
+		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
+		<outPort index="0" name="VCF output">
+			<column name="VCF" type="string"/>
+		</outPort>
   </ports>
   <documentation>
   See also: <a>https://github.com/lindenb/jvarkit/wiki/VcffilterSequenceOntology</a>.

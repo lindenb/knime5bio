@@ -47,7 +47,7 @@ public class IndexVcfNodeModel extends AbstractIndexVcfNodeModel {
 					throw new FileNotFoundException("cannot find " + inFile);
 				if (!inFile.isFile())
 					throw new FileNotFoundException("not a file: " + inFile);
-				final File outFile = super.createFileForWriting(Optional.of("SelectVariants"), ".vcf.gz");
+				final File outFile = super.createFileForWriting(Optional.of("TabixVcf"), ".vcf.gz");
 				final VcfIndexTabix application = new VcfIndexTabix();
 				VcfIterator r=null;
 				try {

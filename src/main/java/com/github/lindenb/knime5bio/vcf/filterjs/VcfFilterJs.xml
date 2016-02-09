@@ -2,6 +2,9 @@
 <node >
 	<description>Filter a VCF table with a Javascript expression</description>
 	<settings>
+		<setting name="vcf" type="column" index="0" required="true" data-type="string" >
+				<description>Input VCF file</description>
+		</setting>
 		<setting name="vcfExpr" type="string"  multiline="true" required="true" label="javascript">
 			<description>A Javascript expression</description>
 			<default>/** Sample having a unique genotype: */
@@ -40,8 +43,10 @@ accept(variant);
 	</settings>
 
 	<ports>
-		<inPort id="vcf"/>
-		<outPort id="vcf"/>
+		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
+		<outPort index="0" name="VCF output">
+			<column name="VCF" type="string"/>
+		</outPort>
 	</ports>
 	
 	<documentation>The script binds the following variables:
