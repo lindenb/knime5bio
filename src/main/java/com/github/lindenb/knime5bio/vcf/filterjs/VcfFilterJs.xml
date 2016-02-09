@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <node >
+
 	<description>Filter a VCF table with a Javascript expression</description>
 	<settings>
 		<setting name="vcf" type="column" index="0" required="true" data-type="string" >
@@ -42,12 +43,17 @@ accept(variant);
 		</setting>
 	</settings>
 
+
+
 	<ports>
 		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
 		<outPort index="0" name="VCF output">
 			<column name="VCF" type="string"/>
 		</outPort>
 	</ports>
+
+<snippet id="transform-file"/>
+
 	
 	<documentation>The script binds the following variables:
 	  <ul>

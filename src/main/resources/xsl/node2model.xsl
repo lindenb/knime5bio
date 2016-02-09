@@ -56,6 +56,97 @@ public <xsl:if test="$abstract = 'true'">abstract</xsl:if> class <xsl:if test="$
 		super(NUMBER_INPUT_TABLES,NUMBER_OUTPUT_TABLES);
 		}
 	
+	<xsl:if test="snippet[@id='transform-file']">
+	
+	protected abstract void transform(final java.io.File inFile,final java.io.File outFile) throws Exception;
+	
+	protected BufferedDataTable[] transform(
+		final BufferedDataTable inTable,
+		final SettingsModelColumnName column,
+		final String fileExtension,
+		final ExecutionContext exec
+			) throws Exception {
+		final int vcfColumn = super.findColumnIndexByName(inTable,column);
+		this.assureNodeWorkingDirectoryExists();
+		org.knime.core.node.BufferedDataContainer container=null;
+		com.github.lindenb.knime5bio.LogRowIterator iter=null;
+		
+		<xsl:if test="snippet[@id='transform-file' and @max-rows]">
+    		if( inTable.size() &gt;  <xsl:value-of select="snippet[@id='transform-file']/@max-rows"/>)
+    			{
+				throw new InvalidSettingsException("expected at most <xsl:value-of select="snippet[@id='transform-file']/@max-rows"/> rows but got "+inTable.size() );
+    			}
+	    </xsl:if>
+		
+		
+		try {
+	    	final DataTableSpec spec0 = createOutTableSpec0();
+	    	container = exec.createDataContainer(spec0);
+	    	
+			
+			
+			iter = new com.github.lindenb.knime5bio.LogRowIterator(inTable,exec);
+			while (iter.hasNext()) {
+				
+				
+				final org.knime.core.data.DataRow row = iter.next();
+				final DataCell cell = row.getCell(vcfColumn);
+				if(!(cell instanceof StringCell))
+					{
+					iter.close();
+					iter=null;
+					throw new InvalidSettingsException("not a string cell");
+					}
+				if (cell.isMissing())
+					continue;
+				final java.io.File inFile = new java.io.File(StringCell.class.cast(cell).getStringValue());
+				if (!inFile.exists())
+					{
+					iter.close();
+					iter=null;
+					throw new java.io.FileNotFoundException("cannot find " + inFile);
+					}
+				if (!inFile.isFile())
+					{
+					iter.close();
+					iter=null;
+					throw new java.io.IOException("not a file: " + inFile);
+					}
+				final java.io.File outFile = super.createFileForWriting(java.util.Optional.of(getNodeName()), fileExtension);
+				
+				transform(inFile,outFile);
+				
+	
+				if (!outFile.exists()) {
+					iter.close();
+					iter=null;
+					throw new RuntimeException("Output file was not created");
+				}
+				container.addRowToTable(new org.knime.core.data.def.DefaultRow(row.getKey(),
+						this.createDataCellsForOutTableSpec0(outFile.getPath())));
+	
+			} //end while
+			iter.close();iter=null;
+			container.close();
+	        BufferedDataTable out = container.getTable();
+	        container=null;
+	        return new BufferedDataTable[]{out};
+	
+		} catch(Exception err)
+		{
+			err.printStackTrace();
+			throw err;
+		}
+			
+		finally {
+			htsjdk.samtools.util.CloserUtil.close(iter);
+			htsjdk.samtools.util.CloserUtil.close(container);
+		}
+	}
+	
+	
+	</xsl:if>
+	
 	
     protected abstract BufferedDataTable[] execute(<xsl:for-each select="ports/inPort">
 	    final BufferedDataTable inData<xsl:value-of select="position() - 1"/>, </xsl:for-each>

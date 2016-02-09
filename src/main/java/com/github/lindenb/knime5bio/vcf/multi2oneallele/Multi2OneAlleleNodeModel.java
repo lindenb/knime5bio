@@ -1,37 +1,46 @@
 package com.github.lindenb.knime5bio.vcf.multi2oneallele;
+import java.io.File;
+
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.ExecutionContext;
 
 import com.github.lindenb.jvarkit.tools.misc.VcfMultiToOneAllele;
+import com.github.lindenb.jvarkit.util.vcf.VCFUtils;
 import com.github.lindenb.jvarkit.util.vcf.VcfIterator;
-import com.github.lindenb.knime5bio.htsjdk.variant.KnimeVariantContextWriter;
-import com.github.lindenb.knime5bio.htsjdk.variant.KnimeVcfIterator;
+
+import htsjdk.samtools.util.CloserUtil;
+import htsjdk.variant.variantcontext.writer.VariantContextWriter;
 
 
 public class Multi2OneAlleleNodeModel extends AbstractMulti2OneAlleleNodeModel {
-@Override
-    protected BufferedDataTable[] execute(final BufferedDataTable header,
-    		final BufferedDataTable body,
-    		final ExecutionContext exec) throws Exception
-        {     	
+	
+	
+	@Override
+	protected void transform(File inFile, File outFile) throws Exception {
 		final VcfMultiToOneAllele application = new VcfMultiToOneAllele();
-		
-     	try {
-    		application.setPrint_samples(super.isSettingsModelPrint_samplesBoolean());     		
-    		checkEmptyListOfThrowables(application.initializeKnime());
+		VcfIterator in=null;
+		VariantContextWriter w=null;
+		application.setPrint_samples(super.isSettingsModelPrint_samplesBoolean());     		
+		checkEmptyListOfThrowables(application.initializeKnime());
 
-     		final VcfIterator vcfIn = new KnimeVcfIterator(header,body);
-     		final KnimeVariantContextWriter vcfOut = new KnimeVariantContextWriter(exec);
-     		checkEmptyListOfThrowables(application.doVcfToVcf(this.getNodeName(),vcfIn,vcfOut));
-			vcfIn.close();
-			vcfOut.close();
-            return vcfOut.getTables();
-		} catch (Exception e) {
-			getLogger().error("boum", e);
-			e.printStackTrace();
-			throw e;
-		} finally {
+		try
+		{
+			in = VCFUtils.createVcfIteratorFromFile(inFile);
+			w =  VCFUtils.createVariantContextWriter(outFile);
+     		checkEmptyListOfThrowables(application.doVcfToVcf(this.getNodeName(),in,w));
+
+		}
+		finally
+		{
+			CloserUtil.close(in);
+			CloserUtil.close(w);
 			application.disposeKnime();
 		}
-        }
+	}
+
+	@Override
+	protected BufferedDataTable[] execute(BufferedDataTable inData0, ExecutionContext exec) throws Exception {
+		return transform(inData0, __vcf, ".vcf.gz", exec);
+		}
+	
 }

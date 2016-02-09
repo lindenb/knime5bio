@@ -22,6 +22,7 @@ public LogRowIterator(final BufferedDataTable table,ExecutionContext context) {
 
 public LogRowIterator(final String prefix,final BufferedDataTable table,ExecutionContext context) {
 	this.delegate = table.iterator();
+	this.context = context;
 	_size = table.size();
 	if(prefix==null || prefix.trim().isEmpty()) {
 		this.prefix = null;
@@ -51,11 +52,11 @@ public DataRow next() {
 	this._seen++;
 	if(this.prefix==null || this.prefix.isEmpty())
 		{
-		context.setProgress(progress);
+		this.context.setProgress(progress);
 		}
 	else
 		{
-		context.setProgress(progress,this.prefix+" "+String.format("%.2f%%", progress*100.0));
+		this.context.setProgress(progress,this.prefix+" "+String.format("%.2f%%", progress*100.0));
 		}
 	return this.delegate.next();
 	}

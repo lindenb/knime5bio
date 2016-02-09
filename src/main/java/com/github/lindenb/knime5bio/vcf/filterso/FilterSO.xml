@@ -18,6 +18,11 @@
       <description>disable reasoning, don't use term's children.</description>
     </setting>
   </settings>
+  
+  
+  <snippet id="transform-file"/>
+  
+  
   <ports>
 		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
 		<outPort index="0" name="VCF output">

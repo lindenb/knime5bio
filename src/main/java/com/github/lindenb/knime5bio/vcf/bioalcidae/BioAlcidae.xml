@@ -2,6 +2,10 @@
 <node xmlns:j="http://github.com/lindenb/jvarkit/">
   <description>javascript version of awk for bioinformatics. Allow to reformat data See <url>https://github.com/lindenb/jvarkit/wiki/BioAlcidae</url></description>
   <settings>
+ 		<setting name="vcf" type="column" index="0" required="true" data-type="string" >
+			<description>Input VCF file</description>
+	</setting>
+  		
       <setting name="extension" type="string"  label="File extension" required="false" default=".txt">
        <description>File extension . e.g: '.txt'</description>
       </setting>
@@ -20,8 +24,11 @@ while(iter.hasNext())
       <description>Javascript file</description>
     </setting>
   </settings>
+  
+    <snippet id="transform-file" />
+  
   <ports>
-		<inPort id="vcf"/>
+		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
 		<outPort index="0" name="BioAlciae output">
 			<column name="BioAlciae" type="string"/>
 		</outPort>

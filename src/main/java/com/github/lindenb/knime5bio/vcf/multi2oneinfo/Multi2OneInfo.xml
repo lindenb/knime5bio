@@ -2,12 +2,21 @@
 <node xmlns:j="http://github.com/lindenb/jvarkit/">
   <description>'one INFO with N values' to 'N variants with one INFO'</description>
   <settings>
+  	  	<setting name="vcf" type="column" index="0" required="true" data-type="string" >
+				<description>Input VCF file</description>
+		</setting>
+  	
     <setting name="infoTag" type="string" label="INFO Tag" required="true">
       <description>The INFO tag</description>
     </setting>
   </settings>
+  
+    <snippet id="transform-file"/>
+  
   <ports>
-		<inPort id="vcf"/>
-		<outPort id="vcf"/>
+		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
+		<outPort index="0" name="VCF output">
+			<column name="VCF" type="string"/>
+		</outPort>
   </ports>
 </node>
