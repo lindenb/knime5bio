@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>Find mendelian incompatibilitie in a VCF.</description>
+  <settings>
+  	<setting name="vcf" type="column" index="0" required="true" data-type="string" >
+				<description>Input VCF file</description>
+		</setting>
+    <setting name="pedigreeFile" type="input-file" required="true">
+      <description>Pedigree file</description>
+    </setting>
+    <setting name="create_filter" type="boolean" default="false">
+      <description>create a filter in the FILTER column</description>
+    </setting>
+</settings>s  
+  
+  <snippet id="transform-file"/>
+  
+  
+  <ports>
+		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
+		<outPort index="0" name="VCF output">
+			<column name="VCF" type="string"/>
+		</outPort>
+  </ports>
+  <documentation>
+  See also: <a>https://github.com/lindenb/jvarkit/wiki/VCFTrio</a>.
+  
+  </documentation>
+</node>

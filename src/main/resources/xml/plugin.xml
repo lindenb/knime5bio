@@ -71,6 +71,15 @@
 		    	  factory-class="com.github.lindenb.knime5bio.vcf.vcftail.VcfTailNodeFactory"
 		    	  id="com.github.lindenb.knime5bio.vcf.vcftail.VcfTailNodeFactory"
 				/>
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.cutsamples.CutSamplesNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.cutsamples.CutSamplesNodeFactory"
+				/>
+			
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.trios.TriosNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.trios.TriosNodeFactory"
+				/>
 			
 			 <node category-path="/community/knime5bio/vcf"
 		    	  factory-class="com.github.lindenb.knime5bio.vcf.veprest.VepRestNodeFactory"
