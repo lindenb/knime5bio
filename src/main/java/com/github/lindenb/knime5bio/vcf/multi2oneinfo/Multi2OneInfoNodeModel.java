@@ -24,7 +24,7 @@ public class Multi2OneInfoNodeModel extends AbstractMulti2OneInfoNodeModel {
 		{
 			in = VCFUtils.createVcfIteratorFromFile(inFile);
 			w =  VCFUtils.createVariantContextWriter(outFile);
-     		checkEmptyListOfThrowables(application.doVcfToVcf(this.getNodeName(),in,w));
+     		checkEmptyListOfThrowables(application.doVcfToVcf(inFile.getName(),in,w));
 		}
 		finally
 		{

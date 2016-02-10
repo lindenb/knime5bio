@@ -63,6 +63,15 @@
 
 			<!--  VCF -->
 			
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.vcfhead.VcfHeadNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.vcfhead.VcfHeadNodeFactory"
+				/>
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.vcftail.VcfTailNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.vcftail.VcfTailNodeFactory"
+				/>
+			
 			 <node category-path="/community/knime5bio/vcf"
 		    	  factory-class="com.github.lindenb.knime5bio.vcf.veprest.VepRestNodeFactory"
 		    	  id="com.github.lindenb.knime5bio.vcf.veprest.VepRestNodeFactory"

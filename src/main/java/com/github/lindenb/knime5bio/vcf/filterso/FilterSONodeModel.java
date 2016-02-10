@@ -28,7 +28,7 @@ public class FilterSONodeModel extends AbstractFilterSONodeModel {
 			checkEmptyListOfThrowables(application.initializeKnime());
 			r= VCFUtils.createVcfIteratorFromFile(inFile);
 			w= VCFUtils.createVariantContextWriter(outFile);
-			checkEmptyListOfThrowables(application.doVcfToVcf(this.getNodeName(),r,w));
+			checkEmptyListOfThrowables(application.doVcfToVcf(inFile.getName(),r,w));
 		}
 		finally
 		{

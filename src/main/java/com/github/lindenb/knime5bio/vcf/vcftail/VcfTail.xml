@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node >
+
+	<description>Prints the Last variants of a VCF file</description>
+	<settings>
+		<setting name="vcf" type="column" index="0" required="true" data-type="string" >
+				<description>Input VCF file</description>
+		</setting>
+	    <setting name="count" type="int" label="Number of rows" default="10" required="true">
+	       <description>Number of rows</description>
+		</setting>
+
+	</settings>
+
+	<ports>
+		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
+		<outPort index="0" name="VCF output">
+			<column name="VCF" type="string"/>
+		</outPort>
+	</ports>
+
+<snippet id="transform-file"/>
+
+	
+	<documentation>
+
+
+	  
+	</documentation>
+	
+</node>

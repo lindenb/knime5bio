@@ -27,7 +27,7 @@ public class Multi2OneAlleleNodeModel extends AbstractMulti2OneAlleleNodeModel {
 		{
 			in = VCFUtils.createVcfIteratorFromFile(inFile);
 			w =  VCFUtils.createVariantContextWriter(outFile);
-     		checkEmptyListOfThrowables(application.doVcfToVcf(this.getNodeName(),in,w));
+     		checkEmptyListOfThrowables(application.doVcfToVcf(inFile.getName(),in,w));
 
 		}
 		finally

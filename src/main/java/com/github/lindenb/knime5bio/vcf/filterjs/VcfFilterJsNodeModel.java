@@ -25,7 +25,7 @@ public class VcfFilterJsNodeModel extends AbstractVcfFilterJsNodeModel {
     		checkEmptyListOfThrowables(application.initializeKnime());
     		r= VCFUtils.createVcfIteratorFromFile(inFile);
      		w= VCFUtils.createVariantContextWriter(outFile);
-     		checkEmptyListOfThrowables(application.doVcfToVcf(this.getNodeName(),r,w));
+     		checkEmptyListOfThrowables(application.doVcfToVcf(inFile.getName(),r,w));
 		}
 		catch(Exception err) 
 			{
