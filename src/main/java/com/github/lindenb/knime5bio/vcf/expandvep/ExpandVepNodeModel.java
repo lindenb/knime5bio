@@ -1,10 +1,7 @@
 package com.github.lindenb.knime5bio.vcf.expandvep;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
@@ -144,7 +141,7 @@ public class ExpandVepNodeModel extends AbstractExpandVepNodeModel {
      			vcfOut.add(vcfIn.next());
      			}         
      		vcfOut.close();
-			return vcfOut.getTables();
+			return new BufferedDataTable[]{vcfOut.getBodyTable()};
 
 		} catch (Exception e) {
 			getLogger().error("boum", e);

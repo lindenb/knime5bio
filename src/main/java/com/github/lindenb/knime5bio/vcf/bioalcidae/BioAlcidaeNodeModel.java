@@ -15,7 +15,7 @@ public class BioAlcidaeNodeModel extends AbstractBioAlcidaeNodeModel {
      }
      
      @Override
-    protected void transform(File inFile, File outFile) throws Exception {
+    protected void transform(final  File inFile, final File outFile) throws Exception {
  		final BioAlcidae application = new BioAlcidae();
     	application.setFormatString("VCF");
 		application.setOutputFile(outFile);
@@ -32,14 +32,15 @@ public class BioAlcidaeNodeModel extends AbstractBioAlcidaeNodeModel {
 		super.checkEmptyListOfThrowables(application.initializeKnime());
 		VcfIterator r=null;
 		try {
-			r= VCFUtils.createVcfIteratorFromFile(inFile);
 			application.initializeJavaScript();
-			application.executeAsVcf(r);
+			r= VCFUtils.createVcfIteratorFromFile(inFile);
+			this.checkEmptyListOfThrowables(application.executeAsVcf(r));
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		} finally 
 			{
+			application.disposeKnime();
 			CloserUtil.close(r);
 			}
      	}

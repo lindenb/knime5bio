@@ -91,6 +91,11 @@ public class KnimeVariantContextWriter
      	this.bodyContainer = this.exec.createDataContainer(this.outBodyDataTableSpec);
 		}
 
+	public DataTableSpec getOutBodyDataTableSpec() {
+		if(outBodyDataTableSpec==null) throw new IllegalStateException("header not written");
+		return outBodyDataTableSpec;
+	}
+	
 	protected DataColumnSpec[] createColumnSpecs(final VCFHeader header)
 		{
 		final DataColumnSpec colspecs[]=new DataColumnSpec[
@@ -146,10 +151,18 @@ public class KnimeVariantContextWriter
 		return headContainer;
 	}
 	
+	public BufferedDataTable getHeaderTable() {
+		return this.getHeadContainer().getTable();
+	}
+	public BufferedDataTable getBodyTable() {
+		return this.getBodyContainer().getTable();
+	}
+
+	
 	public BufferedDataTable[] getTables() {
 		return new BufferedDataTable[]{
-				this.getHeadContainer().getTable(),
-				this.getBodyContainer().getTable()
+				this.getHeaderTable(),
+				this.getBodyTable()
 		};
 	}
 	
