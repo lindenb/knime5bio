@@ -4,6 +4,10 @@
   Compare two VCFs and print common/exclusive information for each sample/genotype.
   Both files must be sorted ROD.</description>
   <settings>
+ 	  	  <setting name="VCF" type="column" index="0" required="true" data-type="string" >
+			<description>Input VCF file</description>
+	 </setting>
+  
     <setting name="exampleFile" type="output-file" required="false" label="Examples.xml">
       <description>Write a few Variants in this XML file. Optional</description>
     </setting>
@@ -19,8 +23,7 @@
     </setting>
   </settings>
   <ports>
-		<inPort index="0" id="vcf"/>
-		<inPort index="2" id="vcf"/>
+		<inPort index="0" name="VCF">VCF</inPort>
 		<outPort index="0" name="CmpCallerOutput" label="Compare" at-runtime="true"/>
   </ports>
   

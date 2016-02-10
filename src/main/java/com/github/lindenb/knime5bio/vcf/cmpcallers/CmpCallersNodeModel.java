@@ -1,19 +1,16 @@
 package com.github.lindenb.knime5bio.vcf.cmpcallers;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import org.knime.core.data.DataTableSpec;
-import org.knime.core.data.RowKey;
-import org.knime.core.data.def.DefaultRow;
-import org.knime.core.node.BufferedDataContainer;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.ExecutionContext;
-import com.github.lindenb.jvarkit.tools.bioalcidae.BioAlcidae;
 import com.github.lindenb.jvarkit.tools.vcfcmp.VcfCompareCallers;
+import com.github.lindenb.jvarkit.util.vcf.VCFUtils;
 import com.github.lindenb.jvarkit.util.vcf.VcfIterator;
 import com.github.lindenb.knime5bio.FileToTable;
-import com.github.lindenb.knime5bio.htsjdk.variant.KnimeVcfIterator;
 
 import htsjdk.samtools.util.CloserUtil;
 
@@ -21,21 +18,21 @@ import htsjdk.samtools.util.CloserUtil;
 public class CmpCallersNodeModel extends AbstractCmpCallersNodeModel {
      CmpCallersNodeModel() {
      }
-@Override
-    protected BufferedDataTable[] execute(
-    		final BufferedDataTable headerTable1, 
-    		final BufferedDataTable bodyTable1, 
-    		final BufferedDataTable headerTable2, 
-    		final BufferedDataTable bodyTable2, 
-    		final ExecutionContext exec) throws Exception
-        {   
+     
+     @Override
+    protected BufferedDataTable[] execute(BufferedDataTable inData0, ExecutionContext exec) throws Exception {
 		VcfIterator iterators[]=new VcfIterator[]{null,null};
 		final VcfCompareCallers application = new VcfCompareCallers();
 		this.assureNodeWorkingDirectoryExists();
 		final File outFile = super.createFileForWriting(Optional.of("VcfCompareCallers"), ".txt");
 		outFile.deleteOnExit();
+		List<File> files = new ArrayList<>( super.collectFilesInOneColumn(inData0, __VCF));
+		if(files.size()!=2)
+			{
+			throw new RuntimeException("Expected Only two VCF file on input but got "+files.size());
+			}
 		try {
-
+			
 	    	
 	    	application.setNumberOfExampleVariants(super.__numberOfExampleVariants.getIntValue());
 	    	application.setHomRefIsNoCall(super.__homRefIsNoCall.getBooleanValue());
@@ -51,8 +48,8 @@ public class CmpCallersNodeModel extends AbstractCmpCallersNodeModel {
 			
 
 			checkEmptyListOfThrowables(application.initializeKnime());
-			iterators[0] = new KnimeVcfIterator(headerTable1, bodyTable1);
-			iterators[1] = new KnimeVcfIterator(headerTable2, bodyTable2);
+			iterators[0] = VCFUtils.createVcfIteratorFromFile(files.get(0));
+			iterators[1] = VCFUtils.createVcfIteratorFromFile(files.get(1));
 			checkEmptyListOfThrowables(application.compare(iterators[0],iterators[1]));
 			
 			

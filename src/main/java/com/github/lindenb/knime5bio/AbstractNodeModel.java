@@ -267,9 +267,9 @@ public abstract class AbstractNodeModel
 	/** get this Node working directory. Return null if no plugin directory defined */
 	protected File getNodeWorkingDirectory()
 		{
-		File parent= getPluginBaseDirectory();
+		final File parent= getPluginBaseDirectory();
 		if(parent==null) return null;
-		File me = new File(parent, getNodeUniqId()+"."+getNodeName());
+		final File me = new File(parent, getNodeUniqId()+"."+getNodeName());
 		return me;
 		}
 
@@ -277,13 +277,14 @@ public abstract class AbstractNodeModel
 	protected void removeTmpNodeFiles()
 		{
 		if( !hasNodeUniqId() ) return;
-		File dir = this.getNodeWorkingDirectory();
+		final File dir = this.getNodeWorkingDirectory();
 		if(dir==null || !dir.exists()) return;
 		getLogger().warn("Cleaning up "+dir);
 		for(final File f : dir.listFiles())
 			{
 			removeTmpNodeFile(f);
 			}
+		dir.delete();
 		}
 	/* remove tmp file in getNodeWorkingDirectory */
 	protected void removeTmpNodeFile(final File f)
@@ -506,6 +507,7 @@ public abstract class AbstractNodeModel
 		if(throwables==null || throwables.isEmpty()) return;
 		for(final Throwable t:throwables)
 			{
+			removeTmpNodeFiles();
 			getLogger().warn("error in "+getNodeName(), t);
 			}
 		throw new InvalidSettingsException(throwables.iterator().next());
