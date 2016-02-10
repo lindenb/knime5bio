@@ -58,6 +58,10 @@ public class IndexVcfNodeModel extends AbstractIndexVcfNodeModel {
 					r= VCFUtils.createVcfIteratorFromFile(inFile);
 					super.checkEmptyListOfThrowables(application.doVcfToVcf(inFile.getPath(), r, outFile));
 				}
+				catch(Exception err)
+					{
+					throw err;
+					}
 				finally
 				{
 					CloserUtil.close(r);

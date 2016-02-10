@@ -36,6 +36,7 @@ public class BioAlcidaeNodeModel extends AbstractBioAlcidaeNodeModel {
 			r= VCFUtils.createVcfIteratorFromFile(inFile);
 			this.checkEmptyListOfThrowables(application.executeAsVcf(r));
 		} catch (Exception e) {
+			outFile.delete();
 			e.printStackTrace();
 			throw e;
 		} finally 

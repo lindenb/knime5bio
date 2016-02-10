@@ -156,7 +156,13 @@ public <xsl:if test="$abstract = 'true'">abstract</xsl:if> class <xsl:if test="$
 	@Override
     protected final BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception
 		{
-		return this.execute(<xsl:for-each select="ports/inPort">inData[<xsl:value-of select="position() - 1"/>],</xsl:for-each>exec);
+		try {
+			return this.execute(<xsl:for-each select="ports/inPort">inData[<xsl:value-of select="position() - 1"/>],</xsl:for-each>exec);
+			}
+		catch(Exception err) {
+			this.removeTmpNodeFiles();
+			throw err;
+			}	
 		}
 	
     protected DataTableSpec createOutDataTableSpec(final int index,final DataTableSpec[] inSpec)

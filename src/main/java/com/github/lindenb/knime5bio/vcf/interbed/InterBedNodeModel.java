@@ -31,20 +31,22 @@ public class InterBedNodeModel extends AbstractInterBedNodeModel {
     @Override
     protected BufferedDataTable[] execute(final BufferedDataTable  bedTable,final BufferedDataTable  vcftable, final ExecutionContext exec) throws Exception
         {
-    	final int vcfColumn = super.findColumnIndexByName(bedTable,super.__VCF);
+    	final int vcfColumn = super.findColumnIndexByName(vcftable,super.__VCF);
     	BufferedDataContainer container0 = null;
         LogRowIterator iter =null;
         BufferedReader in=null;
-        IntervalTreeMap<Boolean> intervals = new IntervalTreeMap<>();
+        final IntervalTreeMap<Boolean> intervals = new IntervalTreeMap<>();
         VariantContextWriter vcw=null;
         VcfIterator vcfIn=null;
         
         try
             {
         	super.assureNodeWorkingDirectoryExists();
+        	System.err.println("EAD BED");
         	for(File bedFile:super.collectFilesInOneColumn(bedTable, super.__BED))
         		{
 				final BEDCodec codec = new BEDCodec();
+				getLogger().info("reading "+bedFile);
         		in = IOUtils.openFileForBufferedReading(bedFile);
 				String line;
 				while((line=in.readLine())!=null)
@@ -56,6 +58,11 @@ public class InterBedNodeModel extends AbstractInterBedNodeModel {
 					}
         		in.close();in=null;
         		}
+        	if(intervals.isEmpty())
+        		{
+            	getLogger().warn("BED is empty");
+        		}
+        	
 			container0 = exec.createDataContainer(super.createOutTableSpec0());
 
         	
