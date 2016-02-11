@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node>
+  <description>
+  Compare two VCFs and print common/exclusive information for each sample/genotype.
+  Both files must be sorted ROD.</description>
+  <settings>
+ 	   <setting name="VCFDatabase" type="column" index="0" required="true" data-type="string" >
+			<description>Input VCF Database file</description>
+	 </setting>
+ 	   <setting name="VCF" type="column" index="1" required="true" data-type="string" >
+			<description>Input VCF file</description>
+	 </setting>
+  
+    <setting name="inverse" type="boolean" default="false">
+      <description>Print variant that are not part of the VCF-database.</description>
+    </setting>
+    <setting name="databaseIsTabix" type="boolean" default="false">
+      <description>Database is Tabix-ed</description>
+    </setting>
+    <setting name="userAltInDatabase" type="boolean" default="false">
+      <description>ALL user ALT must be found in VCF-database ALT</description>
+    </setting>
+    
+    </settings>
+    
+  <ports>
+		<inPort index="0" name="VCFDatabase">VCF Database</inPort>
+		<inPort index="1" name="VCFList">VCF List</inPort>
+		<outPort index="0" name="VCF output">
+			<column name="VCF" type="string"/>
+		</outPort>
+  </ports>
+  
+  <documentation>
+  
+  
+  </documentation>
+  
+</node>

@@ -38,13 +38,13 @@ jvarkit.root?=${HOME}/src/jvarkit
 ifeq ($(realpath ${jvarkit.root}),)
 $(error cannot find $$jvarit.root = ${jvarkit.root})
 endif
-jvarkit.jars?=$(shell find $(realpath ${jvarkit.root})/dist* -type f   -name "vcftrio.jar" -o    -name "vcfcutsamples.jar" -o -name "vcftail.jar" -o  -name "vcfhead.jar" -o  -name "vcfrenamechr.jar" -o -name "vcfcomparecallers.jar" -o -name "groupbygene.jar" -o -name "vcfpeekvcf.jar" -o -name "vcfmulti2oneinfo.jar" -o -name "vcffilterso.jar" -o -name "vcfmulti2oneallele.jar" -o -name "vcffilterjs.jar" -o -name "bioalcidae.jar"  -o -name "vcfindextabix.jar" ) \
+jvarkit.jars?=$(shell find $(realpath ${jvarkit.root})/dist* -type f -name "vcfin.jar" -o  -name "vcftrio.jar" -o    -name "vcfcutsamples.jar" -o -name "vcftail.jar" -o  -name "vcfhead.jar" -o  -name "vcfrenamechr.jar" -o -name "vcfcomparecallers.jar" -o -name "groupbygene.jar" -o -name "vcfpeekvcf.jar" -o -name "vcfmulti2oneinfo.jar" -o -name "vcffilterso.jar" -o -name "vcfmulti2oneallele.jar" -o -name "vcffilterjs.jar" -o -name "bioalcidae.jar"  -o -name "vcfindextabix.jar" ) \
 	$(realpath $(addprefix ${jvarkit.root}/,lib/commons-cli/commons-cli/1.3.1/commons-cli-1.3.1.jar lib/org/slf4j/slf4j-api/1.7.13/slf4j-api-1.7.13.jar lib/org/slf4j/slf4j-simple/1.7.13/slf4j-simple-1.7.13.jar ))
 	
 
 
-ifneq ($(words ${jvarkit.jars}),17)
-$(error expected count($$jvarkit.jars)=17 but got '$(words ${jvarkit.jars})' for ${jvarkit.jars})
+ifneq ($(words ${jvarkit.jars}),18)
+$(error expected count($$jvarkit.jars)=18 but got '$(words ${jvarkit.jars})' for ${jvarkit.jars})
 endif
 
 
@@ -141,6 +141,7 @@ endef
 all: ${dist.dir}/com.github.lindenb.knime5bio_${plugin.version}.jar
 
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/veprest/VepRest,1,,,,,))
+$(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/vcfin/VcfIn,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/samplesin/SamplesIn,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/vcfhead/VcfHead,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/vcftail/VcfTail,1,,,,,))
@@ -209,6 +210,7 @@ ${dist.dir}/com_github_lindenb_knime5bio.jar : $(sort ${knime.jars} ${extra.jars
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/util/table2file/TableToFileNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/util/head/HeadNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/util/echo/EchoNodeModel.java \
+	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/vcfin/VcfInNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/renamechr/RenameContigNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/vcfhead/VcfHeadNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/vcftail/VcfTailNodeModel.java \
