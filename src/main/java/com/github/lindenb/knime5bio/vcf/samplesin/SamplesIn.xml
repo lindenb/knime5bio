@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>show Samples in VCF</description>
+  <settings>
+  	  	<setting name="vcf" type="column" index="0" required="true" data-type="string" >
+				<description>Input VCF file</description>
+		</setting>    
+  </settings>
+  <ports>
+		<inPort index="0" name="Input"/>
+		<outPort index="0" name="VCF output">
+			<column name="VCF" type="string"/>
+			<column name="Sample" type="string"/>
+		</outPort>
+  </ports>
+</node>

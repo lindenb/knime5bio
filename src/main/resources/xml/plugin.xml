@@ -62,7 +62,10 @@
 				/>
 
 			<!--  VCF -->
-			
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.samplesin.SamplesInNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.samplesin.SamplesInNodeFactory"
+				/>
 			<node category-path="/community/knime5bio/vcf"
 		    	  factory-class="com.github.lindenb.knime5bio.vcf.vcfhead.VcfHeadNodeFactory"
 		    	  id="com.github.lindenb.knime5bio.vcf.vcfhead.VcfHeadNodeFactory"

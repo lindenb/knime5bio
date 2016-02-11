@@ -141,6 +141,7 @@ endef
 all: ${dist.dir}/com.github.lindenb.knime5bio_${plugin.version}.jar
 
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/veprest/VepRest,1,,,,,))
+$(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/samplesin/SamplesIn,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/vcfhead/VcfHead,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/vcftail/VcfTail,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/trios/Trios,1,,,,,))
@@ -211,6 +212,7 @@ ${dist.dir}/com_github_lindenb_knime5bio.jar : $(sort ${knime.jars} ${extra.jars
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/renamechr/RenameContigNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/vcfhead/VcfHeadNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/vcftail/VcfTailNodeModel.java \
+	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/samplesin/SamplesInNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/trios/TriosNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/cutsamples/CutSamplesNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/cmpcallers/CmpCallersNodeModel.java \
