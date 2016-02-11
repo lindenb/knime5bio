@@ -67,6 +67,10 @@
 		    	  factory-class="com.github.lindenb.knime5bio.vcf.vcfin.VcfInNodeFactory"
 		    	  id="com.github.lindenb.knime5bio.vcf.vcfin.VcfInNodeFactory"
 				/>
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.merge.MergeNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.merge.MergeNodeFactory"
+				/>
 			
 			<node category-path="/community/knime5bio/vcf"
 		    	  factory-class="com.github.lindenb.knime5bio.vcf.samplesin.SamplesInNodeFactory"

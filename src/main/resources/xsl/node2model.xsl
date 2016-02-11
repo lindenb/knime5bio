@@ -427,7 +427,7 @@ public <xsl:if test="$abstract = 'true'">abstract</xsl:if> class <xsl:if test="$
 	</xsl:when>
 	
 	<xsl:when test="(@type='int' or @type='double') and not(@required)">
-		<xsl:message terminate="true">@required missing in <xsl:value-of select="concat($className,':',@name)"/></xsl:message>
+		<xsl:message terminate="true">@required missing in '<xsl:value-of select="@name"/>'</xsl:message>
 	</xsl:when>
 	
 	<xsl:when test="(@type='int' or @type='double') and @required='false'">

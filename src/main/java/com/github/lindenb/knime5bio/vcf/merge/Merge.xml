@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns:j="http://github.com/lindenb/jvarkit/">
+  <description>Merge VCF Files</description>
+  <settings>
+ 		<setting name="vcf" type="column" index="0" required="true" data-type="string" >
+			<description>Input VCF file</description>
+		</setting>
+  		
+  		
+  		
+    <setting name="maxRecordsInRam" type="int" default="1000" required="true">
+      <description>When writing VCF files that need to be sorted, this will specify the number of records stored in RAM before spilling to disk. Increasing this number reduces the number of file handles needed to sort a SAM file, and increases the amount of RAM needed.</description>
+    </setting>
+    <setting name="filesAreSorted" type="boolean" default="true">
+      <description>files are known to be ROD sorted</description>
+    </setting>
+    <setting name="doNotMergeRowLines" type="boolean" default="false">
+      <description>Do NOT merge VariantContext lines, but create multiple lines</description>
+    </setting>
+    <setting name="useHomRefForUnknown" type="boolean" default="false">
+      <description>Use HomRef 0/0 for unknown variant</description>
+    </setting>
+
+  </settings>
+  
+  
+  <ports>
+		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
+		<outPort index="0" name="Merged">
+			<column name="VCF" type="string"/>
+		</outPort>
+  </ports>
+</node>

@@ -28,7 +28,7 @@ G|intron_variant|MODIFIER||2475|Transcript|XM_005263441.1|protein_coding||27/27|
 ![install01.jpg](install01.jpg)
 
 * supprimer un ancien fichier `com.github.lindenb.knime5bio*.jar` s'il est présent dans le répertoire `plugins`.
-* télécharger et installer le nouveau fichier  `com.github.lindenb.knime5bio*.jar` dans le répertoire `plugins`.
+* cherchez la dernière release du plugin dans https://github.com/lindenb/knime5bio/releases :  télécharger et installer le nouveau fichier  `com.github.lindenb.knime5bio*.jar` dans le répertoire `plugins`.
 * dans le repertoire du dessus (knime) ouvrez le fichier `knime.ini` avec un éditeur de texte (notepad...) et forcer knime à parler anglais... 
 
 Sur la première ligne inserez:
