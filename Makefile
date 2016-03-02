@@ -38,13 +38,13 @@ jvarkit.root?=${HOME}/src/jvarkit
 ifeq ($(realpath ${jvarkit.root}),)
 $(error cannot find $$jvarit.root = ${jvarkit.root})
 endif
-jvarkit.jars?=$(shell find $(realpath ${jvarkit.root})/dist*  -type f -name "vcfmerge.jar" -o -name "vcfin.jar" -o  -name "vcftrio.jar" -o    -name "vcfcutsamples.jar" -o -name "vcftail.jar" -o  -name "vcfhead.jar" -o  -name "vcfrenamechr.jar" -o -name "vcfcomparecallers.jar" -o -name "groupbygene.jar" -o -name "vcfpeekvcf.jar" -o -name "vcfmulti2oneinfo.jar" -o -name "vcffilterso.jar" -o -name "vcfmulti2oneallele.jar" -o -name "vcffilterjs.jar" -o -name "bioalcidae.jar"  -o -name "vcfindextabix.jar" ) \
+jvarkit.jars?=$(shell find $(realpath ${jvarkit.root})/dist*  -type f -name "vcfburdenf2.jar" -o -name "vcfburdenf3.jar" -o -name "vcfmerge.jar" -o -name "vcfin.jar" -o  -name "vcftrio.jar" -o    -name "vcfcutsamples.jar" -o -name "vcftail.jar" -o  -name "vcfhead.jar" -o  -name "vcfrenamechr.jar" -o -name "vcfcomparecallers.jar" -o -name "groupbygene.jar" -o -name "vcfpeekvcf.jar" -o -name "vcfmulti2oneinfo.jar" -o -name "vcffilterso.jar" -o -name "vcfmulti2oneallele.jar" -o -name "vcffilterjs.jar" -o -name "bioalcidae.jar"  -o -name "vcfindextabix.jar" ) \
 	$(realpath $(addprefix ${jvarkit.root}/,lib/commons-cli/commons-cli/1.3.1/commons-cli-1.3.1.jar lib/org/slf4j/slf4j-api/1.7.13/slf4j-api-1.7.13.jar lib/org/slf4j/slf4j-simple/1.7.13/slf4j-simple-1.7.13.jar ))
 	
 
 
-ifneq ($(words ${jvarkit.jars}),19)
-$(error expected count($$jvarkit.jars)=19 but got '$(words ${jvarkit.jars})' for ${jvarkit.jars})
+ifneq ($(words ${jvarkit.jars}),21)
+$(error expected count($$jvarkit.jars)=21 but got '$(words ${jvarkit.jars})' for ${jvarkit.jars})
 endif
 
 
@@ -169,6 +169,8 @@ $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/indexvcf/IndexVcf,1,
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/bioalcidae/BioAlcidae,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/interbed/InterBed,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/countvariants/CountVariants,1,,,,,))
+$(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/burdenf2/BurdenF2,1,,,,,))
+$(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/burdenf3/BurdenF3,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/fasta/readfasta/ReadFasta,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/fasta/writefasta/WriteFasta,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/gatk/selectvariants/SelectVariants,1,,,,,))
@@ -233,6 +235,8 @@ ${dist.dir}/com_github_lindenb_knime5bio.jar : $(sort ${knime.jars} ${extra.jars
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/multi2oneinfo/Multi2OneInfoNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/filterjs/VcfFilterJsNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/interbed/InterBedNodeModel.java \
+	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/burdenf2/BurdenF2NodeModel.java \
+	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/burdenf3/BurdenF3NodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/countvariants/CountVariantsNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/bioalcidae/BioAlcidaeNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/gatk/selectvariants/SelectVariantsNodeModel.java \
