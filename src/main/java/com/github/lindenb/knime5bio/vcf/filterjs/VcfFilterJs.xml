@@ -41,6 +41,12 @@ function accept(ctx)
 accept(variant);			
 			</default>
 		</setting>
+		
+	 <setting name="filteredTag" type="string"  default="" required="false">
+		<description>If not empty, variants won't be discarded and this name will be used in the FILTER column</description>
+	</setting>
+		
+		
 	</settings>
 
 

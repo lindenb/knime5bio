@@ -21,6 +21,14 @@
       <description>ALL user ALT must be found in VCF-database ALT</description>
     </setting>
     
+    <setting name="filterIn" type="string" required="false" default="">
+		<description>Do not discard variant but add this FILTER if the variant is found in the database</description>
+	</setting>
+	<setting name="filterOut" type="string" required="false" default="">
+		<description>Do not discard variant but add this FILTER if the variant is NOT found in the database</description>
+	</setting>
+    
+    
     </settings>
     
   <ports>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node>
+  <description>Burden Splitter: split by gene</description>
+  <settings>
+    	<setting name="vcf" type="column" index="0" required="true" data-type="string" >
+				<description>Input VCF file</description>
+		</setting>
+      	<setting name="casesFile" type="input-file" required="true">
+	      <description>Path to a pedigree )containing the names of the CASES. A pedigree file is a text file containing the following columns: FAMILY-ID INDIVIDUAL-ID FATHER-ID(or 0) MOTHER-ID(or 0) SEX(1 male, 2 female, 0 unknown) PHENOTYPE (1 affected, 0 unaffected, 9 not available)</description>
+	    </setting>
+	    <setting name="controlsFile" type="input-file"  required="true">
+	      <description>Path to a pedigree containing the names of the CONTROLS. A pedigree file is a text file containing the following columns: FAMILY-ID INDIVIDUAL-ID FATHER-ID(or 0) MOTHER-ID(or 0) SEX(1 male, 2 female, 0 unknown) PHENOTYPE (1 affected, 0 unaffected, 9 not available)</description>
+	    </setting>
+	     <setting name="maxRecordsInRam" type="int" default="50000" required="true">
+	      <description>When writing large files that need to be sorted, this will specify the number of records stored in RAM </description>
+	    </setting>
+	     
+		<setting name="splittype" type="string" default="vepso" required="true">
+			 <description>Splitter Name : vepso or vephd</description>
+	    </setting>
+
+  </settings>
+    
+  <ports>
+		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
+		<outPort index="0" name="Splitter output">
+			<column name="CHROM" type="string"/>
+			<column name="chromStart" type="int"/>
+			<column name="chromEnd" type="int"/>
+			<column name="name" type="string"/>
+			<column name="totalVariants" type="int"/>
+			<column name="unfilteredVariants" type="int"/>
+			<column name="Fisher" type="double"/>
+			<column name="VCF" type="string"/>
+		</outPort>
+  </ports>
+</node>

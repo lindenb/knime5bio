@@ -15,19 +15,20 @@ import htsjdk.variant.variantcontext.writer.VariantContextWriter;
 public class VcfFilterJsNodeModel extends AbstractVcfFilterJsNodeModel {
 	
 	@Override
-	protected void transform(File inFile, File outFile) throws Exception {
+	protected void transform(final File inFile, final File outFile) throws Exception {
 		final VCFFilterJS application = new VCFFilterJS();
 
 		VcfIterator r=null;
 		VariantContextWriter w=null;
 		try {
-    		application.setJavascriptExpr(super.getSettingsModelVcfExprString());     		
+    		application.setJavascriptExpr(super.getSettingsModelVcfExprString());
+    		application.setFilteredTag(__filteredTag.getStringValue());
     		checkEmptyListOfThrowables(application.initializeKnime());
     		r= VCFUtils.createVcfIteratorFromFile(inFile);
      		w= VCFUtils.createVariantContextWriter(outFile);
      		checkEmptyListOfThrowables(application.doVcfToVcf(inFile.getName(),r,w));
 		}
-		catch(Exception err) 
+		catch(final Exception err) 
 			{
 			err.printStackTrace();
 			throw err;

@@ -74,6 +74,11 @@
 				/>
 			
 			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.burdensplitter.BurdenSplitterNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.burdensplitter.BurdenSplitterNodeFactory"
+				/>
+			
+			<node category-path="/community/knime5bio/vcf"
 		    	  factory-class="com.github.lindenb.knime5bio.vcf.vcfin.VcfInNodeFactory"
 		    	  id="com.github.lindenb.knime5bio.vcf.vcfin.VcfInNodeFactory"
 				/>

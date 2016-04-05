@@ -76,6 +76,8 @@ public class VcfInNodeModel extends AbstractVcfInNodeModel {
 				application.setDatabaseIsTabix(__databaseIsTabix.getBooleanValue());
 				application.setUserAltInDatabase(__userAltInDatabase.getBooleanValue());
 				application.setInverse(__inverse.getBooleanValue());
+				application.setFilterIn(__filterIn.getStringValue());
+				application.setFilterOut(__filterOut.getStringValue());
 				application.setOutputFile(outFile);
 				application.setInputFiles(
 						Arrays.asList(databaseFiles.get(0).getPath(),inFile.getPath())

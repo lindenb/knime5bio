@@ -27,7 +27,7 @@ plugin.version=2016.01.21
 knime.root?= ${HOME}/package/knime_3.1.0
 
 htsjdk.root?=${HOME}/src/htsjdk
-htsjdk.jars=$(realpath $(addsuffix .jar,$(addprefix ${htsjdk.root}/dist/,apache-ant-1.8.2-bzip2 commons-compress-1.4.1 commons-jexl-2.1.1 commons-logging-1.1.1 htsjdk-2.1.0 ngs-java-1.2.2 snappy-java-1.0.3-rc3 xz-1.5)))
+htsjdk.jars=$(realpath $(addsuffix .jar,$(addprefix ${htsjdk.root}/dist/,apache-ant-1.8.2-bzip2 commons-compress-1.4.1 commons-jexl-2.1.1 commons-logging-1.1.1 htsjdk-2.1.1 ngs-java-1.2.2 snappy-java-1.0.3-rc3 xz-1.5)))
 
 
 ifneq ($(words ${htsjdk.jars}),8)
@@ -38,13 +38,13 @@ jvarkit.root?=${HOME}/src/jvarkit
 ifeq ($(realpath ${jvarkit.root}),)
 $(error cannot find $$jvarit.root = ${jvarkit.root})
 endif
-jvarkit.jars?=$(shell find $(realpath ${jvarkit.root})/dist*  -type f -name "vcfburdenf2.jar" -o -name "vcfburdenf3.jar" -o -name "vcfmerge.jar" -o -name "vcfin.jar" -o  -name "vcftrio.jar" -o    -name "vcfcutsamples.jar" -o -name "vcftail.jar" -o  -name "vcfhead.jar" -o  -name "vcfrenamechr.jar" -o -name "vcfcomparecallers.jar" -o -name "groupbygene.jar" -o -name "vcfpeekvcf.jar" -o -name "vcfmulti2oneinfo.jar" -o -name "vcffilterso.jar" -o -name "vcfmulti2oneallele.jar" -o -name "vcffilterjs.jar" -o -name "bioalcidae.jar"  -o -name "vcfindextabix.jar" ) \
+jvarkit.jars?=$(shell find $(realpath ${jvarkit.root})/dist*  -type f -name "vcfburdenf2.jar" -o -name "vcfburdensplitter.jar" -o -name "vcfburdenf3.jar" -o -name "vcfmerge.jar" -o -name "vcfin.jar" -o  -name "vcftrio.jar" -o    -name "vcfcutsamples.jar" -o -name "vcftail.jar" -o  -name "vcfhead.jar" -o  -name "vcfrenamechr.jar" -o -name "vcfcomparecallers.jar" -o -name "groupbygene.jar" -o -name "vcfpeekvcf.jar" -o -name "vcfmulti2oneinfo.jar" -o -name "vcffilterso.jar" -o -name "vcfmulti2oneallele.jar" -o -name "vcffilterjs.jar" -o -name "bioalcidae.jar"  -o -name "vcfindextabix.jar" ) \
 	$(realpath $(addprefix ${jvarkit.root}/,lib/commons-cli/commons-cli/1.3.1/commons-cli-1.3.1.jar lib/org/slf4j/slf4j-api/1.7.13/slf4j-api-1.7.13.jar lib/org/slf4j/slf4j-simple/1.7.13/slf4j-simple-1.7.13.jar ))
 	
 
 
-ifneq ($(words ${jvarkit.jars}),21)
-$(error expected count($$jvarkit.jars)=21 but got '$(words ${jvarkit.jars})' for ${jvarkit.jars})
+ifneq ($(words ${jvarkit.jars}),22)
+$(error expected count($$jvarkit.jars)=22 but got '$(words ${jvarkit.jars})' for ${jvarkit.jars})
 endif
 
 
@@ -141,6 +141,7 @@ endef
 all: ${dist.dir}/com.github.lindenb.knime5bio_${plugin.version}.jar
 
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/veprest/VepRest,1,,,,,))
+$(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/burdensplitter/BurdenSplitter,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/vcfin/VcfIn,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/merge/Merge,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/samplesin/SamplesIn,1,,,,,))
@@ -237,6 +238,7 @@ ${dist.dir}/com_github_lindenb_knime5bio.jar : $(sort ${knime.jars} ${extra.jars
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/interbed/InterBedNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/burdenf2/BurdenF2NodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/burdenf3/BurdenF3NodeModel.java \
+	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/burdensplitter/BurdenSplitterNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/countvariants/CountVariantsNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/bioalcidae/BioAlcidaeNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/gatk/selectvariants/SelectVariantsNodeModel.java \
