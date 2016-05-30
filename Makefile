@@ -23,7 +23,7 @@ JAR?=jar
 JAVA?=java
 
 
-plugin.version=2016.01.21
+plugin.version=2016.05.30
 knime.root?= ${HOME}/package/knime_3.1.0
 
 htsjdk.root?=${HOME}/src/htsjdk
