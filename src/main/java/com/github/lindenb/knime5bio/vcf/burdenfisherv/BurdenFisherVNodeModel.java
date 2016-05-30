@@ -1,10 +1,10 @@
-package com.github.lindenb.knime5bio.vcf.burdenf2;
+package com.github.lindenb.knime5bio.vcf.burdenfisherv;
 import java.io.File;
 
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.ExecutionContext;
 
-import com.github.lindenb.jvarkit.tools.burden.VcfBurdenFilter2;
+import com.github.lindenb.jvarkit.tools.burden.VcfBurdenFisherV;
 import com.github.lindenb.jvarkit.util.vcf.VCFUtils;
 import com.github.lindenb.jvarkit.util.vcf.VcfIterator;
 
@@ -12,20 +12,16 @@ import htsjdk.samtools.util.CloserUtil;
 import htsjdk.variant.variantcontext.writer.VariantContextWriter;
 
 
-public class BurdenF2NodeModel extends AbstractBurdenF2NodeModel {
+public class BurdenFisherVNodeModel extends AbstractBurdenFisherVNodeModel {
 	
 	
 	@Override
-	protected void transform(final File inFile, final File outFile) throws Exception {
-		final VcfBurdenFilter2 application = new VcfBurdenFilter2();
-		application.setCasesFile(super.getSettingsModelCasesFileFile());
-		application.setControlsFile(super.getSettingsModelControlsFileFile());
-		application.setMaxMAF(super.getSettingsModelMaxMAF().getDoubleValue());
-		application.setMinFisherPValue(super.getSettingsModelMinFisherPValue().getDoubleValue());
-		
-		
+	protected void transform(File inFile, File outFile) throws Exception {
+		final VcfBurdenFisherV application = new VcfBurdenFisherV();
 		VcfIterator in=null;
 		VariantContextWriter w=null;
+		application.setAcceptFiltered(super.getSettingsModelAcceptFiltered().getBooleanValue());
+		application.setOutputFile(outFile);
 		
 		checkEmptyListOfThrowables(application.initializeKnime());
 

@@ -5,19 +5,57 @@
     	<setting name="vcf" type="column" index="0" required="true" data-type="string" >
 				<description>Input VCF file</description>
 		</setting>
-      	<setting name="casesFile" type="input-file" required="true">
-	      <description>Path to a pedigree )containing the names of the CASES. A pedigree file is a text file containing the following columns: FAMILY-ID INDIVIDUAL-ID FATHER-ID(or 0) MOTHER-ID(or 0) SEX(1 male, 2 female, 0 unknown) PHENOTYPE (1 affected, 0 unaffected, 9 not available)</description>
+
+
+	    <setting name="splitterName" type="string" default="vepso">
+	      <description>Splitter Name</description>
 	    </setting>
-	    <setting name="controlsFile" type="input-file"  required="true">
-	      <description>Path to a pedigree containing the names of the CONTROLS. A pedigree file is a text file containing the following columns: FAMILY-ID INDIVIDUAL-ID FATHER-ID(or 0) MOTHER-ID(or 0) SEX(1 male, 2 female, 0 unknown) PHENOTYPE (1 affected, 0 unaffected, 9 not available)</description>
+	    <setting name="acceptFiltered" type="boolean" default="false">
+	      <description>accept variants having a FILTER column. Default is ignore variants with a FILTER column</description>
 	    </setting>
+	    <setting name="galaxyHtmlPath" type="string" default="">
+	      <description>When used with galaxy, the files will be expanded in that path. </description>
+	    </setting>
+	    <setting name="enableVepFeature" type="boolean" default="false">
+	      <description>enable VEP 'FEATURE' (transcript)</description>
+	    </setting>
+	    <setting name="enableVepHgnc" type="boolean" default="false">
+	      <description>enable VEP 'HGNC'</description>
+	    </setting>
+	    <setting name="enableVepEnsg" type="boolean" default="false">
+	      <description>enable VEP 'ENSG'</description>
+	    </setting>
+	    <setting name="enableVepEnst" type="boolean" default="false">
+	      <description>enable VEP 'FEATURE' starting with 'ENST'</description>
+	    </setting>
+	    <setting name="enableVepEnsp" type="boolean" default="false">
+	      <description>enable VEP 'ENSP'</description>
+	    </setting>
+	    <setting name="enableVepSymbol" type="boolean" default="false">
+	      <description>enable VEP 'SYMBOL'</description>
+	    </setting>
+	    <setting name="enableVepRefSeq" type="boolean" default="false">
+	      <description>enable VEP 'SYMBOL'= XM_ or NM_</description>
+	    </setting>
+	    <setting name="enableAllNM" type="boolean" default="false">
+	      <description>enable grouping by ALL_NM : gene not empty and transcript starting with NM_ </description>
+	    </setting>
+	    <setting name="enableAllRefSeq" type="boolean" default="false">
+	      <description>enable grouping by ALL_REFSEQ: gene not empty and transcript NOT starting with ENST</description>
+	    </setting>
+	    <setting name="enableAllEnst" type="boolean" default="false">
+	      <description>enable grouping by ALL_ENST: gene starting with ENST</description>
+	    </setting>
+	    <setting name="enableAllTranscript" type="boolean" default="false">
+	      <description>enable grouping by all transcript for a gene</description>
+	    </setting>
+
+
+
 	     <setting name="maxRecordsInRam" type="int" default="50000" required="true">
 	      <description>When writing large files that need to be sorted, this will specify the number of records stored in RAM </description>
 	    </setting>
 	     
-		<setting name="splittype" type="string" default="vepso" required="true">
-			 <description>Splitter Name : vepso or vephd</description>
-	    </setting>
 
   </settings>
     
@@ -30,7 +68,6 @@
 			<column name="name" type="string"/>
 			<column name="totalVariants" type="int"/>
 			<column name="unfilteredVariants" type="int"/>
-			<column name="Fisher" type="double"/>
 			<column name="VCF" type="string"/>
 		</outPort>
   </ports>

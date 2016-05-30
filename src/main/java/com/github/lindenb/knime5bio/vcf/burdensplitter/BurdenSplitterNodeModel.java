@@ -45,24 +45,22 @@ public class BurdenSplitterNodeModel extends AbstractBurdenSplitterNodeModel {
 		try {
 			
 			application.setOutputFile(zipFile);
-			application.setCasesFile(super.getSettingsModelCasesFileFile());
-			application.setControlsFile(super.getSettingsModelControlsFileFile());
 			application.setMaxRecordsInRam(super.__maxRecordsInRam.getIntValue());
 			application.setAcceptFiltered(false);
 			
-			application.setIgnoreVepFeature(true);
-			application.setIgnoreVepHgnc(true);
-			application.setIgnoreVepEnsg(true);
-			application.setIgnoreVepEnst(true);
-			application.setIgnoreVepEnsp(true);
-			application.setIgnoreVepSymbol(true);
-			application.setIgnoreVepRefSeq(true);
+			application.setEnableVepFeature(super.__enableVepFeature.getBooleanValue());
+			application.setEnableVepHgnc(super.__enableVepHgnc.getBooleanValue());
+			application.setEnableVepEnsg(super.__enableVepEnsg.getBooleanValue());
+			application.setEnableVepEnst(super.__enableVepEnst.getBooleanValue());
+			application.setEnableVepEnsp(super.__enableVepEnsp.getBooleanValue());
+			application.setEnableVepSymbol(super.__enableVepSymbol.getBooleanValue());
+			application.setEnableVepRefSeq(super.__enableVepRefSeq.getBooleanValue());
 			
-			application.setIgnoreAllNM(false);
-			application.setIgnoreAllRefSeq(false);
-			application.setIgnoreAllEnst(false);
-			application.setIgnoreAllTranscript(false);
-			application.setSplitterName(super.__splittype.getStringValue());
+			application.setEnableAllNM(super.__enableAllNM.getBooleanValue());
+			application.setEnableAllRefSeq(super.__enableAllRefSeq.getBooleanValue());
+			application.setEnableAllEnst(super.__enableAllEnst.getBooleanValue());
+			application.setEnableAllTranscript(super.__enableAllTranscript.getBooleanValue());
+			application.setSplitterName(super.__splitterName.getStringValue());
 
 			application.setTmpdir(getNodeWorkingDirectory());
 			checkEmptyListOfThrowables(application.call());
@@ -87,12 +85,8 @@ public class BurdenSplitterNodeModel extends AbstractBurdenSplitterNodeModel {
 					Integer chromStart = null;
 					Integer chromEnd = null;
 					Double fisher = null;
-					VCFHeaderLine ohl = header.getOtherHeaderLine(VcfBurdenSplitter.VCF_HEADER_FISHER_VALUE);
-					if(ohl!=null) {
-						fisher = Double.parseDouble(ohl.getValue());
-					}
 					String splitkey=entry.getName();
-					header.getOtherHeaderLine(VcfBurdenSplitter.VCF_HEADER_SPLITKEY);
+					final VCFHeaderLine ohl = header.getOtherHeaderLine(VcfBurdenSplitter.VCF_HEADER_SPLITKEY);
 					if(ohl!=null) {
 						splitkey = ohl.getValue();
 					}
@@ -115,7 +109,7 @@ public class BurdenSplitterNodeModel extends AbstractBurdenSplitterNodeModel {
 					final DataRow row = new DefaultRow(RowKey.createRowKey(rowIndex),
 							super.createDataCellsForOutTableSpec0(chrom,chromStart, chromEnd,
 							splitkey,		
-							totalVariants,unfilteredVariants,fisher,vcfFileOut.getPath()));
+							totalVariants,unfilteredVariants,vcfFileOut.getPath()));
 					container.addRowToTable(row);
 					}
 				}

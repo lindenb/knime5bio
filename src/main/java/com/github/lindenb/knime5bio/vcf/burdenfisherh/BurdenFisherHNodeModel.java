@@ -1,10 +1,10 @@
-package com.github.lindenb.knime5bio.vcf.burdenf3;
+package com.github.lindenb.knime5bio.vcf.burdenfisherh;
 import java.io.File;
 
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.ExecutionContext;
 
-import com.github.lindenb.jvarkit.tools.burden.VcfBurdenFilter3;
+import com.github.lindenb.jvarkit.tools.burden.VcfBurdenFisherH;
 import com.github.lindenb.jvarkit.util.vcf.VCFUtils;
 import com.github.lindenb.jvarkit.util.vcf.VcfIterator;
 
@@ -12,19 +12,17 @@ import htsjdk.samtools.util.CloserUtil;
 import htsjdk.variant.variantcontext.writer.VariantContextWriter;
 
 
-public class BurdenF3NodeModel extends AbstractBurdenF3NodeModel {
+public class BurdenFisherHNodeModel extends AbstractBurdenFisherHNodeModel {
 	
 	
 	@Override
-	protected void transform(File inFile, File outFile) throws Exception {
-		final VcfBurdenFilter3 application = new VcfBurdenFilter3();
+	protected void transform(final File inFile, final File outFile) throws Exception {
+		final VcfBurdenFisherH application = new VcfBurdenFisherH();
+		application.setMinFisherPValue(super.getSettingsModelMinFisherPValue().getDoubleValue());
+		
+		
 		VcfIterator in=null;
 		VariantContextWriter w=null;
-		application.setExacFile(super.getSettingsModelExacFileFile());
-		application.setExacPopulationStr(super.getSettingsModelExacPopulationStr().toString().replaceAll("[\n ]", ","));
-		application.setIfNotInExacThenDiscard(super.getSettingsModelIfNotInExacThenDiscard().getBooleanValue());
-		application.setOutputFile(outFile);
-		application.setMaxFreq(super.geSettingsModelMaxFreqDouble());
 		
 		checkEmptyListOfThrowables(application.initializeKnime());
 

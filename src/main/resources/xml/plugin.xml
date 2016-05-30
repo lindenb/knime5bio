@@ -64,13 +64,13 @@
 			<!--  VCF -->
 			
 			<node category-path="/community/knime5bio/vcf"
-		    	  factory-class="com.github.lindenb.knime5bio.vcf.burdenf3.BurdenF3NodeFactory"
-		    	  id="com.github.lindenb.knime5bio.vcf.burdenf3.BurdenF3NodeFactory"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.burdenfisherv.BurdenFisherVNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.burdenfisherv.BurdenFisherVNodeFactory"
 				/>
 				
 			<node category-path="/community/knime5bio/vcf"
-		    	  factory-class="com.github.lindenb.knime5bio.vcf.burdenf2.BurdenF2NodeFactory"
-		    	  id="com.github.lindenb.knime5bio.vcf.burdenf2.BurdenF2NodeFactory"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.burdenfisherh.BurdenFisherHNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.burdenfisherh.BurdenFisherHNodeFactory"
 				/>
 			
 			<node category-path="/community/knime5bio/vcf"
@@ -189,7 +189,10 @@
 		    	  factory-class="com.github.lindenb.knime5bio.vcf.countvariants.CountVariantsNodeFactory"
 		    	  id="com.github.lindenb.knime5bio.vcf.countvariants.CountVariantsNodeFactory"
 				/>	
-				
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.injectpedigree.InjectPedigreeNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.injectpedigree.InjectPedigreeNodeFactory"
+				/>		
 				
 			<!--  GATK -->	
 		
