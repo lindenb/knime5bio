@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node>
+  <description>Burden filter 3 - Exac</description>
+  <settings>
+    	<setting name="vcf" type="column" index="0" required="true" data-type="string" >
+				<description>Input VCF file</description>
+		</setting>
+  
+    <setting name="exacFile" type="input-file" required="true">
+      <description>Path to Exac VCF file. At the time of writing, you'd better use a normalized version of Exac (see https://github.com/lindenb/jvarkit/wiki/VCFFixIndels )</description>
+    </setting>
+    <setting name="ifNotInExacThenDiscard" type="boolean" default="false">
+      <description>if variant was not found in Exac, discard the variant (set the FILTER). Default: don't set the FILTER. </description>
+    </setting>
+    <setting name="maxFreq" type="double" default="0.001" required="true">
+      <description>set FILTER if max(exac frequency in any pop) is greater than this value) </description>
+    </setting>
+    <setting name="exacPopulationStr" type="string" default="AFR,AMR,EAS,FIN,NFE,SAS" required="true">
+      <description>comma separated populations in exac</description>
+    </setting>
+    <setting name="useTabixIndex" type="boolean" default="false">
+      <description>use tabix index for Exac it is present. Might speed up things if the number of variant is low.</description>
+    </setting>
+
+  </settings>
+  
+    <snippet id="transform-file"/>
+  
+  <ports>
+		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
+		<outPort index="0" name="VCF output">
+			<column name="VCF" type="string"/>
+		</outPort>
+  </ports>
+</node>

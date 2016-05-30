@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node>
+  <description>Burden : MAF for Cases / Controls </description>
+  <settings>
+    	<setting name="vcf" type="column" index="0" required="true" data-type="string" >
+				<description>Input VCF file</description>
+		</setting>
+  
+   <setting name="maxMAF" type="double" default="0.05" required="true">
+      <description>if MAF of cases OR MAF of control is greater than maxMAF, the the FILTER Column is Filled </description>
+    </setting>
+
+
+  </settings>
+  
+    <snippet id="transform-file"/>
+  
+  <ports>
+		<inPort index="0" name="In-Port name">VCF INPUT</inPort>
+		<outPort index="0" name="VCF output">
+			<column name="VCF" type="string"/>
+		</outPort>
+  </ports>
+</node>

@@ -38,13 +38,13 @@ jvarkit.root?=${HOME}/src/jvarkit
 ifeq ($(realpath ${jvarkit.root}),)
 $(error cannot find $$jvarit.root = ${jvarkit.root})
 endif
-jvarkit.jars?=$(shell find $(realpath ${jvarkit.root})/dist*  -type f -name "vcfinjectpedigree.jar" -o -name "vcfburdenfisherh.jar" -o -name "vcfburdensplitter.jar" -o -name "vcfburdenfisherv.jar" -o -name "vcfmerge.jar" -o -name "vcfin.jar" -o  -name "vcftrio.jar" -o    -name "vcfcutsamples.jar" -o -name "vcftail.jar" -o  -name "vcfhead.jar" -o  -name "vcfrenamechr.jar" -o -name "vcfcomparecallers.jar" -o -name "groupbygene.jar" -o -name "vcfpeekvcf.jar" -o -name "vcfmulti2oneinfo.jar" -o -name "vcffilterso.jar" -o -name "vcfmulti2oneallele.jar" -o -name "vcffilterjs.jar" -o -name "bioalcidae.jar"  -o -name "vcfindextabix.jar" ) \
+jvarkit.jars?=$(shell find $(realpath ${jvarkit.root})/dist*  -type f -name "vcfinjectpedigree.jar"  -o -name "vcfburdenmaf.jar" -o -name "vcfburdenexac.jar" -o -name "vcfburdenfisherh.jar" -o -name "vcfburdensplitter.jar" -o -name "vcfburdenfisherv.jar" -o -name "vcfmerge.jar" -o -name "vcfin.jar" -o  -name "vcftrio.jar" -o    -name "vcfcutsamples.jar" -o -name "vcftail.jar" -o  -name "vcfhead.jar" -o  -name "vcfrenamechr.jar" -o -name "vcfcomparecallers.jar" -o -name "groupbygene.jar" -o -name "vcfpeekvcf.jar" -o -name "vcfmulti2oneinfo.jar" -o -name "vcffilterso.jar" -o -name "vcfmulti2oneallele.jar" -o -name "vcffilterjs.jar" -o -name "bioalcidae.jar"  -o -name "vcfindextabix.jar" ) \
 	$(realpath $(addprefix ${jvarkit.root}/,lib/commons-cli/commons-cli/1.3.1/commons-cli-1.3.1.jar lib/org/slf4j/slf4j-api/1.7.13/slf4j-api-1.7.13.jar lib/org/slf4j/slf4j-simple/1.7.13/slf4j-simple-1.7.13.jar ))
 	
 
 
-ifneq ($(words ${jvarkit.jars}),23)
-$(error expected count($$jvarkit.jars)=23 but got '$(words ${jvarkit.jars})' for ${jvarkit.jars})
+ifneq ($(words ${jvarkit.jars}),25)
+$(error expected count($$jvarkit.jars)=25 but got '$(words ${jvarkit.jars})' for ${jvarkit.jars})
 endif
 
 
@@ -142,6 +142,8 @@ all: ${dist.dir}/com.github.lindenb.knime5bio_${plugin.version}.jar
 
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/veprest/VepRest,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/burdensplitter/BurdenSplitter,1,,,,,))
+$(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/burdenexac/BurdenExac,1,,,,,))
+$(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/burdenmaf/BurdenMaf,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/vcfin/VcfIn,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/merge/Merge,1,,,,,))
 $(eval $(call generatecode,com/github/lindenb/knime5bio/vcf/samplesin/SamplesIn,1,,,,,))
@@ -253,6 +255,8 @@ ${dist.dir}/com_github_lindenb_knime5bio.jar : $(sort ${knime.jars} ${extra.jars
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/bed/intersectbed/IntersectBedNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/bed/slop/SlopBedNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/veprest/VepRestNodeModel.java \
+	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/burdenmaf/BurdenMafNodeModel.java \
+	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/burdenexac/BurdenExacNodeModel.java \
 	${this.dir}src/main/java/com/github/lindenb/knime5bio/vcf/injectpedigree/InjectPedigreeNodeModel.java
 	mkdir -p $(dir $@) ${tmp.dir}
 	${JAVAC} -Xlint -d ${tmp.dir} -g -classpath "$(subst $(SPACE),:,$(filter %.jar,$^))" -sourcepath ${this.dir}src/main/java:${this.dir}src/main/generated-code/java $(filter %.java,$^)

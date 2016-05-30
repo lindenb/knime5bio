@@ -64,6 +64,16 @@
 			<!--  VCF -->
 			
 			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.burdenmaf.BurdenMafNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.burdenmaf.BurdenMafNodeFactory"
+				/>
+			
+			<node category-path="/community/knime5bio/vcf"
+		    	  factory-class="com.github.lindenb.knime5bio.vcf.burdenexac.BurdenExacNodeFactory"
+		    	  id="com.github.lindenb.knime5bio.vcf.burdenexac.BurdenExacNodeFactory"
+				/>
+			
+			<node category-path="/community/knime5bio/vcf"
 		    	  factory-class="com.github.lindenb.knime5bio.vcf.burdenfisherv.BurdenFisherVNodeFactory"
 		    	  id="com.github.lindenb.knime5bio.vcf.burdenfisherv.BurdenFisherVNodeFactory"
 				/>
